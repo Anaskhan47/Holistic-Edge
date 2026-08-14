@@ -1,0 +1,112 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ArrowLeft, Save, Loader2 } from 'lucide-react';
+import { leadStorage, notificationStorage } from '../../services/adminStorage';
+import { useAdminStore } from '../../context/AdminStoreContext';
+import type { LeadSource, LeadStatus } from '../../types/admin.types';
+import { conditionsData } from '../../../data/conditions';
+
+const SOURCES: LeadSource[] = ['Website Form', 'WhatsApp', 'Phone', 'Booking Modal', 'Walk-in', 'Referral'];
+
+export function LeadForm() {
+  const navigate = useNavigate();
+  const { refreshLeads, refreshMetrics, showToast, logAudit } = useAdminStore();
+
+  const [form, setForm] = useState({
+    fullName: '', phone: '', email: '', condition: conditionsData[0]?.title ?? 'Back Pain',
+    message: '', source: 'Phone' as LeadSource, status: 'New' as LeadStatus,
+  });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [saving, setSaving] = useState(false);
+
+  const set = (field: string, value: string) => {
+    setForm(prev => ({ ...prev, [field]: value }));
+    setErrors(prev => ({ ...prev, [field]: '' }));
+  };
+
+  const validate = () => {
+    const errs: Record<string, string> = {};
+    if (!form.fullName.trim()) errs.fullName = 'Name is required';
+    if (!form.phone.trim()) errs.phone = 'Phone is required';
+    if (!form.condition) errs.condition = 'Condition is required';
+    setErrors(errs);
+    return Object.keys(errs).length === 0;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validate()) return;
+    setSaving(true);
+    await new Promise(r => setTimeout(r, 400));
+    const created = leadStorage.create({
+      fullName: form.fullName.trim(), phone: form.phone.trim(),
+      email: form.email || undefined, condition: form.condition,
+      message: form.message || undefined, source: form.source, status: form.status,
+    });
+    notificationStorage.create({
+      type: 'lead', title: 'New Lead Added',
+      message: `${created.fullName} — ${created.condition}`,
+      entityId: created.id, entityType: 'lead', link: `/admin/leads/${created.id}`,
+    });
+    refreshLeads(); refreshMetrics();
+    logAudit('created', 'lead', created.id, `Lead created for ${created.fullName}`);
+    showToast('success', 'Lead created', created.fullName);
+    setSaving(false);
+    navigate(`/admin/leads/${created.id}`);
+  };
+
+  const ic = (f: string) => `w-full h-10 px-3 rounded-xl border text-sm focus:outline-none focus:ring-2 transition-all ${errors[f] ? 'border-red-300 focus:border-red-400 focus:ring-red-100' : 'border-[#E5E2DC] focus:border-[#A94420] focus:ring-[#A94420]/10'}`;
+
+  return (
+    <div className="p-6 max-w-xl space-y-5">
+      <div className="flex items-center gap-3">
+        <button onClick={() => navigate('/admin/leads')} className="w-8 h-8 rounded-lg border border-[#E5E2DC] flex items-center justify-center text-[#5A544E] hover:bg-[#F8F7F4]">
+          <ArrowLeft size={15} />
+        </button>
+        <h1 className="text-lg font-bold text-[#1A1A1A]">Add Lead</h1>
+      </div>
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <div className="bg-white border border-[#E5E2DC] rounded-2xl p-5 space-y-4">
+          <h2 className="text-xs font-semibold text-[#9E968C] uppercase tracking-wider">Contact Information</h2>
+          <div className="grid grid-cols-2 gap-4">
+            {[['fullName', 'Full Name *', 'text', 'Patient name'], ['phone', 'Phone *', 'tel', '+91 XXXXX XXXXX'], ['email', 'Email', 'email', 'patient@email.com']].map(([f, l, t, p]) => (
+              <div key={f} className={f === 'email' ? 'col-span-2' : ''}>
+                <label className="block text-xs font-semibold text-[#5A544E] mb-1.5">{l}</label>
+                <input className={ic(f as string)} type={t as string} value={(form as any)[f as string]} onChange={e => set(f as string, e.target.value)} placeholder={p as string} />
+                {errors[f as string] && <p className="mt-1 text-[11px] text-red-600">{errors[f as string]}</p>}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="bg-white border border-[#E5E2DC] rounded-2xl p-5 space-y-4">
+          <h2 className="text-xs font-semibold text-[#9E968C] uppercase tracking-wider">Inquiry Details</h2>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-semibold text-[#5A544E] mb-1.5">Condition *</label>
+              <select className={ic('condition')} value={form.condition} onChange={e => set('condition', e.target.value)}>
+                {conditionsData.map(c => <option key={c.id} value={c.title}>{c.title}</option>)}
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-[#5A544E] mb-1.5">Source</label>
+              <select className={ic('source')} value={form.source} onChange={e => set('source', e.target.value as LeadSource)}>
+                {SOURCES.map(s => <option key={s} value={s}>{s}</option>)}
+              </select>
+            </div>
+          </div>
+          <div>
+            <label className="block text-xs font-semibold text-[#5A544E] mb-1.5">Message / Notes</label>
+            <textarea rows={3} className="w-full px-3 py-2.5 rounded-xl border border-[#E5E2DC] text-sm placeholder:text-[#C4BDB4] focus:outline-none focus:border-[#A94420] focus:ring-2 focus:ring-[#A94420]/10 resize-none" value={form.message} onChange={e => set('message', e.target.value)} placeholder="What the patient said…" />
+          </div>
+        </div>
+        <div className="flex gap-3">
+          <button type="button" onClick={() => navigate('/admin/leads')} className="px-5 py-2.5 rounded-xl border border-[#E5E2DC] text-sm text-[#2C2926] hover:bg-[#F8F7F4]">Cancel</button>
+          <button type="submit" disabled={saving} className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#A94420] text-white text-sm font-semibold hover:bg-[#8F3717] disabled:opacity-60">
+            {saving ? <><Loader2 size={14} className="animate-spin" />Creating…</> : <><Save size={14} />Add Lead</>}
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}

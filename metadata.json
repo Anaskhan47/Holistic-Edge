@@ -1,0 +1,6 @@
+{
+  "name": "Holistic Edge Chiropractic & Wellness Clinic",
+  "description": "Premier Chiropractic, Acupuncture, Cupping Therapy, and A.M.M Method Pain Management Clinic founded by Dr. Abdul Mallik in Mehdipatnam, Hyderabad.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,73 @@
+import React from 'react';
+import { cn } from '../../lib/utils';
+import { Loader2 } from 'lucide-react';
+
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'primary' | 'secondary' | 'accent' | 'outline' | 'ghost' | 'navy';
+  size?: 'sm' | 'md' | 'lg';
+  isLoading?: boolean;
+  leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
+  fullWidth?: boolean;
+}
+
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  (
+    {
+      className,
+      variant = 'primary',
+      size = 'md',
+      isLoading = false,
+      leftIcon,
+      rightIcon,
+      fullWidth = false,
+      children,
+      disabled,
+      ...props
+    },
+    ref
+  ) => {
+    const baseStyles = 'inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer select-none active:scale-[0.98] whitespace-nowrap tracking-tight';
+
+    const variants = {
+      primary: 'bg-[#1A1A1A] hover:bg-[#2E2C29] text-[#FAF9F6] focus:ring-[#1A1A1A] shadow-sm shadow-[#1A1A1A]/10 hover:shadow-md',
+      secondary: 'bg-[#1B4332] hover:bg-[#112A1F] text-[#FAF9F6] focus:ring-[#1B4332] shadow-sm shadow-[#1B4332]/15',
+      accent: 'bg-[#A94420] hover:bg-[#8F3717] text-white focus:ring-[#A94420] shadow-sm shadow-[#A94420]/20 hover:shadow-md hover:shadow-[#A94420]/25',
+      outline: 'bg-transparent border border-[#D5CFC5] text-[#1A1A1A] hover:bg-[#F2EDE4] hover:border-[#1A1A1A]/40 focus:ring-[#1A1A1A]/20',
+      ghost: 'bg-transparent hover:bg-[#F2EDE4] text-[#2C2926] hover:text-[#1A1A1A] focus:ring-[#D5CFC5]',
+      navy: 'bg-[#1A365D] hover:bg-[#10243E] text-[#FAF9F6] focus:ring-[#1A365D]'
+    };
+
+    const sizes = {
+      sm: 'text-xs px-3.5 py-2 min-h-[36px] gap-1.5',
+      md: 'text-sm px-5 py-2.5 min-h-[44px] gap-2',
+      lg: 'text-base px-6 py-3.5 min-h-[48px] gap-2.5 font-semibold'
+    };
+
+    return (
+      <button
+        ref={ref}
+        disabled={disabled || isLoading}
+        className={cn(
+          baseStyles,
+          variants[variant],
+          sizes[size],
+          fullWidth && 'w-full',
+          className
+        )}
+        {...props}
+      >
+        {isLoading ? (
+          <Loader2 className="w-4 h-4 animate-spin text-current" />
+        ) : (
+          leftIcon
+        )}
+        <span>{children}</span>
+        {!isLoading && rightIcon}
+      </button>
+    );
+  }
+);
+
+Button.displayName = 'Button';
+
