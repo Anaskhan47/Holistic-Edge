@@ -54,6 +54,7 @@ export const WhyHolisticEdge: React.FC<WhyHolisticEdgeProps> = ({
 
             {/* Key Pillars */}
             <div className="space-y-3.5">
+              <div className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-lg bg-[#FAF4ED] text-[#D49E58] flex items-center justify-center flex-shrink-0 mt-0.5 border border-[#EADBCE]">
                   <ShieldCheck className="w-4 h-4" />
                 </div>

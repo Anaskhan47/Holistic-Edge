@@ -132,8 +132,6 @@ export function DashboardPage() {
           label="Today's Appointments"
           value={metrics.todayAppointments}
           sub={`${todayAppts.filter(a => a.status === 'Confirmed').length} confirmed`}
-          icon={<CalendarDays size={17} className="text-[#1B4332]" />}
-          color="bg-green-50"
           icon={<CalendarDays size={17} className="text-[#0F2747]" />}
           color="bg-blue-50"
           onClick={() => navigate('/admin/appointments')}
