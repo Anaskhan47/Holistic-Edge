@@ -43,25 +43,14 @@ export const FounderSection: React.FC<FounderSectionProps> = ({
                 </div>
               </div>
 
-              {/* Desktop Floating 25 Years Badge (>= lg) */}
-              <div className="hidden lg:flex absolute -bottom-6 -left-6 bg-white p-3.5 rounded-2xl shadow-xl border border-[#E8E4DC] items-center gap-3 z-20">
-                <div className="w-10 h-10 rounded-xl bg-[#F0F4F8] text-[#0F2747] flex items-center justify-center font-bold text-sm font-serif border border-[#CBD8E6]">
+              {/* Metric Card - Normal Flow Element (16px gap below image, zero overlap) */}
+              <div className="mt-4 bg-white p-4 rounded-2xl shadow-sm border border-[#E8E4DC] flex items-center gap-3.5">
+                <div className="w-11 h-11 rounded-xl bg-[#F0F4F8] text-[#0F2747] flex items-center justify-center font-bold text-base font-serif border border-[#CBD8E6] flex-shrink-0">
                   25+
                 </div>
                 <div className="text-left">
-                  <div className="text-xs font-bold text-[#1A1A1A]">Years of Practice</div>
-                  <div className="text-[11px] text-[#736C63]">12,000+ Patients Treated</div>
-                </div>
-              </div>
-
-              {/* Mobile & Tablet stacked card below portrait (< lg) */}
-              <div className="mt-4 lg:hidden bg-white p-3.5 rounded-2xl shadow-xs border border-[#E8E4DC] flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#F0F4F8] text-[#0F2747] flex items-center justify-center font-bold text-sm font-serif border border-[#CBD8E6] flex-shrink-0">
-                  25+
-                </div>
-                <div className="text-left">
-                  <div className="text-xs font-bold text-[#1A1A1A]">25+ Years of Clinical Practice</div>
-                  <div className="text-[11px] text-[#736C63]">Over 12,000+ Patients Treated in Hyderabad</div>
+                  <div className="text-xs sm:text-sm font-bold text-[#1A1A1A]">25+ Years of Clinical Practice</div>
+                  <div className="text-xs text-[#736C63]">Over 12,000+ Patients Treated in Hyderabad</div>
                 </div>
               </div>
             </div>

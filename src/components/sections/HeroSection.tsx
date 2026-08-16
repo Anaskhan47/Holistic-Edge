@@ -162,50 +162,28 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 </div>
               </div>
 
-              {/* Desktop Floating Rating Badge (>= lg) */}
-              <div className="hidden lg:flex absolute -top-5 -left-6 bg-white p-3.5 rounded-2xl shadow-xl border border-[#E8E4DC] items-center gap-3 z-20">
-                <div className="w-10 h-10 rounded-xl bg-[#FAF4ED] text-[#D49E58] flex items-center justify-center border border-[#EADBCE]">
-                  <Star className="w-5 h-5 fill-[#D49E58]" />
-                </div>
-                <div className="text-left">
-                  <div className="flex items-center gap-1 text-sm font-bold text-[#1A1A1A]">
-                    <span>4.6★ / 4.7★</span>
-                    <span className="text-[10px] text-[#1B4332] bg-[#EAF2ED] px-1.5 py-0.5 rounded font-semibold">Verified</span>
-                  </div>
-                  <div className="text-[11px] text-[#736C63]">Justdial & Cybo Ratings</div>
-                </div>
-              </div>
-
-              {/* Desktop Floating 12,000+ Treated Badge (>= lg) - Anchored at top-right to prevent overlap */}
-              <div className="hidden lg:flex absolute -top-5 -right-6 bg-white p-3.5 rounded-2xl shadow-xl border border-[#E8E4DC] items-center gap-3 z-20">
-                <div className="w-10 h-10 rounded-xl bg-[#F0F4F8] text-[#0F2747] flex items-center justify-center border border-[#CBD8E6]">
-                  <Users className="w-5 h-5" />
-                </div>
-                <div className="text-left">
-                  <div className="text-sm font-bold text-[#1A1A1A] font-serif">12,000+</div>
-                  <div className="text-[11px] text-[#736C63]">Patients Treated in Hyd</div>
-                </div>
-              </div>
-
-              {/* Mobile & Tablet stacked cards below image (< lg) */}
-              <div className="grid grid-cols-2 gap-3 mt-4 lg:hidden">
-                <div className="bg-white p-3 rounded-2xl shadow-xs border border-[#E8E4DC] flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-[#FAF4ED] text-[#D49E58] flex items-center justify-center border border-[#EADBCE] flex-shrink-0">
+              {/* Trust & Metric Cards in Normal Document Flow (Zero Overlap on all viewports) */}
+              <div className="grid grid-cols-2 gap-3 mt-4">
+                <div className="bg-white p-3.5 rounded-2xl shadow-sm border border-[#E8E4DC] flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-[#FAF4ED] text-[#D49E58] flex items-center justify-center border border-[#EADBCE] flex-shrink-0">
                     <Star className="w-4 h-4 fill-[#D49E58]" />
                   </div>
                   <div className="text-left min-w-0">
-                    <div className="text-xs font-bold text-[#1A1A1A]">4.6★ / 4.7★</div>
-                    <div className="text-[10px] text-[#736C63] truncate">Verified Ratings</div>
+                    <div className="flex items-center gap-1 text-xs font-bold text-[#1A1A1A]">
+                      <span>4.6★ / 4.7★</span>
+                      <span className="text-[9px] text-[#1B4332] bg-[#EAF2ED] px-1 py-0.5 rounded font-semibold hidden sm:inline">Verified</span>
+                    </div>
+                    <div className="text-[10.5px] text-[#736C63] truncate">Justdial & Cybo Ratings</div>
                   </div>
                 </div>
 
-                <div className="bg-white p-3 rounded-2xl shadow-xs border border-[#E8E4DC] flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-[#F0F4F8] text-[#0F2747] flex items-center justify-center border border-[#CBD8E6] flex-shrink-0">
+                <div className="bg-white p-3.5 rounded-2xl shadow-sm border border-[#E8E4DC] flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-[#F0F4F8] text-[#0F2747] flex items-center justify-center border border-[#CBD8E6] flex-shrink-0">
                     <Users className="w-4 h-4" />
                   </div>
                   <div className="text-left min-w-0">
                     <div className="text-xs font-bold text-[#1A1A1A] font-serif">12,000+</div>
-                    <div className="text-[10px] text-[#736C63] truncate">Patients Treated</div>
+                    <div className="text-[10.5px] text-[#736C63] truncate">Patients Treated in Hyd</div>
                   </div>
                 </div>
               </div>
