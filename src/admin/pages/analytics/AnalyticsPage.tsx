@@ -59,7 +59,7 @@ export function AnalyticsPage() {
                 <span className="text-[#9E968C]">{s.share} ({s.count})</span>
               </div>
               <div className="w-full h-2 bg-[#F4F1EA] rounded-full overflow-hidden">
-                <div className="h-full bg-[#A94420] rounded-full" style={{ width: s.share }} />
+                <div className="h-full bg-[#0F2747] rounded-full" style={{ width: s.share }} />
               </div>
             </div>
           ))}

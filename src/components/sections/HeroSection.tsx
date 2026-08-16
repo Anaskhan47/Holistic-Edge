@@ -28,7 +28,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   return (
     <section className="relative overflow-hidden bg-[#FAF9F6] pt-8 pb-16 md:pt-14 md:pb-24 border-b border-[#E8E4DC]">
       {/* Subtle Background Geometry */}
-      <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-[#A94420]/5 blur-3xl pointer-events-none" />
+      <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-[#0F2747]/5 blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 rounded-full bg-[#1B4332]/5 blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -43,7 +43,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               className="inline-flex items-center gap-2"
             >
               <Badge variant="editorial" size="md" className="py-1 px-3.5 shadow-sm">
-                <ShieldCheck className="w-3.5 h-3.5 text-[#A94420]" />
+                <ShieldCheck className="w-3.5 h-3.5 text-[#0F2747]" />
                 <span>Mehdipatnam, Hyderabad • Founded by Dr. Abdul Mallik</span>
               </Badge>
             </motion.div>
@@ -56,7 +56,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               className="text-3xl sm:text-4xl md:text-5xl lg:text-[54px] font-normal text-[#1A1A1A] leading-[1.12] font-serif tracking-tight"
             >
               25 Years of Experience. <br className="hidden sm:inline" />
-              <span className="text-[#A94420] italic font-medium">12,000+ Patients Treated.</span> <br />
+              <span className="text-[#0F2747] italic font-medium">12,000+ Patients Treated.</span> <br />
               <span className="text-[#2B2723] text-2xl sm:text-3xl md:text-4xl font-normal font-serif">
                 A Different Approach to Pain Care.
               </span>
@@ -107,7 +107,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 size="lg"
                 onClick={onOpenBooking}
                 leftIcon={<Calendar className="w-5 h-5" />}
-                className="shadow-md shadow-[#A94420]/20 hover:shadow-lg hover:shadow-[#A94420]/30"
+                className="shadow-md shadow-[#0F2747]/20 hover:shadow-lg hover:shadow-[#0F2747]/30"
               >
                 Book an Appointment
               </Button>
@@ -117,7 +117,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 href={`tel:${clinicInfo.phone.replace(/\s+/g, '')}`}
                 className="inline-flex items-center justify-center gap-2 bg-white hover:bg-[#F4EFE8] text-[#1A1A1A] border border-[#D5CFC5] font-semibold px-5 py-3.5 rounded-xl text-base shadow-sm hover:border-[#1A1A1A]/40 transition-colors"
               >
-                <Phone className="w-5 h-5 text-[#A94420]" />
+                <Phone className="w-5 h-5 text-[#0F2747]" />
                 <span>Call {clinicInfo.phone}</span>
               </a>
             </motion.div>
@@ -178,7 +178,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
               {/* Floating 12,000+ Treated Badge */}
               <div className="absolute -bottom-4 -right-2 sm:-right-4 bg-white p-3.5 rounded-2xl shadow-lg border border-[#E8E4DC] flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#F4EDE4] text-[#A94420] flex items-center justify-center border border-[#E2D6C6]">
+                <div className="w-10 h-10 rounded-xl bg-[#F0F4F8] text-[#0F2747] flex items-center justify-center border border-[#CBD8E6]">
                   <Users className="w-5 h-5" />
                 </div>
                 <div className="text-left">

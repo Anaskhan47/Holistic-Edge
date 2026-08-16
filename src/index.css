@@ -2,17 +2,17 @@
 
 @layer base {
   :root {
-    --brand-primary: #1A365D;
-    --brand-primary-dark: #10243E;
+    --brand-primary: #0F2747;
+    --brand-primary-dark: #0B1D3A;
     --brand-primary-light: #F0F4F8;
     --brand-secondary: #1B4332;
     --brand-secondary-dark: #112A1F;
     --brand-secondary-light: #EBF3EE;
-    --brand-accent: #A94420;
-    --brand-accent-hover: #8F3717;
-    --brand-accent-light: #FBF2EC;
+    --brand-accent: #0F2747;
+    --brand-accent-hover: #0B1D3A;
+    --brand-accent-light: #F0F4F8;
     --brand-ink: #1A1A1A;
-    --brand-dark: #22201E;
+    --brand-dark: #111827;
     --brand-muted: #6B6661;
     --brand-neutral: #FAF9F6;
     --brand-card: #FFFFFF;

@@ -64,14 +64,14 @@ export const AmmMethodDeepDive: React.FC<AmmMethodDeepDiveProps> = ({
                 <div className="flex items-center justify-between mb-3">
                   <span
                     className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-sm ${
-                      isActive ? 'bg-[#332E2A] text-[#D49E58]' : 'bg-[#FAF0EB] text-[#A94420]'
+                      isActive ? 'bg-[#0F2747] text-white' : 'bg-[#F0F4F8] text-[#0F2747]'
                     }`}
                   >
                     Stage {stage.stepNumber}
                   </span>
                   <span
                     className={`text-xs font-bold px-2 py-0.5 rounded-md uppercase tracking-wider ${
-                      isActive ? 'bg-[#332E2A] text-[#D49E58]' : 'bg-[#F2EDE4] text-[#736C63]'
+                      isActive ? 'bg-[#0F2747] text-white' : 'bg-[#F2EDE4] text-[#736C63]'
                     }`}
                   >
                     Code: {stage.code}
@@ -176,7 +176,7 @@ export const AmmMethodDeepDive: React.FC<AmmMethodDeepDiveProps> = ({
                 key={idx}
                 className="bg-[#FAF8F5] border border-[#E8E4DC] rounded-2xl p-5 text-left space-y-2"
               >
-                <div className="w-8 h-8 rounded-lg bg-[#FAF0EB] text-[#A94420] flex items-center justify-center font-bold text-xs font-serif">
+                <div className="w-8 h-8 rounded-lg bg-[#F0F4F8] text-[#0F2747] flex items-center justify-center font-bold text-xs font-serif">
                   0{idx + 1}
                 </div>
                 <h4 className="text-sm font-bold text-[#1A1A1A] leading-snug">

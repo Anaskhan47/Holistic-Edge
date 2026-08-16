@@ -206,7 +206,7 @@ export const AboutView: React.FC<AboutViewProps> = ({
                 </p>
 
                 {founder.philosophy && (
-                  <div className="bg-[#FAF8F5] border-l-4 border-[#A94420] p-4 rounded-r-xl text-xs sm:text-sm text-[#3E3A35] italic font-serif">
+                  <div className="bg-[#FAF8F5] border-l-4 border-[#0F2747] p-4 rounded-r-xl text-xs sm:text-sm text-[#3E3A35] italic font-serif">
                     "{founder.philosophy}"
                   </div>
                 )}
@@ -219,7 +219,7 @@ export const AboutView: React.FC<AboutViewProps> = ({
                     {founder.specialization.map((s, idx) => (
                       <span
                         key={idx}
-                        className="text-xs font-medium px-3 py-1 bg-[#FAF0EB] text-[#A94420] rounded-lg border border-[#ECCDC1]"
+                        className="text-xs font-medium px-3 py-1 bg-[#F0F4F8] text-[#0F2747] rounded-lg border border-[#CBD8E6]"
                       >
                         {s}
                       </span>

@@ -45,7 +45,7 @@ export function AppointmentDetailPage() {
     return (
       <div className="p-6 text-center">
         <p className="text-sm text-[#9E968C]">Appointment not found.</p>
-        <button onClick={() => navigate('/admin/appointments')} className="mt-3 text-xs text-[#A94420] hover:underline">
+        <button onClick={() => navigate('/admin/appointments')} className="mt-3 text-xs text-[#0F2747] hover:underline">
           ← Back to Appointments
         </button>
       </div>
@@ -204,7 +204,7 @@ export function AppointmentDetailPage() {
               onChange={e => setEditNotes(e.target.value)}
               rows={4}
               placeholder="Add clinical notes, reminders, or follow-up details…"
-              className="w-full px-3 py-2.5 rounded-xl border border-[#E5E2DC] text-sm text-[#1A1A1A] placeholder:text-[#C4BDB4] focus:outline-none focus:border-[#A94420] focus:ring-2 focus:ring-[#A94420]/10 resize-none transition-all"
+              className="w-full px-3 py-2.5 rounded-xl border border-[#E5E2DC] text-sm text-[#1A1A1A] placeholder:text-[#C4BDB4] focus:outline-none focus:border-[#0F2747] focus:ring-2 focus:ring-[#0F2747]/10 resize-none transition-all"
             />
             <button
               onClick={handleSaveNotes}
@@ -255,7 +255,7 @@ export function AppointmentDetailPage() {
                   <p className="text-[10.5px] text-[#9E968C]">Linked Lead</p>
                   <button
                     onClick={() => navigate(`/admin/leads/${appt.leadId}`)}
-                    className="text-xs text-[#A94420] hover:underline"
+                    className="text-xs text-[#0F2747] hover:underline"
                   >
                     View Lead →
                   </button>

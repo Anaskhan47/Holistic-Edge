@@ -43,7 +43,7 @@ export function LeadDetailPage() {
     return (
       <div className="p-6 text-center">
         <p className="text-sm text-[#9E968C]">Lead not found.</p>
-        <button onClick={() => navigate('/admin/leads')} className="mt-3 text-xs text-[#A94420] hover:underline">← Back to Leads</button>
+        <button onClick={() => navigate('/admin/leads')} className="mt-3 text-xs text-[#0F2747] hover:underline">← Back to Leads</button>
       </div>
     );
   }
@@ -110,7 +110,7 @@ export function LeadDetailPage() {
           <a href={`https://wa.me/${lead.phone.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center text-green-700 hover:bg-green-100" title="WhatsApp">
             <MessageSquare size={14} />
           </a>
-          <button onClick={() => navigate(`/admin/appointments/new`)} className="w-8 h-8 rounded-lg bg-[#A94420] flex items-center justify-center text-white hover:bg-[#8F3717]" title="Book Appointment">
+          <button onClick={() => navigate(`/admin/appointments/new`)} className="w-8 h-8 rounded-lg bg-[#0F2747] flex items-center justify-center text-white hover:bg-[#0B1D3A]" title="Book Appointment">
             <CalendarPlus size={14} />
           </button>
           <button onClick={() => setDeleteConfirm(true)} className="w-8 h-8 rounded-lg border border-red-100 flex items-center justify-center text-red-500 hover:bg-red-50">
@@ -159,7 +159,7 @@ export function LeadDetailPage() {
                 onChange={e => setNote(e.target.value)}
                 rows={2}
                 placeholder="Add a note, follow-up reminder, or observation…"
-                className="flex-1 px-3 py-2.5 rounded-xl border border-[#E5E2DC] text-sm placeholder:text-[#C4BDB4] focus:outline-none focus:border-[#A94420] focus:ring-2 focus:ring-[#A94420]/10 resize-none transition-all"
+                className="flex-1 px-3 py-2.5 rounded-xl border border-[#E5E2DC] text-sm placeholder:text-[#C4BDB4] focus:outline-none focus:border-[#0F2747] focus:ring-2 focus:ring-[#0F2747]/10 resize-none transition-all"
                 onKeyDown={e => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) handleAddNote(); }}
               />
               <button

@@ -80,7 +80,7 @@ export const SuccessStoriesSection: React.FC<SuccessStoriesProps> = ({
                 </div>
 
                 {/* Condition Tag */}
-                <div className="bg-[#FAF0EB] text-[#A94420] border border-[#ECCDC1] px-2.5 py-1 rounded-lg text-xs font-semibold inline-block">
+                <div className="bg-[#F0F4F8] text-[#0F2747] border border-[#CBD8E6] px-2.5 py-1 rounded-lg text-xs font-semibold inline-block">
                   {testimonial.conditionTreated}
                 </div>
 

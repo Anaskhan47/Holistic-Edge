@@ -20,7 +20,7 @@ export function TeamPage() {
             <div className="flex-1 space-y-1">
               <div className="flex items-center justify-between">
                 <h2 className="text-base font-bold text-[#1A1A1A]">{member.name}</h2>
-                <span className="text-xs bg-[#A94420]/10 text-[#A94420] px-2.5 py-0.5 rounded-full font-medium">
+                <span className="text-xs bg-[#F0F4F8] text-[#0F2747] px-2.5 py-0.5 rounded-full font-medium">
                   {typeof member.experienceYears === 'number'
                     ? `${member.experienceYears}+ yrs`
                     : member.experienceYears}

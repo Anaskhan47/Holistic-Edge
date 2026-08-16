@@ -19,49 +19,44 @@ export function ClinicPage() {
 
           <div className="grid grid-cols-2 gap-4 pt-3 border-t border-[#F0ECE4]">
             <div className="flex items-start gap-2">
-              <MapPin size={16} className="text-[#A94420] flex-shrink-0 mt-0.5" />
+              <MapPin size={16} className="text-[#0F2747] flex-shrink-0 mt-0.5" />
               <div>
-                <p className="text-xs font-semibold text-[#1A1A1A]">Address</p>
-                <p className="text-xs text-[#9E968C]">{clinicInfo.address}</p>
-                <p className="text-xs text-[#9E968C]">{clinicInfo.landmark}, {clinicInfo.city}</p>
-                <p className="text-xs text-[#9E968C]">{clinicInfo.state} – {clinicInfo.pincode}</p>
+                <p className="text-xs font-semibold text-[#1A1A1A]">{clinicInfo.name}</p>
+                <p className="text-xs text-[#5A544E]">{clinicInfo.address}</p>
+                <p className="text-xs text-[#5A544E]">{clinicInfo.city}, {clinicInfo.state} - {clinicInfo.pincode}</p>
               </div>
             </div>
-
-            <div className="flex items-start gap-2">
-              <Phone size={16} className="text-[#1A365D] flex-shrink-0 mt-0.5" />
+            <div className="flex items-center gap-3">
+              <Phone size={16} className="text-[#1A365D] flex-shrink-0" />
               <div>
-                <p className="text-xs font-semibold text-[#1A1A1A]">Contact</p>
-                <p className="text-xs text-[#9E968C]">Phone: {clinicInfo.phone}</p>
-                <p className="text-xs text-[#9E968C]">WhatsApp: +{clinicInfo.whatsapp}</p>
+                <p className="text-xs font-semibold text-[#1A1A1A]">Contact Phones</p>
+                <p className="text-xs text-[#5A544E]">{clinicInfo.phone} · {clinicInfo.whatsapp}</p>
               </div>
             </div>
-
-            <div className="flex items-start gap-2">
-              <Clock size={16} className="text-amber-700 flex-shrink-0 mt-0.5" />
+            <div className="flex items-center gap-3">
+              <Clock size={16} className="text-[#1B4332] flex-shrink-0" />
               <div>
-                <p className="text-xs font-semibold text-[#1A1A1A]">Hours</p>
-                <p className="text-xs text-[#9E968C]">{clinicInfo.openingHoursNote}</p>
+                <p className="text-xs font-semibold text-[#1A1A1A]">Working Hours</p>
+                <p className="text-xs text-[#5A544E]">{clinicInfo.timingWeekdays} (Weekdays)</p>
+                <p className="text-xs text-[#5A544E]">{clinicInfo.timingSunday} (Sunday)</p>
               </div>
             </div>
+          </div>
 
-            <div className="flex flex-col gap-2">
-              <div>
-                <p className="text-[10.5px] text-[#9E968C] font-semibold uppercase tracking-wide mb-1">Stats</p>
-                <div className="flex gap-3">
-                  <div className="text-center">
-                    <p className="text-base font-bold text-[#A94420]">{clinicInfo.experienceYears}+</p>
-                    <p className="text-[10px] text-[#9E968C]">Years</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-base font-bold text-[#A94420]">{clinicInfo.patientsTreated}</p>
-                    <p className="text-[10px] text-[#9E968C]">Patients</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-base font-bold text-[#A94420]">{clinicInfo.specialistsCount}</p>
-                    <p className="text-[10px] text-[#9E968C]">Specialists</p>
-                  </div>
-                </div>
+          <div className="border-t border-[#F0ECE4] pt-4">
+            <h3 className="text-xs font-semibold text-[#9E968C] uppercase tracking-wider mb-3">Key Highlights</h3>
+            <div className="grid grid-cols-3 gap-3 text-center">
+              <div className="bg-[#F8F7F4] rounded-xl p-3">
+                <p className="text-base font-bold text-[#0F2747]">{clinicInfo.experienceYears}+</p>
+                <p className="text-[11px] text-[#9E968C]">Years Practice</p>
+              </div>
+              <div className="bg-[#F8F7F4] rounded-xl p-3">
+                <p className="text-base font-bold text-[#0F2747]">{clinicInfo.patientsTreated}</p>
+                <p className="text-[11px] text-[#9E968C]">Patients Treated</p>
+              </div>
+              <div className="bg-[#F8F7F4] rounded-xl p-3">
+                <p className="text-base font-bold text-[#0F2747]">{clinicInfo.specialistsCount}</p>
+                <p className="text-[10px] text-[#9E968C]">Specialists</p>
               </div>
             </div>
           </div>

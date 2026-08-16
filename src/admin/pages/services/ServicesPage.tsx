@@ -14,7 +14,7 @@ export function ServicesPage() {
         {servicesData.map(service => (
           <div key={service.id} className="bg-white border border-[#E5E2DC] rounded-2xl p-5 space-y-3">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-[#A94420]/10 text-[#A94420] flex items-center justify-center font-bold">
+              <div className="w-10 h-10 rounded-xl bg-[#F0F4F8] text-[#0F2747] flex items-center justify-center font-bold">
                 <Stethoscope size={20} />
               </div>
               <div>

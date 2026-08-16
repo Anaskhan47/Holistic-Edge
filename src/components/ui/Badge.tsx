@@ -19,7 +19,7 @@ export const Badge: React.FC<BadgeProps> = ({
     editorial: 'bg-[#F2ECE4] text-[#3D3730] border border-[#DDD4C7]',
     blue: 'bg-[#EBF2F7] text-[#1A365D] border border-[#CBDCE9]',
     teal: 'bg-[#EAF2ED] text-[#1B4332] border border-[#C5DACB]',
-    orange: 'bg-[#FAF0EB] text-[#A94420] border border-[#ECCDC1]',
+    orange: 'bg-[#F0F4F8] text-[#0F2747] border border-[#CBD8E6]',
     neutral: 'bg-[#F0ECE4] text-[#4A443D] border border-[#E0D8CC]',
     success: 'bg-[#EAF2ED] text-[#1B4332] border border-[#C5DACB]',
     outline: 'bg-transparent border border-[#DDD7CD] text-[#3D3730]',

@@ -71,7 +71,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBooking }) => {
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-[#A94420] flex-shrink-0" />
+                <Phone className="w-4 h-4 text-[#0F2747] flex-shrink-0" />
                 <a
                   href={`tel:${clinicInfo.phone.replace(/\s+/g, '')}`}
                   className="font-semibold text-[#FAF9F6] hover:text-[#D49E58] transition-colors"
@@ -94,7 +94,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBooking }) => {
                     to={`/services/${s.slug}`}
                     className="text-[#9E968C] hover:text-[#FAF9F6] transition-colors flex items-center gap-1.5 group text-left"
                   >
-                    <ChevronRight className="w-3 h-3 text-[#A94420] group-hover:translate-x-0.5 transition-transform" />
+                    <ChevronRight className="w-3 h-3 text-[#0F2747] group-hover:translate-x-0.5 transition-transform" />
                     <span>{s.title}</span>
                   </Link>
                 </li>
@@ -123,7 +123,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBooking }) => {
                     to={`/conditions/${c.slug}`}
                     className="text-[#9E968C] hover:text-[#FAF9F6] transition-colors flex items-center gap-1.5 group text-left"
                   >
-                    <ChevronRight className="w-3 h-3 text-[#A94420] group-hover:translate-x-0.5 transition-transform" />
+                    <ChevronRight className="w-3 h-3 text-[#0F2747] group-hover:translate-x-0.5 transition-transform" />
                     <span className="truncate">{c.title}</span>
                   </Link>
                 </li>

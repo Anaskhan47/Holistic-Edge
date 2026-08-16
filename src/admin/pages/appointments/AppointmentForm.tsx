@@ -114,7 +114,7 @@ export function AppointmentForm() {
     `w-full h-10 px-3 rounded-xl border text-sm text-[#1A1A1A] focus:outline-none focus:ring-2 transition-all ${
       errors[field]
         ? 'border-red-300 focus:border-red-400 focus:ring-red-100'
-        : 'border-[#E5E2DC] focus:border-[#A94420] focus:ring-[#A94420]/10'
+        : 'border-[#E5E2DC] focus:border-[#0F2747] focus:ring-[#0F2747]/10'
     }`;
 
   return (
@@ -187,28 +187,28 @@ export function AppointmentForm() {
           </div>
           <Field label="Notes (optional)" name="notes" error={errors.notes}>
             <textarea
-              className="w-full px-3 py-2.5 rounded-xl border border-[#E5E2DC] text-sm text-[#1A1A1A] placeholder:text-[#C4BDB4] focus:outline-none focus:border-[#A94420] focus:ring-2 focus:ring-[#A94420]/10 resize-none transition-all"
               rows={3}
               value={form.notes}
               onChange={e => set('notes', e.target.value)}
-              placeholder="Clinical notes, special requirements…"
+              placeholder="Internal notes, specific symptoms, or patient requests…"
+              className="w-full px-3 py-2.5 rounded-xl border border-[#E5E2DC] text-sm text-[#1A1A1A] placeholder:text-[#C4BDB4] focus:outline-none focus:border-[#0F2747] focus:ring-2 focus:ring-[#0F2747]/10 resize-none transition-all"
             />
           </Field>
         </div>
 
-        {/* Submit */}
-        <div className="flex gap-3">
+        {/* Submit Bar */}
+        <div className="flex items-center justify-end gap-3 pt-2">
           <button
             type="button"
             onClick={() => navigate('/admin/appointments')}
-            className="px-5 py-2.5 rounded-xl border border-[#E5E2DC] text-sm text-[#2C2926] hover:bg-[#F8F7F4] transition-colors"
+            className="px-4 py-2.5 rounded-xl border border-[#E5E2DC] text-xs font-semibold text-[#5A544E] hover:bg-[#F8F7F4] transition-colors"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={saving}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#A94420] text-white text-sm font-semibold hover:bg-[#8F3717] disabled:opacity-60 transition-colors"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#0F2747] text-white text-sm font-semibold hover:bg-[#0B1D3A] disabled:opacity-60 transition-colors"
           >
             {saving ? <><Loader2 size={14} className="animate-spin" /> Creating…</> : <><Save size={14} /> Create Appointment</>}
           </button>

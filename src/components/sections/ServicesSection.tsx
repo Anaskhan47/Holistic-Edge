@@ -104,7 +104,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                 <div className="pt-3 flex flex-wrap items-center gap-3">
                   <Link
                     to="/#amm-method"
-                    className="inline-flex items-center justify-center h-10 px-4 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 bg-[#A94420] text-white hover:bg-[#8F3717]"
+                    className="inline-flex items-center justify-center h-10 px-4 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 bg-[#0F2747] text-white hover:bg-[#0B1D3A]"
                   >
                     Explore A.M.M Method
                     <ArrowRight className="w-4 h-4 ml-2" />
@@ -162,7 +162,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
 
               <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
                 <div>
-                  <span className="text-xs font-semibold text-[#A94420] block mb-1">
+                  <span className="text-xs font-semibold text-[#0F2747] block mb-1">
                     {service.subtitle}
                   </span>
                   <p className="text-xs text-[#5A544E] line-clamp-3 leading-relaxed">
@@ -173,7 +173,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                   <div className="mt-3 space-y-1 text-xs text-[#2C2926]">
                     {service.benefits.slice(0, 2).map((benefit, i) => (
                       <div key={i} className="flex items-start gap-1.5">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#1B4332] flex-shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#0F2747] flex-shrink-0 mt-0.5" />
                         <span className="line-clamp-1">{benefit}</span>
                       </div>
                     ))}
@@ -183,7 +183,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                 <div className="pt-3 border-t border-[#F0EBE3] flex items-center justify-between">
                   <Link
                     to={`/services/${service.slug}`}
-                    className="text-xs font-semibold text-[#A94420] hover:text-[#8F3717] flex items-center gap-1 group/btn"
+                    className="text-xs font-semibold text-[#0F2747] hover:text-[#0B1D3A] flex items-center gap-1 group/btn"
                   >
                     <span>Learn More</span>
                     <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />

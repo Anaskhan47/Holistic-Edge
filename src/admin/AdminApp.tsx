@@ -32,7 +32,7 @@ function ProtectedAdminRoute({ children }: { children: React.ReactNode }) {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#F8F7F4]">
-        <Loader2 className="animate-spin text-[#A94420]" size={24} />
+        <Loader2 className="animate-spin text-[#0F2747]" size={24} />
       </div>
     );
   }

@@ -35,17 +35,17 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
   const getIcon = (iconName: string) => {
     switch (iconName) {
       case 'Activity':
-        return <Activity className="w-5 h-5 text-[#A94420]" />;
+        return <Activity className="w-5 h-5 text-[#0F2747]" />;
       case 'Zap':
         return <Zap className="w-5 h-5 text-[#1B4332]" />;
       case 'Shield':
-        return <Shield className="w-5 h-5 text-[#A94420]" />;
+        return <Shield className="w-5 h-5 text-[#0F2747]" />;
       case 'HeartHandshake':
         return <HeartHandshake className="w-5 h-5 text-[#1B4332]" />;
       case 'Layers':
-        return <Layers className="w-5 h-5 text-[#D49E58]" />;
+        return <Layers className="w-5 h-5 text-[#2563EB]" />;
       default:
-        return <Activity className="w-5 h-5 text-[#A94420]" />;
+        return <Activity className="w-5 h-5 text-[#0F2747]" />;
     }
   };
 
@@ -63,7 +63,7 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
           <button
             type="button"
             onClick={() => navigate('/services')}
-            className="inline-flex items-center gap-2 text-xs font-bold text-[#A94420] hover:underline"
+            className="inline-flex items-center gap-2 text-xs font-bold text-[#0F2747] hover:underline"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Back to All Clinical Services</span>
@@ -87,7 +87,7 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
                 <h1 className="text-3xl sm:text-4xl font-normal text-[#1A1A1A] font-serif">
                   {selectedService.title}
                 </h1>
-                <p className="text-sm font-semibold text-[#A94420] uppercase tracking-wider">
+                <p className="text-sm font-semibold text-[#0F2747] uppercase tracking-wider">
                   {selectedService.subtitle}
                 </p>
                 <p className="text-sm sm:text-base text-[#3E3A35] leading-relaxed">
@@ -142,13 +142,13 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
             {/* How It Works */}
             <Card padding="lg" className="border-[#E8E4DC] space-y-4 text-left bg-white">
               <h3 className="text-lg font-bold text-[#1A1A1A] font-serif flex items-center gap-2">
-                <Activity className="w-5 h-5 text-[#A94420]" />
+                <Activity className="w-5 h-5 text-[#0F2747]" />
                 <span>How the Treatment is Administered</span>
               </h3>
               <ul className="space-y-2.5 text-xs sm:text-sm text-[#3E3A35]">
                 {selectedService.howItWorks.map((hw, idx) => (
                   <li key={idx} className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-[#A94420] mt-2 flex-shrink-0" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#0F2747] mt-2 flex-shrink-0" />
                     <span>{hw}</span>
                   </li>
                 ))}
@@ -211,7 +211,7 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
                   <Link
                     key={rcSlug}
                     to={`/conditions/${rcSlug}`}
-                    className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-[#FAF8F5] border border-[#E8E4DC] hover:bg-[#FAF0EB] hover:text-[#A94420] transition-colors inline-block"
+                    className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-[#FAF8F5] border border-[#E8E4DC] hover:bg-[#F0F4F8] hover:text-[#0F2747] transition-colors inline-block"
                   >
                     View {rcSlug.replace(/-/g, ' ')} →
                   </Link>
@@ -224,7 +224,7 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
           {selectedService.faqs.length > 0 && (
             <div className="space-y-4 text-left">
               <h3 className="text-xl font-bold text-[#1A1A1A] font-serif flex items-center gap-2">
-                <HelpCircle className="w-5 h-5 text-[#A94420]" />
+                <HelpCircle className="w-5 h-5 text-[#0F2747]" />
                 <span>Frequently Asked Questions About {selectedService.title}</span>
               </h3>
               <Accordion
@@ -312,7 +312,7 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
 
               <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
                 <div>
-                  <span className="text-xs font-semibold text-[#A94420] uppercase tracking-wider block mb-1">
+                  <span className="text-xs font-semibold text-[#0F2747] uppercase tracking-wider block mb-1">
                     {service.subtitle}
                   </span>
                   <p className="text-xs text-[#5A544E] line-clamp-3 leading-relaxed mb-3">
@@ -332,7 +332,7 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
                 <div className="pt-3 border-t border-[#E8E4DC] flex items-center justify-between">
                   <Link
                     to={`/services/${service.slug}`}
-                    className="text-xs font-bold text-[#A94420] hover:text-[#8C3719] flex items-center gap-1 group/btn"
+                    className="text-xs font-bold text-[#0F2747] hover:text-[#0B1D3A] flex items-center gap-1 group/btn"
                   >
                     <span>View Full Protocol</span>
                     <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
@@ -341,7 +341,7 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
                   <button
                     type="button"
                     onClick={() => onOpenBooking(service.title)}
-                    className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-[#FAF0EB] text-[#A94420] border border-[#ECCDC1] hover:bg-[#F5DFD5] transition-colors"
+                    className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-[#F0F4F8] text-[#0F2747] border border-[#CBD8E6] hover:bg-[#D4E2F0] transition-colors"
                   >
                     Book
                   </button>

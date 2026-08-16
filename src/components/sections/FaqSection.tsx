@@ -37,8 +37,8 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ onOpenBooking }) => {
         {/* Header */}
         <div className="text-center mb-10">
           <Badge variant="editorial" size="md" className="mb-3">
-            <HelpCircle className="w-3.5 h-3.5 mr-1 text-[#A94420]" />
-            Patient Clarifications
+            <HelpCircle className="w-3.5 h-3.5 mr-1 text-[#0F2747]" />
+            Frequently Asked Questions
           </Badge>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal text-[#1A1A1A] font-serif tracking-tight">
             Frequently Asked Questions
@@ -90,7 +90,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ onOpenBooking }) => {
                 setSearchQuery('');
                 setSelectedCategory('All');
               }}
-              className="text-xs text-[#A94420] font-bold hover:underline"
+              className="text-xs text-[#0F2747] font-bold hover:underline"
             >
               Reset filters
             </button>

@@ -37,7 +37,7 @@ const ScrollToTop = () => {
 
 const LoadingFallback = () => (
   <div className="min-h-[50vh] flex items-center justify-center">
-    <Loader2 className="w-8 h-8 animate-spin text-[#A94420]" />
+    <Loader2 className="w-8 h-8 animate-spin text-[#0F2747]" />
   </div>
 );
 
@@ -59,7 +59,7 @@ function MainContent() {
       <Route
         path="/*"
         element={
-          <div className="min-h-screen flex flex-col bg-[#FAF9F6] text-[#1A1A1A] font-sans antialiased selection:bg-[#FAF0EB] selection:text-[#A94420]">
+          <div className="min-h-screen flex flex-col bg-[#FAF9F6] text-[#1A1A1A] font-sans antialiased selection:bg-[#EBF2FA] selection:text-[#0F2747]">
             {/* Top Announcement Bar */}
             <AnnouncementBar onOpenBooking={() => handleOpenBooking('Chiropractic & Wellness Consultation')} />
 

@@ -11,7 +11,7 @@ const TYPE_META: Record<NotificationType, { icon: React.ReactNode; label: string
   lead: { icon: <Activity size={14} className="text-[#1A365D]" />, label: 'Lead' },
   testimonial: { icon: <Star size={14} className="text-amber-600" />, label: 'Testimonial' },
   system: { icon: <AlertCircle size={14} className="text-[#9E968C]" />, label: 'System' },
-  content: { icon: <Bell size={14} className="text-[#A94420]" />, label: 'Content' },
+  content: { icon: <Bell size={14} className="text-[#0F2747]" />, label: 'Content' },
 };
 
 function formatRelative(iso: string): string {
@@ -45,7 +45,7 @@ export function NotificationsPage() {
           <h1 className="text-lg font-bold text-[#1A1A1A]">Notifications</h1>
           <p className="text-sm text-[#9E968C]">{notifications.filter(n => n.status === 'unread').length} unread</p>
         </div>
-        <button onClick={markAllNotificationsRead} className="text-xs text-[#A94420] hover:underline">Mark all read</button>
+        <button onClick={markAllNotificationsRead} className="text-xs text-[#0F2747] hover:underline">Mark all read</button>
       </div>
 
       <div className="flex gap-1.5">
@@ -78,11 +78,11 @@ export function NotificationsPage() {
                   </div>
                   <div className="flex items-center gap-1.5 flex-shrink-0">
                     <p className="text-[10.5px] text-[#9E968C]">{formatRelative(n.createdAt)}</p>
-                    {n.status === 'unread' && <span className="w-2 h-2 rounded-full bg-[#A94420]" />}
+                    {n.status === 'unread' && <span className="w-2 h-2 rounded-full bg-[#0F2747]" />}
                   </div>
                 </div>
                 <div className="flex items-center gap-2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  {n.status === 'unread' && <button onClick={e => { e.stopPropagation(); markNotificationRead(n.id); }} className="text-[11px] text-[#A94420] hover:underline flex items-center gap-1"><Check size={10} />Mark read</button>}
+                  {n.status === 'unread' && <button onClick={e => { e.stopPropagation(); markNotificationRead(n.id); }} className="text-[11px] text-[#0F2747] hover:underline flex items-center gap-1"><Check size={10} />Mark read</button>}
                   <button onClick={e => { e.stopPropagation(); handleArchive(n.id); }} className="text-[11px] text-[#9E968C] hover:underline flex items-center gap-1"><Archive size={10} />Archive</button>
                   {n.link && <button onClick={e => { e.stopPropagation(); navigate(n.link!); }} className="text-[11px] text-[#1A365D] hover:underline flex items-center gap-1"><ExternalLink size={10} />View</button>}
                 </div>

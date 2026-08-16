@@ -44,7 +44,7 @@ export function UsersPage() {
         </div>
         <button
           onClick={() => setShowAdd(v => !v)}
-          className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#A94420] text-white text-xs font-semibold hover:bg-[#8F3717]"
+          className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#0F2747] text-white text-xs font-semibold hover:bg-[#0B1D3A]"
         >
           <Plus size={14} /> Add Staff Member
         </button>
@@ -80,7 +80,7 @@ export function UsersPage() {
         {users.map(u => (
           <div key={u.id} className="flex items-center justify-between p-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-[#A94420] text-white font-bold flex items-center justify-center text-sm">
+              <div className="w-10 h-10 rounded-full bg-[#0F2747] text-white font-bold flex items-center justify-center text-sm">
                 {u.name.charAt(0)}
               </div>
               <div>

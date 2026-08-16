@@ -50,14 +50,13 @@ export const ConditionsView: React.FC<ConditionsViewProps> = ({
 
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
           {/* Back button */}
-          <button
-            type="button"
-            onClick={() => navigate('/conditions')}
-            className="inline-flex items-center gap-2 text-xs font-bold text-[#A94420] hover:underline"
+          <Link
+            to="/conditions"
+            className="inline-flex items-center gap-2 text-xs font-bold text-[#0F2747] hover:underline"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="w-3.5 h-3.5" />
             <span>Back to All Conditions</span>
-          </button>
+          </Link>
 
           {/* Hero Banner */}
           <div className="bg-white rounded-3xl overflow-hidden border border-[#E8E4DC] shadow-sm">
@@ -101,13 +100,13 @@ export const ConditionsView: React.FC<ConditionsViewProps> = ({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card padding="lg" className="border-[#E8E4DC] space-y-4 text-left bg-white">
               <h3 className="text-lg font-bold text-[#1A1A1A] font-serif flex items-center gap-2">
-                <AlertCircle className="w-5 h-5 text-[#A94420]" />
+                <AlertCircle className="w-5 h-5 text-[#0F2747]" />
                 <span>Common Symptoms & Clinical Signs</span>
               </h3>
               <ul className="space-y-2.5 text-xs sm:text-sm text-[#3E3A35]">
                 {selectedCondition.symptoms.map((s, idx) => (
                   <li key={idx} className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-[#A94420] mt-2 flex-shrink-0" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#0F2747] mt-2 flex-shrink-0" />
                     <span>{s}</span>
                   </li>
                 ))}
@@ -133,13 +132,13 @@ export const ConditionsView: React.FC<ConditionsViewProps> = ({
           {/* Holistic Edge Treatment Approach */}
           <Card padding="lg" className="border-[#E8E4DC] space-y-4 text-left bg-white">
             <h3 className="text-xl font-bold text-[#1A1A1A] font-serif flex items-center gap-2">
-              <Activity className="w-5 h-5 text-[#A94420]" />
+              <Activity className="w-5 h-5 text-[#0F2747]" />
               <span>How Holistic Edge Treats {selectedCondition.title} Non-Surgically</span>
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
               {selectedCondition.treatmentApproach.map((app, idx) => (
                 <div key={idx} className="bg-[#FAF8F5] p-4 rounded-xl border border-[#E8E4DC] space-y-1.5">
-                  <span className="text-xs font-bold text-[#A94420] block font-serif">Step 0{idx + 1}</span>
+                  <span className="text-xs font-bold text-[#0F2747] block font-serif">Step 0{idx + 1}</span>
                   <p className="text-xs sm:text-sm text-[#2C2926] leading-relaxed font-medium">
                     {app}
                   </p>
@@ -148,10 +147,10 @@ export const ConditionsView: React.FC<ConditionsViewProps> = ({
             </div>
 
             {/* Recovery Expectation */}
-            <div className="mt-4 bg-[#FAF0EB] border border-[#ECCDC1] p-4 rounded-xl text-xs text-[#2C2926] flex items-start gap-2">
-              <Sparkles className="w-4 h-4 text-[#A94420] flex-shrink-0 mt-0.5" />
+            <div className="mt-4 bg-[#F0F4F8] border border-[#CBD8E6] p-4 rounded-xl text-xs text-[#2C2926] flex items-start gap-2">
+              <Sparkles className="w-4 h-4 text-[#0F2747] flex-shrink-0 mt-0.5" />
               <div>
-                <strong className="font-semibold text-[#A94420] block font-serif">Expected Timeline:</strong>
+                <strong className="font-semibold text-[#0F2747] block font-serif">Expected Timeline:</strong>
                 <span>{selectedCondition.recoveryTimelineExpectation}</span>
               </div>
             </div>
@@ -161,7 +160,7 @@ export const ConditionsView: React.FC<ConditionsViewProps> = ({
           {selectedCondition.faqs.length > 0 && (
             <div className="space-y-4 text-left">
               <h3 className="text-xl font-bold text-[#1A1A1A] font-serif flex items-center gap-2">
-                <HelpCircle className="w-5 h-5 text-[#A94420]" />
+                <HelpCircle className="w-5 h-5 text-[#0F2747]" />
                 <span>Frequently Asked Questions About {selectedCondition.title}</span>
               </h3>
               <Accordion
@@ -282,7 +281,7 @@ export const ConditionsView: React.FC<ConditionsViewProps> = ({
                 <div className="pt-3 border-t border-[#E8E4DC] flex items-center justify-between">
                   <Link
                     to={`/conditions/${condition.slug}`}
-                    className="text-xs font-bold text-[#A94420] hover:text-[#8C3719] flex items-center gap-1 group/btn"
+                    className="text-xs font-bold text-[#0F2747] hover:text-[#0B1D3A] flex items-center gap-1 group/btn"
                   >
                     <span>View Treatment Details</span>
                     <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
@@ -291,7 +290,7 @@ export const ConditionsView: React.FC<ConditionsViewProps> = ({
                   <button
                     type="button"
                     onClick={() => onOpenBooking(condition.title)}
-                    className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-[#FAF0EB] text-[#A94420] border border-[#ECCDC1] hover:bg-[#F5DFD5] transition-colors"
+                    className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-[#F0F4F8] text-[#0F2747] border border-[#CBD8E6] hover:bg-[#D4E2F0] transition-colors"
                   >
                     Book
                   </button>

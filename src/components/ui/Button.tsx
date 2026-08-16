@@ -32,10 +32,10 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const variants = {
       primary: 'bg-[#1A1A1A] hover:bg-[#2E2C29] text-[#FAF9F6] focus:ring-[#1A1A1A] shadow-sm shadow-[#1A1A1A]/10 hover:shadow-md',
       secondary: 'bg-[#1B4332] hover:bg-[#112A1F] text-[#FAF9F6] focus:ring-[#1B4332] shadow-sm shadow-[#1B4332]/15',
-      accent: 'bg-[#A94420] hover:bg-[#8F3717] text-white focus:ring-[#A94420] shadow-sm shadow-[#A94420]/20 hover:shadow-md hover:shadow-[#A94420]/25',
+      accent: 'bg-[#0F2747] hover:bg-[#0B1D3A] text-white focus:ring-[#0F2747] shadow-sm shadow-[#0F2747]/20 hover:shadow-md hover:shadow-[#0F2747]/25',
       outline: 'bg-transparent border border-[#D5CFC5] text-[#1A1A1A] hover:bg-[#F2EDE4] hover:border-[#1A1A1A]/40 focus:ring-[#1A1A1A]/20',
       ghost: 'bg-transparent hover:bg-[#F2EDE4] text-[#2C2926] hover:text-[#1A1A1A] focus:ring-[#D5CFC5]',
-      navy: 'bg-[#1A365D] hover:bg-[#10243E] text-[#FAF9F6] focus:ring-[#1A365D]'
+      navy: 'bg-[#0F2747] hover:bg-[#0B1D3A] text-[#FAF9F6] focus:ring-[#0F2747]'
     };
 
     const sizes = {

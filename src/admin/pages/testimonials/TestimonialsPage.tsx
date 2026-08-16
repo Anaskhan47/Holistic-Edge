@@ -74,7 +74,7 @@ export function TestimonialsPage() {
           <h1 className="text-lg font-bold text-[#1A1A1A]">Testimonials</h1>
           <p className="text-sm text-[#9E968C]">{counts.Pending > 0 && <span className="text-amber-700 font-medium">{counts.Pending} pending review · </span>}{testimonials.length} total</p>
         </div>
-        <button onClick={() => navigate('/admin/testimonials/new')} className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#A94420] text-white text-sm font-semibold hover:bg-[#8F3717]">
+        <button onClick={() => navigate('/admin/testimonials/new')} className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#0F2747] text-white text-sm font-semibold hover:bg-[#0B1D3A]">
           <Plus size={15} /> Add Testimonial
         </button>
       </div>
@@ -98,7 +98,7 @@ export function TestimonialsPage() {
             <div key={t.id} className="bg-white border border-[#E5E2DC] rounded-2xl overflow-hidden">
               <div className="flex items-start gap-4 p-5">
                 {/* Avatar */}
-                <div className="w-10 h-10 rounded-full bg-[#A94420] flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                <div className="w-10 h-10 rounded-full bg-[#0F2747] flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
                   {t.displayName.charAt(0)}
                 </div>
 
@@ -125,7 +125,7 @@ export function TestimonialsPage() {
                     "{t.review}"
                   </p>
                   {t.review.length > 100 && (
-                    <button onClick={() => setExpandedId(expandedId === t.id ? null : t.id)} className="text-[11px] text-[#A94420] hover:underline mt-1">
+                    <button onClick={() => setExpandedId(expandedId === t.id ? null : t.id)} className="text-[11px] text-[#0F2747] hover:underline mt-1">
                       {expandedId === t.id ? 'Show less' : 'Show more'}
                     </button>
                   )}

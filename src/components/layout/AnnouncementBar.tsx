@@ -14,7 +14,7 @@ export const AnnouncementBar: React.FC<AnnouncementBarProps> = ({ onOpenBooking 
     >
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
         <div className="flex items-center gap-2">
-          <span className="flex h-1.5 w-1.5 rounded-full bg-[#A94420] animate-pulse" />
+          <span className="flex h-1.5 w-1.5 rounded-full bg-[#0F2747] animate-pulse" />
           <span className="flex items-center gap-1.5 tracking-wide text-[#FAF9F6]">
             <Sparkles className="w-3.5 h-3.5 text-[#D49E58] hidden md:inline" />
             <span>{clinicInfo.freeConsultationNotice}</span>

@@ -125,7 +125,7 @@ export function AdminTopBar({ onSearchOpen }: AdminTopBarProps) {
         <div ref={quickRef} className="relative">
           <button
             onClick={() => setQuickActionsOpen(v => !v)}
-            className="w-8 h-8 flex items-center justify-center rounded-lg bg-[#A94420] text-white hover:bg-[#8F3717] transition-colors"
+            className="w-8 h-8 flex items-center justify-center rounded-lg bg-[#0F2747] text-white hover:bg-[#0B1D3A] transition-colors"
             title="Quick actions"
           >
             <Plus size={15} />
@@ -138,7 +138,7 @@ export function AdminTopBar({ onSearchOpen }: AdminTopBarProps) {
                   onClick={() => { navigate(action.path); setQuickActionsOpen(false); }}
                   className="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-[#2C2926] hover:bg-[#F8F7F4] transition-colors"
                 >
-                  <span className="text-[#A94420]">{action.icon}</span>
+                  <span className="text-[#0F2747]">{action.icon}</span>
                   {action.label}
                 </button>
               ))}
@@ -154,7 +154,7 @@ export function AdminTopBar({ onSearchOpen }: AdminTopBarProps) {
           >
             <Bell size={16} />
             {unreadCount > 0 && (
-              <span className="absolute top-0.5 right-0.5 w-4 h-4 text-[9px] font-bold bg-[#A94420] text-white rounded-full flex items-center justify-center leading-none">
+              <span className="absolute top-0.5 right-0.5 w-4 h-4 text-[9px] font-bold bg-[#0F2747] text-white rounded-full flex items-center justify-center leading-none">
                 {unreadCount > 9 ? '9+' : unreadCount}
               </span>
             )}
@@ -167,7 +167,7 @@ export function AdminTopBar({ onSearchOpen }: AdminTopBarProps) {
                   {unreadCount > 0 && (
                     <button
                       onClick={markAllNotificationsRead}
-                      className="text-[11px] text-[#A94420] hover:underline"
+                      className="text-[11px] text-[#0F2747] hover:underline"
                     >
                       Mark all read
                     </button>
@@ -191,7 +191,7 @@ export function AdminTopBar({ onSearchOpen }: AdminTopBarProps) {
                       }}
                       className={cn(
                         'flex items-start gap-3 px-4 py-3 cursor-pointer hover:bg-[#F8F7F4] transition-colors',
-                        n.status === 'unread' && 'bg-[#FBF2EC]'
+                        n.status === 'unread' && 'bg-[#F0F4F8]'
                       )}
                     >
                       <div className="w-6 h-6 rounded-full bg-[#F4F1EA] flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -203,7 +203,7 @@ export function AdminTopBar({ onSearchOpen }: AdminTopBarProps) {
                         <p className="text-[10.5px] text-[#9E968C] mt-1">{formatRelativeTime(n.createdAt)}</p>
                       </div>
                       {n.status === 'unread' && (
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#A94420] flex-shrink-0 mt-2" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#0F2747] flex-shrink-0 mt-2" />
                       )}
                     </div>
                   ))
@@ -212,7 +212,7 @@ export function AdminTopBar({ onSearchOpen }: AdminTopBarProps) {
               <div className="border-t border-[#E5E2DC] px-4 py-2">
                 <button
                   onClick={() => { navigate('/admin/notifications'); setNotifOpen(false); }}
-                  className="text-[12px] text-[#A94420] hover:underline w-full text-center"
+                  className="text-[12px] text-[#0F2747] hover:underline w-full text-center"
                 >
                   View all notifications
                 </button>
@@ -227,7 +227,7 @@ export function AdminTopBar({ onSearchOpen }: AdminTopBarProps) {
             onClick={() => setUserMenuOpen(v => !v)}
             className="flex items-center gap-2 h-8 px-2 rounded-lg text-[#2C2926] hover:bg-[#F8F7F4] transition-colors"
           >
-            <div className="w-6 h-6 rounded-full bg-[#A94420] flex items-center justify-center text-white text-[10px] font-bold">
+            <div className="w-6 h-6 rounded-full bg-[#0F2747] flex items-center justify-center text-white text-[10px] font-bold">
               {user?.name.charAt(0).toUpperCase()}
             </div>
             <span className="hidden md:inline text-xs font-medium truncate max-w-[80px]">{user?.name}</span>
@@ -238,7 +238,7 @@ export function AdminTopBar({ onSearchOpen }: AdminTopBarProps) {
               <div className="px-3 py-2 border-b border-[#F0ECE4] mb-1">
                 <p className="text-xs font-semibold text-[#1A1A1A] truncate">{user?.name}</p>
                 <p className="text-[11px] text-[#9E968C] truncate">{user?.email}</p>
-                <span className="inline-block mt-1 text-[10px] bg-[#FBF2EC] text-[#A94420] px-1.5 py-0.5 rounded font-medium">
+                <span className="inline-block mt-1 text-[10px] bg-[#F0F4F8] text-[#0F2747] px-1.5 py-0.5 rounded font-medium">
                   {user?.role}
                 </span>
               </div>

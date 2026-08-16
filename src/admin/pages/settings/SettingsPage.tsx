@@ -57,7 +57,7 @@ export function SettingsPage() {
         {/* Clinic Identity */}
         <div className="bg-white border border-[#E5E2DC] rounded-2xl p-5 space-y-4">
           <div className="flex items-center gap-2">
-            <Building2 size={16} className="text-[#A94420]" />
+            <Building2 size={16} className="text-[#0F2747]" />
             <h2 className="text-sm font-semibold text-[#1A1A1A]">Clinic Profile</h2>
           </div>
           <div className="grid grid-cols-2 gap-4">
@@ -205,7 +205,7 @@ export function SettingsPage() {
         <button
           type="submit"
           disabled={saving}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#A94420] text-white text-sm font-semibold hover:bg-[#8F3717] disabled:opacity-60 transition-colors"
+          className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#0F2747] text-white text-sm font-semibold hover:bg-[#0B1D3A] disabled:opacity-60 transition-colors"
         >
           {saving ? <><Loader2 size={15} className="animate-spin" /> Saving…</> : <><Save size={15} /> Save Settings</>}
         </button>
@@ -214,7 +214,7 @@ export function SettingsPage() {
       {/* Security Form */}
       <div className="bg-white border border-[#E5E2DC] rounded-2xl p-5 space-y-4">
         <div className="flex items-center gap-2">
-          <Key size={16} className="text-[#A94420]" />
+          <Key size={16} className="text-[#0F2747]" />
           <h2 className="text-sm font-semibold text-[#1A1A1A]">Admin Security</h2>
         </div>
         <form onSubmit={handleChangePassword} className="space-y-4 max-w-md">

@@ -13,7 +13,7 @@ export const FreeConsultationBanner: React.FC<FreeConsultationBannerProps> = ({ 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative overflow-hidden rounded-3xl bg-[#1A1A1A] text-[#FAF9F6] p-8 sm:p-10 lg:p-12 shadow-xl border border-[#332E2A]">
           {/* Subtle warm accent glow */}
-          <div className="absolute top-0 right-0 -mr-16 -mt-16 w-80 h-80 rounded-full bg-[#A94420]/10 blur-3xl pointer-events-none" />
+          <div className="absolute top-0 right-0 -mr-16 -mt-16 w-80 h-80 rounded-full bg-[#0F2747]/10 blur-3xl pointer-events-none" />
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
             <div className="lg:col-span-8 space-y-4 text-left">
@@ -65,7 +65,7 @@ export const FreeConsultationBanner: React.FC<FreeConsultationBannerProps> = ({ 
                 href={`tel:${clinicInfo.phone.replace(/\s+/g, '')}`}
                 className="inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl bg-[#FAF9F6] text-[#1A1A1A] font-bold text-sm hover:bg-white transition-colors"
               >
-                <Phone className="w-4 h-4 text-[#A94420]" />
+                <Phone className="w-4 h-4 text-[#0F2747]" />
                 <span>Call {clinicInfo.phone}</span>
               </a>
 

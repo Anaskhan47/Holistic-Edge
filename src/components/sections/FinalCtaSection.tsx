@@ -11,7 +11,7 @@ export const FinalCtaSection: React.FC<FinalCtaProps> = ({ onOpenBooking }) => {
   return (
     <section id="final-conversion-section" className="py-16 md:py-24 bg-[#1A1A1A] text-[#FAF9F6] relative overflow-hidden border-t border-[#332E2A]">
       {/* Subtle warm glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#A94420]/10 blur-3xl pointer-events-none rounded-full" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#0F2747]/10 blur-3xl pointer-events-none rounded-full" />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-6">
         <div className="inline-flex items-center gap-2 bg-[#FAF9F6]/10 border border-white/10 px-3.5 py-1 rounded-full text-xs font-semibold text-[#D49E58]">

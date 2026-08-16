@@ -45,7 +45,7 @@ export const FounderSection: React.FC<FounderSectionProps> = ({
 
               {/* Floating 25 Years Badge */}
               <div className="absolute -bottom-4 -left-4 sm:-left-6 bg-white p-3.5 rounded-2xl shadow-lg border border-[#E8E4DC] flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#FAF0EB] text-[#A94420] flex items-center justify-center font-bold text-sm font-serif border border-[#ECCDC1]">
+                <div className="w-10 h-10 rounded-xl bg-[#F0F4F8] text-[#0F2747] flex items-center justify-center font-bold text-sm font-serif border border-[#CBD8E6]">
                   25+
                 </div>
                 <div className="text-left">
@@ -72,8 +72,8 @@ export const FounderSection: React.FC<FounderSectionProps> = ({
 
             {/* Quote Box */}
             {founder.philosophy && (
-              <div className="bg-[#FAF8F5] border-l-2 border-[#A94420] rounded-r-2xl p-5 relative shadow-xs">
-                <Quote className="w-6 h-6 text-[#A94420]/20 absolute top-3 right-4" />
+              <div className="bg-[#FAF8F5] border-l-2 border-[#0F2747] rounded-r-2xl p-5 relative shadow-xs">
+                <Quote className="w-6 h-6 text-[#0F2747]/20 absolute top-3 right-4" />
                 <p className="text-xs sm:text-sm text-[#2C2926] italic font-serif leading-relaxed">
                   "{founder.philosophy}"
                 </p>

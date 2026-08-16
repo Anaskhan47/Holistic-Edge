@@ -19,7 +19,7 @@ const TYPE_META: Record<SearchResult['type'], { icon: React.ReactNode; color: st
   appointment: { icon: <CalendarDays size={13} />, color: 'text-[#1B4332]', label: 'Appointment' },
   lead: { icon: <Activity size={13} />, color: 'text-[#1A365D]', label: 'Lead' },
   testimonial: { icon: <Star size={13} />, color: 'text-[#92400E]', label: 'Testimonial' },
-  service: { icon: <Stethoscope size={13} />, color: 'text-[#A94420]', label: 'Service' },
+  service: { icon: <Stethoscope size={13} />, color: 'text-[#0F2747]', label: 'Service' },
   condition: { icon: <BookOpen size={13} />, color: 'text-[#5A544E]', label: 'Condition' },
   team: { icon: <Users size={13} />, color: 'text-[#1A1A1A]', label: 'Team' },
 };

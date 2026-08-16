@@ -55,7 +55,7 @@ export function LeadForm() {
     navigate(`/admin/leads/${created.id}`);
   };
 
-  const ic = (f: string) => `w-full h-10 px-3 rounded-xl border text-sm focus:outline-none focus:ring-2 transition-all ${errors[f] ? 'border-red-300 focus:border-red-400 focus:ring-red-100' : 'border-[#E5E2DC] focus:border-[#A94420] focus:ring-[#A94420]/10'}`;
+  const ic = (f: string) => `w-full h-10 px-3 rounded-xl border text-sm focus:outline-none focus:ring-2 transition-all ${errors[f] ? 'border-red-300 focus:border-red-400 focus:ring-red-100' : 'border-[#E5E2DC] focus:border-[#0F2747] focus:ring-[#0F2747]/10'}`;
 
   return (
     <div className="p-6 max-w-xl space-y-5">
@@ -96,13 +96,13 @@ export function LeadForm() {
             </div>
           </div>
           <div>
-            <label className="block text-xs font-semibold text-[#5A544E] mb-1.5">Message / Notes</label>
-            <textarea rows={3} className="w-full px-3 py-2.5 rounded-xl border border-[#E5E2DC] text-sm placeholder:text-[#C4BDB4] focus:outline-none focus:border-[#A94420] focus:ring-2 focus:ring-[#A94420]/10 resize-none" value={form.message} onChange={e => set('message', e.target.value)} placeholder="What the patient said…" />
+            <label className="block text-xs font-semibold text-[#5A544E] mb-1.5">Initial Message / Notes</label>
+            <textarea rows={3} className="w-full px-3 py-2.5 rounded-xl border border-[#E5E2DC] text-sm placeholder:text-[#C4BDB4] focus:outline-none focus:border-[#0F2747] focus:ring-2 focus:ring-[#0F2747]/10 resize-none" value={form.message} onChange={e => set('message', e.target.value)} placeholder="What the patient said…" />
           </div>
-        </div>
-        <div className="flex gap-3">
-          <button type="button" onClick={() => navigate('/admin/leads')} className="px-5 py-2.5 rounded-xl border border-[#E5E2DC] text-sm text-[#2C2926] hover:bg-[#F8F7F4]">Cancel</button>
-          <button type="submit" disabled={saving} className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#A94420] text-white text-sm font-semibold hover:bg-[#8F3717] disabled:opacity-60">
+
+          <div className="flex justify-end gap-3 pt-2">
+            <button type="button" onClick={() => navigate('/admin/leads')} className="px-4 py-2.5 rounded-xl border border-[#E5E2DC] text-xs font-semibold text-[#5A544E] hover:bg-[#F8F7F4]">Cancel</button>
+            <button type="submit" disabled={saving} className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#0F2747] text-white text-sm font-semibold hover:bg-[#0B1D3A] disabled:opacity-60">
             {saving ? <><Loader2 size={14} className="animate-spin" />Creating…</> : <><Save size={14} />Add Lead</>}
           </button>
         </div>

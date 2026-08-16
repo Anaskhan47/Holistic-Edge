@@ -38,7 +38,7 @@ export function TestimonialForm() {
     navigate('/admin/testimonials');
   };
 
-  const ic = (f: string) => `w-full h-10 px-3 rounded-xl border text-sm focus:outline-none focus:ring-2 transition-all ${errors[f] ? 'border-red-300 focus:ring-red-100' : 'border-[#E5E2DC] focus:border-[#A94420] focus:ring-[#A94420]/10'}`;
+  const ic = (f: string) => `w-full h-10 px-3 rounded-xl border text-sm focus:outline-none focus:ring-2 transition-all ${errors[f] ? 'border-red-300 focus:ring-red-100' : 'border-[#E5E2DC] focus:border-[#0F2747] focus:ring-[#0F2747]/10'}`;
 
   return (
     <div className="p-6 max-w-xl space-y-5">
@@ -60,11 +60,11 @@ export function TestimonialForm() {
             <div><label className="block text-xs font-semibold text-[#5A544E] mb-1.5">Source</label><select className={ic('source')} value={form.source} onChange={e => set('source', e.target.value)}>{['Direct Patient Feedback', 'Justdial', 'Cybo', 'Verified Clinic Review'].map(s => <option key={s} value={s}>{s}</option>)}</select></div>
             <div><label className="block text-xs font-semibold text-[#5A544E] mb-1.5">Rating</label><select className={ic('rating')} value={form.rating} onChange={e => set('rating', Number(e.target.value))}>{[5,4,3,2,1].map(r => <option key={r} value={r}>{r} Star{r !== 1 ? 's' : ''}</option>)}</select></div>
           </div>
-          <div><label className="block text-xs font-semibold text-[#5A544E] mb-1.5">Review *</label><textarea rows={4} className={`w-full px-3 py-2.5 rounded-xl border text-sm placeholder:text-[#C4BDB4] focus:outline-none focus:ring-2 resize-none transition-all ${errors.review ? 'border-red-300 focus:ring-red-100' : 'border-[#E5E2DC] focus:border-[#A94420] focus:ring-[#A94420]/10'}`} value={form.review} onChange={e => set('review', e.target.value)} placeholder="Patient's review text…" />{errors.review && <p className="mt-1 text-[11px] text-red-600">{errors.review}</p>}</div>
+          <div><label className="block text-xs font-semibold text-[#5A544E] mb-1.5">Review *</label><textarea rows={4} className={`w-full px-3 py-2.5 rounded-xl border text-sm placeholder:text-[#C4BDB4] focus:outline-none focus:ring-2 resize-none transition-all ${errors.review ? 'border-red-300 focus:ring-red-100' : 'border-[#E5E2DC] focus:border-[#0F2747] focus:ring-[#0F2747]/10'}`} value={form.review} onChange={e => set('review', e.target.value)} placeholder="Patient's review text…" />{errors.review && <p className="mt-1 text-[11px] text-red-600">{errors.review}</p>}</div>
         </div>
         <div className="flex gap-3">
           <button type="button" onClick={() => navigate('/admin/testimonials')} className="px-5 py-2.5 rounded-xl border border-[#E5E2DC] text-sm text-[#2C2926] hover:bg-[#F8F7F4]">Cancel</button>
-          <button type="submit" disabled={saving} className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#A94420] text-white text-sm font-semibold hover:bg-[#8F3717] disabled:opacity-60">
+          <button type="submit" disabled={saving} className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#0F2747] text-white text-sm font-semibold hover:bg-[#0B1D3A] disabled:opacity-60">
             {saving ? <><Loader2 size={14} className="animate-spin" />Adding…</> : <><Save size={14} />Add Testimonial</>}
           </button>
         </div>

@@ -155,8 +155,8 @@ export const Header: React.FC<HeaderProps> = ({
                     className={cn(
                       'h-10 px-3 2xl:px-4 text-xs 2xl:text-sm font-medium rounded-[14px] transition-colors flex items-center justify-center gap-1.5 whitespace-nowrap outline-none',
                       isActive
-                        ? 'text-[#A94420] font-semibold bg-[#FAF0EB] border border-[#ECCDC1]/60'
-                        : 'text-[#2C2926] hover:text-[#A94420] hover:bg-[#F2ECE4]'
+                        ? 'text-[#0F2747] font-semibold bg-[#F0F4F8] border border-[#CBD8E6]/60'
+                        : 'text-[#2C2926] hover:text-[#0F2747] hover:bg-[#F2ECE4]'
                     )}
                   >
                     <span>{link.label}</span>
@@ -175,7 +175,7 @@ export const Header: React.FC<HeaderProps> = ({
                         <Link
                           to="/services"
                           onClick={() => setActiveDropdown(null)}
-                          className="text-xs text-[#A94420] font-medium hover:underline"
+                          className="text-xs text-[#0F2747] font-medium hover:underline"
                         >
                           View All
                         </Link>
@@ -187,9 +187,9 @@ export const Header: React.FC<HeaderProps> = ({
                           onClick={() => setActiveDropdown(null)}
                           className="w-full text-left px-3 py-2 rounded-xl hover:bg-[#F9F6F0] transition-colors group flex items-start gap-2.5"
                         >
-                          <div className="w-1.5 h-1.5 rounded-full bg-[#A94420] mt-2 group-hover:scale-125 transition-transform" />
+                          <div className="w-1.5 h-1.5 rounded-full bg-[#0F2747] mt-2 group-hover:scale-125 transition-transform" />
                           <div>
-                            <div className="text-sm font-medium text-[#1A1A1A] group-hover:text-[#A94420]">
+                            <div className="text-sm font-medium text-[#1A1A1A] group-hover:text-[#0F2747]">
                               {s.title}
                             </div>
                             <div className="text-xs text-[#6B6661] line-clamp-1">
@@ -220,8 +220,8 @@ export const Header: React.FC<HeaderProps> = ({
                     className={cn(
                       'h-10 px-3 2xl:px-4 text-xs 2xl:text-sm font-medium rounded-[14px] transition-colors flex items-center justify-center gap-1.5 whitespace-nowrap outline-none',
                       isActive
-                        ? 'text-[#A94420] font-semibold bg-[#FAF0EB] border border-[#ECCDC1]/60'
-                        : 'text-[#2C2926] hover:text-[#A94420] hover:bg-[#F2ECE4]'
+                        ? 'text-[#0F2747] font-semibold bg-[#F0F4F8] border border-[#CBD8E6]/60'
+                        : 'text-[#2C2926] hover:text-[#0F2747] hover:bg-[#F2ECE4]'
                     )}
                   >
                     <span>{link.label}</span>
@@ -240,7 +240,7 @@ export const Header: React.FC<HeaderProps> = ({
                         <Link
                           to="/conditions"
                           onClick={() => setActiveDropdown(null)}
-                          className="text-xs text-[#A94420] font-medium hover:underline"
+                          className="text-xs text-[#0F2747] font-medium hover:underline"
                         >
                           All Conditions
                         </Link>
@@ -251,7 +251,7 @@ export const Header: React.FC<HeaderProps> = ({
                             key={c.id}
                             to={`/conditions/${c.slug}`}
                             onClick={() => setActiveDropdown(null)}
-                            className="text-left px-2.5 py-1.5 rounded-lg hover:bg-[#F9F6F0] text-xs font-medium text-[#2C2926] hover:text-[#A94420] transition-colors truncate"
+                            className="text-left px-2.5 py-1.5 rounded-lg hover:bg-[#F9F6F0] text-xs font-medium text-[#2C2926] hover:text-[#0F2747] transition-colors truncate"
                           >
                             • {c.title}
                           </Link>
@@ -271,10 +271,10 @@ export const Header: React.FC<HeaderProps> = ({
                   className={cn(
                     'h-10 px-3 2xl:px-[17px] text-xs 2xl:text-sm font-medium rounded-[14px] transition-all relative flex items-center justify-center whitespace-nowrap',
                     link.isSpecial && 'text-[#1B4332] font-semibold bg-[#EAF2ED] border border-[#C5DACB] hover:bg-[#DEEBE2] pr-5 2xl:pr-6',
-                    link.isHighlighted && 'text-[#A94420] font-semibold bg-[#FAF0EB] border border-[#ECCDC1]/80 hover:bg-[#F5DFD5]',
+                    link.isHighlighted && 'text-[#0F2747] font-semibold bg-[#F0F4F8] border border-[#CBD8E6]/80 hover:bg-[#D4E2F0]',
                     isActive && !link.isSpecial && !link.isHighlighted
-                      ? 'text-[#A94420] font-semibold bg-[#FAF0EB] border border-[#ECCDC1]/60'
-                      : !link.isSpecial && !link.isHighlighted && 'text-[#2C2926] hover:text-[#A94420] hover:bg-[#F2ECE4]'
+                      ? 'text-[#0F2747] font-semibold bg-[#F0F4F8] border border-[#CBD8E6]/60'
+                      : !link.isSpecial && !link.isHighlighted && 'text-[#2C2926] hover:text-[#0F2747] hover:bg-[#F2ECE4]'
                   )}
                 >
                   <span>{link.label}</span>
@@ -310,7 +310,7 @@ export const Header: React.FC<HeaderProps> = ({
             className="hidden sm:flex xl:hidden items-center justify-center w-10 h-10 rounded-xl bg-[#F2EDE4] text-[#1A1A1A] border border-[#DDD5C7] hover:bg-[#E8E2D5] transition-colors"
             aria-label="Call clinic"
           >
-            <Phone className="w-4 h-4 text-[#A94420]" />
+            <Phone className="w-4 h-4 text-[#0F2747]" />
           </a>
 
           {/* Book Consultation Button */}
@@ -358,7 +358,7 @@ export const Header: React.FC<HeaderProps> = ({
                         onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
                         className={cn(
                           'w-full text-left px-4 py-3 rounded-xl text-base font-semibold transition-colors flex items-center justify-between outline-none',
-                          isActive ? 'bg-[#1A1A1A]/5 text-[#A94420]' : 'text-[#1A1A1A] hover:bg-[#F2ECE4]'
+                          isActive ? 'bg-[#1A1A1A]/5 text-[#0F2747]' : 'text-[#1A1A1A] hover:bg-[#F2ECE4]'
                         )}
                       >
                         <span>{link.label}</span>
@@ -370,7 +370,7 @@ export const Header: React.FC<HeaderProps> = ({
                           <Link
                             to="/services"
                             onClick={() => setMobileMenuOpen(false)}
-                            className="block px-3 py-2 text-sm font-semibold text-[#A94420] hover:underline"
+                            className="block px-3 py-2 text-sm font-semibold text-[#0F2747] hover:underline"
                           >
                             View All Services
                           </Link>
@@ -379,7 +379,7 @@ export const Header: React.FC<HeaderProps> = ({
                               key={s.id}
                               to={`/services/${s.slug}`}
                               onClick={() => setMobileMenuOpen(false)}
-                              className="block px-3 py-2 text-sm font-medium text-[#2C2926] hover:text-[#A94420] rounded-lg"
+                              className="block px-3 py-2 text-sm font-medium text-[#2C2926] hover:text-[#0F2747] rounded-lg"
                             >
                               {s.title}
                             </Link>
@@ -398,7 +398,7 @@ export const Header: React.FC<HeaderProps> = ({
                         onClick={() => setMobileConditionsOpen(!mobileConditionsOpen)}
                         className={cn(
                           'w-full text-left px-4 py-3 rounded-xl text-base font-semibold transition-colors flex items-center justify-between outline-none',
-                          isActive ? 'bg-[#1A1A1A]/5 text-[#A94420]' : 'text-[#1A1A1A] hover:bg-[#F2ECE4]'
+                          isActive ? 'bg-[#1A1A1A]/5 text-[#0F2747]' : 'text-[#1A1A1A] hover:bg-[#F2ECE4]'
                         )}
                       >
                         <span>{link.label}</span>
@@ -410,7 +410,7 @@ export const Header: React.FC<HeaderProps> = ({
                           <Link
                             to="/conditions"
                             onClick={() => setMobileMenuOpen(false)}
-                            className="block px-3 py-2 text-sm font-semibold text-[#A94420] hover:underline"
+                            className="block px-3 py-2 text-sm font-semibold text-[#0F2747] hover:underline"
                           >
                             All Conditions We Treat
                           </Link>
@@ -419,7 +419,7 @@ export const Header: React.FC<HeaderProps> = ({
                               key={c.id}
                               to={`/conditions/${c.slug}`}
                               onClick={() => setMobileMenuOpen(false)}
-                              className="block px-3 py-1.5 text-xs font-medium text-[#2C2926] hover:text-[#A94420] rounded-lg truncate"
+                              className="block px-3 py-1.5 text-xs font-medium text-[#2C2926] hover:text-[#0F2747] rounded-lg truncate"
                             >
                               • {c.title}
                             </Link>
@@ -472,7 +472,7 @@ export const Header: React.FC<HeaderProps> = ({
               href={`tel:${clinicInfo.phoneRaw}`}
               className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-[#D5CFC5] text-[#1A1A1A] font-semibold text-sm hover:bg-[#F2ECE4] transition-colors"
             >
-              <Phone className="w-4 h-4 text-[#A94420]" />
+              <Phone className="w-4 h-4 text-[#0F2747]" />
               <span>Direct Call: {clinicInfo.phone}</span>
             </a>
           </div>

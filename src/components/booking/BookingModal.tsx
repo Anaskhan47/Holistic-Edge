@@ -170,13 +170,13 @@ export const BookingModal: React.FC<BookingModalProps> = ({
       {step < 4 && (
         <div className="mb-6">
           <div className="flex items-center justify-between text-xs font-semibold text-[#736C63] mb-2 font-serif">
-            <span className={step >= 1 ? 'text-[#A94420] font-bold' : ''}>1. Service & Condition</span>
-            <span className={step >= 2 ? 'text-[#A94420] font-bold' : ''}>2. Date & Time</span>
-            <span className={step >= 3 ? 'text-[#A94420] font-bold' : ''}>3. Patient Details</span>
+            <span className={step >= 1 ? 'text-[#0F2747] font-bold' : ''}>1. Service & Condition</span>
+            <span className={step >= 2 ? 'text-[#0F2747] font-bold' : ''}>2. Date & Time</span>
+            <span className={step >= 3 ? 'text-[#0F2747] font-bold' : ''}>3. Patient Details</span>
           </div>
           <div className="h-1.5 w-full bg-[#E8E4DC] rounded-full overflow-hidden flex">
             <div
-              className="h-full bg-[#A94420] transition-all duration-300"
+              className="h-full bg-[#0F2747] transition-all duration-300"
               style={{ width: `${(step / 3) * 100}%` }}
             />
           </div>
@@ -197,13 +197,13 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 onClick={() => setService('Chiropractic & Wellness Consultation')}
                 className={`p-3.5 rounded-xl border text-left transition-all ${
                   service === 'Chiropractic & Wellness Consultation'
-                    ? 'border-[#1A1A1A] bg-[#FAF0EB] ring-2 ring-[#A94420]/20'
+                    ? 'border-[#1A1A1A] bg-[#F0F4F8] ring-2 ring-[#0F2747]/20'
                     : 'border-[#E8E4DC] hover:border-[#D5CFC5] bg-white'
                 }`}
               >
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs font-bold text-[#A94420] flex items-center gap-1 font-serif">
-                    <Sparkles className="w-3.5 h-3.5 text-[#D49E58]" />
+                  <span className="text-xs font-bold text-[#0F2747] flex items-center gap-1 font-serif">
+                    <Sparkles className="w-3.5 h-3.5 text-[#2563EB]" />
                     Recommended
                   </span>
                   <Badge variant="editorial" size="sm">
@@ -224,7 +224,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 onClick={() => setService('A.M.M Method™ (Full Protocol)')}
                 className={`p-3.5 rounded-xl border text-left transition-all ${
                   service === 'A.M.M Method™ (Full Protocol)'
-                    ? 'border-[#1A1A1A] bg-[#FAF0EB] ring-2 ring-[#A94420]/20'
+                    ? 'border-[#1A1A1A] bg-[#F0F4F8] ring-2 ring-[#0F2747]/20'
                     : 'border-[#E8E4DC] hover:border-[#D5CFC5] bg-white'
                 }`}
               >
@@ -250,7 +250,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                     onClick={() => setService(s.title)}
                     className={`p-3 rounded-xl border text-left transition-all ${
                       service === s.title
-                        ? 'border-[#1A1A1A] bg-[#FAF0EB] ring-2 ring-[#A94420]/20'
+                        ? 'border-[#1A1A1A] bg-[#F0F4F8] ring-2 ring-[#0F2747]/20'
                         : 'border-[#E8E4DC] hover:border-[#D5CFC5] bg-white'
                     }`}
                   >
@@ -298,7 +298,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
         <div className="space-y-6">
           <div>
             <label className="block text-sm font-bold text-[#1A1A1A] font-serif mb-2 flex items-center gap-2">
-              <CalendarIcon className="w-4 h-4 text-[#A94420]" />
+              <CalendarIcon className="w-4 h-4 text-[#0F2747]" />
               Select Consultation Date
             </label>
             <div className="grid grid-cols-3 sm:grid-cols-7 gap-2">
@@ -325,7 +325,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
           <div>
             <label className="block text-sm font-bold text-[#1A1A1A] font-serif mb-2 flex items-center gap-2">
-              <Clock className="w-4 h-4 text-[#A94420]" />
+              <Clock className="w-4 h-4 text-[#0F2747]" />
               Select Convenient Time Slot
             </label>
             <div className="grid grid-cols-3 gap-2">
@@ -476,7 +476,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
             </div>
             <div className="flex justify-between border-b border-[#E8E4DC] pb-2">
               <span className="text-[#736C63] font-medium">Date & Slot:</span>
-              <span className="font-bold text-[#A94420] font-serif">
+              <span className="font-bold text-[#0F2747] font-serif">
                 {bookingConfirmation.preferredDate} at {bookingConfirmation.preferredTimeSlot}
               </span>
             </div>

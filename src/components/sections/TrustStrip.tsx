@@ -9,8 +9,8 @@ export const TrustStrip: React.FC = () => {
       label: 'Years Experience',
       sublabel: 'Dedicated Spine Practice',
       icon: Award,
-      color: 'text-[#A94420]',
-      bgColor: 'bg-[#FAF0EB]'
+      color: 'text-[#0F2747]',
+      bgColor: 'bg-[#F0F4F8]'
     },
     {
       value: '12,000+',

@@ -91,47 +91,39 @@ export const LocationContactSection: React.FC<LocationContactProps> = ({ onOpenB
           <div className="lg:col-span-6 space-y-6">
             <Card padding="lg" className="border-[#E8E4DC] shadow-sm space-y-6 bg-white">
               <div>
-                <span className="text-xs font-bold uppercase tracking-widest text-[#A94420] block mb-1">
-                  Clinic Address & Landmark
+                <span className="text-xs font-bold uppercase tracking-widest text-[#0F2747] block mb-1">
+                  Location & Directions
                 </span>
-                <h3 className="text-xl font-normal text-[#1A1A1A] font-serif">
-                  {clinicInfo.name} {clinicInfo.tagline}
+                <h3 className="text-2xl font-bold text-[#1A1A1A] font-serif">
+                  Visit Our Mehdipatnam Clinic
                 </h3>
               </div>
 
-              {/* Address details */}
-              <div className="space-y-3.5 text-sm text-[#2C2926]">
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-[#FAF0EB] text-[#A94420] flex items-center justify-center flex-shrink-0 mt-0.5 border border-[#ECCDC1]">
+              {/* Address Details List */}
+              <div className="space-y-4 text-xs sm:text-sm text-[#2C2926]">
+                <div className="flex items-start gap-3 bg-[#FAF8F5] p-3.5 rounded-2xl border border-[#E8E4DC]">
+                  <div className="w-8 h-8 rounded-lg bg-[#F0F4F8] text-[#0F2747] flex items-center justify-center flex-shrink-0 mt-0.5 border border-[#CBD8E6]">
                     <MapPin className="w-4 h-4" />
                   </div>
                   <div>
-                    <strong className="text-[#1A1A1A] font-semibold block">Full Address:</strong>
-                    <span>{clinicInfo.address}</span>
-                    <span className="block text-[#736C63] font-medium">
-                      {clinicInfo.city} - {clinicInfo.pincode}, {clinicInfo.state}
-                    </span>
-                    <span className="inline-block mt-1 text-xs font-medium text-[#1B4332] bg-[#EAF2ED] border border-[#C5DACB] px-2 py-0.5 rounded">
-                      Landmark: {clinicInfo.landmark}
-                    </span>
+                    <strong className="text-[#1A1A1A] font-semibold block">Exact Address:</strong>
+                    <span>{clinicInfo.address}</span> <br />
+                    <span className="text-[#736C63]">Landmark: {clinicInfo.landmark}</span>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3">
+                <div className="flex items-start gap-3 bg-[#FAF8F5] p-3.5 rounded-2xl border border-[#E8E4DC]">
                   <div className="w-8 h-8 rounded-lg bg-[#EAF2ED] text-[#1B4332] flex items-center justify-center flex-shrink-0 mt-0.5 border border-[#C5DACB]">
                     <Phone className="w-4 h-4" />
                   </div>
                   <div>
-                    <strong className="text-[#1A1A1A] font-semibold block">Direct Contact:</strong>
+                    <strong className="text-[#1A1A1A] font-semibold block">Appointments & Inquiries:</strong>
                     <a
-                      href={`tel:${clinicInfo.phone.replace(/\s+/g, '')}`}
-                      className="text-base font-bold text-[#A94420] hover:underline"
+                      href={`tel:${clinicInfo.phoneRaw}`}
+                      className="text-base font-bold text-[#0F2747] hover:underline"
                     >
                       {clinicInfo.phone}
                     </a>
-                    <span className="text-xs text-[#736C63] block">
-                      Call or WhatsApp for slot confirmation
-                    </span>
                   </div>
                 </div>
 
@@ -298,7 +290,7 @@ export const LocationContactSection: React.FC<LocationContactProps> = ({ onOpenB
                     <button
                       type="button"
                       onClick={onOpenBooking}
-                      className="text-xs text-[#A94420] font-semibold hover:underline"
+                      className="text-xs text-[#0F2747] font-semibold hover:underline"
                     >
                       Prefer to choose a specific date and time? Book full appointment →
                     </button>

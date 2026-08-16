@@ -94,24 +94,27 @@ export function AppointmentsPage() {
         </div>
         <button
           onClick={() => navigate('/admin/appointments/new')}
-          className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#A94420] text-white text-sm font-semibold hover:bg-[#8F3717] transition-colors"
+          className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#0F2747] text-white text-sm font-semibold hover:bg-[#0B1D3A] transition-colors"
         >
-          <Plus size={15} /> New Appointment
+          <Plus size={15} />
+          <span>New Appointment</span>
         </button>
       </div>
 
-      {/* Filters */}
-      <div className="flex flex-wrap items-center gap-3">
-        {/* Search */}
-        <div className="relative flex-1 min-w-[200px] max-w-xs">
-          <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9E968C]" />
-          <input
-            value={search}
-            onChange={e => { setSearch(e.target.value); setPage(1); }}
-            placeholder="Name, phone, service…"
-            className="w-full h-9 pl-8 pr-3 rounded-xl border border-[#E5E2DC] bg-white text-sm text-[#1A1A1A] placeholder:text-[#C4BDB4] focus:outline-none focus:border-[#A94420] focus:ring-2 focus:ring-[#A94420]/10 transition-all"
-          />
-        </div>
+      {/* Filters Bar */}
+      <div className="bg-white rounded-2xl border border-[#E5E2DC] p-4 space-y-3">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+          {/* Search Input */}
+          <div className="relative flex-1">
+            <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#9E968C]" />
+            <input
+              type="text"
+              value={search}
+              onChange={e => { setSearch(e.target.value); setPage(1); }}
+              placeholder="Search patient, phone, service, or ID…"
+              className="w-full h-9 pl-8 pr-3 rounded-xl border border-[#E5E2DC] bg-white text-sm text-[#1A1A1A] placeholder:text-[#C4BDB4] focus:outline-none focus:border-[#0F2747] focus:ring-2 focus:ring-[#0F2747]/10 transition-all"
+            />
+          </div>
 
         {/* Status Filter */}
         <div className="flex items-center gap-1.5 flex-wrap">
@@ -166,7 +169,7 @@ export function AppointmentsPage() {
                     <td className="px-4 py-3">
                       <button
                         onClick={() => navigate(`/admin/appointments/${appt.id}`)}
-                        className="text-left hover:text-[#A94420] transition-colors"
+                        className="text-left hover:text-[#0F2747] transition-colors"
                       >
                         <p className="font-medium text-[#1A1A1A]">{appt.fullName}</p>
                         <p className="text-[11px] text-[#9E968C]">{appt.phone}</p>

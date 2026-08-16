@@ -106,7 +106,7 @@ export function AdminSidebar({ collapsed, onToggle, onNavClick }: AdminSidebarPr
           <img src={logoImg} alt="Holistic Edge" className="h-7 w-auto object-contain brightness-[1.15]" />
         )}
         {collapsed && (
-          <div className="w-7 h-7 rounded-lg bg-[#A94420] flex items-center justify-center">
+          <div className="w-7 h-7 rounded-lg bg-[#0F2747] flex items-center justify-center">
             <Zap size={14} className="text-white" />
           </div>
         )}
@@ -140,7 +140,7 @@ export function AdminSidebar({ collapsed, onToggle, onNavClick }: AdminSidebarPr
                 >
                   {/* Active indicator */}
                   {isActive && (
-                    <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-4 bg-[#A94420] rounded-full" />
+                    <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-4 bg-[#2563EB] rounded-full" />
                   )}
 
                   <span className={cn(isActive ? 'text-white' : 'text-white/50 group-hover:text-white/70')}>
@@ -154,7 +154,7 @@ export function AdminSidebar({ collapsed, onToggle, onNavClick }: AdminSidebarPr
                   {/* Badge */}
                   {item.badge !== undefined && (
                     <span className={cn(
-                      'flex-shrink-0 text-[10px] font-bold leading-none rounded-full bg-[#A94420] text-white',
+                      'flex-shrink-0 text-[10px] font-bold leading-none rounded-full bg-[#0F2747] text-white',
                       collapsed ? 'absolute -top-0.5 -right-0.5 w-4 h-4 flex items-center justify-center' : 'px-1.5 py-0.5'
                     )}>
                       {item.badge > 99 ? '99+' : item.badge}

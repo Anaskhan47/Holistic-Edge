@@ -48,39 +48,40 @@ export const TreatmentJourneySection: React.FC<TreatmentJourneyProps> = ({ onOpe
           {treatmentJourneySteps.map((step, idx) => (
             <div
               key={step.stepNumber}
-              className="bg-white rounded-2xl p-5 border border-[#E8E4DC] shadow-[0_2px_8px_rgba(0,0,0,0.02)] flex flex-col justify-between relative group hover:border-[#1A1A1A]/30 hover:shadow-md transition-all duration-300"
+              className="bg-white rounded-3xl p-6 sm:p-7 border border-[#E8E4DC] shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between group"
             >
-              {/* Top Step Number Badge */}
-              <div className="flex items-center justify-between mb-3">
-                <span className="w-8 h-8 rounded-full bg-[#FAF0EB] text-[#A94420] flex items-center justify-center font-bold text-xs font-serif border border-[#ECCDC1]">
-                  0{step.stepNumber}
-                </span>
-                <div className="w-8 h-8 rounded-full bg-[#FAF8F5] text-[#736C63] flex items-center justify-center group-hover:text-[#A94420] transition-colors border border-[#E8E4DC]">
-                  {getStepIcon(step.icon)}
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="w-8 h-8 rounded-full bg-[#F0F4F8] text-[#0F2747] flex items-center justify-center font-bold text-xs font-serif border border-[#CBD8E6]">
+                    0{step.stepNumber}
+                  </span>
+                  <div className="w-8 h-8 rounded-full bg-[#FAF8F5] text-[#736C63] flex items-center justify-center group-hover:text-[#0F2747] transition-colors border border-[#E8E4DC]">
+                    {getStepIcon(step.icon)}
+                  </div>
                 </div>
-              </div>
 
-              {/* Title & Description */}
-              <div className="space-y-2 flex-1">
-                <h3 className="text-sm font-bold text-[#1A1A1A] font-serif leading-snug">
+                <h3 className="text-xl font-bold text-[#1A1A1A] font-serif mb-1 leading-snug">
                   {step.title}
                 </h3>
-                <p className="text-xs font-semibold text-[#1B4332]">
+                <p className="text-xs text-[#736C63] mb-4 font-medium">
                   {step.subtitle}
                 </p>
-                <p className="text-xs text-[#5A544E] leading-relaxed">
+                <p className="text-sm text-[#5A544E] leading-relaxed mb-6">
                   {step.description}
                 </p>
+              </div>
 
-                {/* Key Points */}
-                <div className="pt-2 border-t border-[#F0EBE3] space-y-1">
-                  {step.details.slice(0, 2).map((detail, i) => (
-                    <div key={i} className="flex items-start gap-1.5 text-[11px] text-[#2C2926]">
-                      <div className="w-1.5 h-1.5 rounded-full bg-[#A94420] mt-1.5 flex-shrink-0" />
-                      <span className="line-clamp-2">{detail}</span>
-                    </div>
-                  ))}
-                </div>
+              {/* Key Outcomes */}
+              <div className="pt-4 border-t border-[#F0EBE3] space-y-2">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-[#8A847C] block mb-1">
+                  Key Outcomes:
+                </span>
+                {step.details.slice(0, 2).map((detail, i) => (
+                  <div key={i} className="flex items-start gap-2 text-xs text-[#2C2926]">
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#0F2747] mt-1.5 flex-shrink-0" />
+                    <span className="line-clamp-2">{detail}</span>
+                  </div>
+                ))}
               </div>
             </div>
           ))}

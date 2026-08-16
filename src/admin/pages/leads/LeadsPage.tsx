@@ -81,7 +81,7 @@ export function LeadsPage() {
         </div>
         <button
           onClick={() => navigate('/admin/leads/new')}
-          className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#A94420] text-white text-sm font-semibold hover:bg-[#8F3717] transition-colors"
+          className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#0F2747] text-white text-sm font-semibold hover:bg-[#0B1D3A] transition-colors"
         >
           <Plus size={15} /> Add Lead
         </button>
@@ -112,7 +112,7 @@ export function LeadsPage() {
           value={search}
           onChange={e => { setSearch(e.target.value); setPage(1); }}
           placeholder="Name, phone, condition…"
-          className="w-full h-9 pl-8 pr-3 rounded-xl border border-[#E5E2DC] bg-white text-sm placeholder:text-[#C4BDB4] focus:outline-none focus:border-[#A94420] focus:ring-2 focus:ring-[#A94420]/10 transition-all"
+          className="w-full h-9 pl-8 pr-3 rounded-xl border border-[#E5E2DC] bg-white text-sm placeholder:text-[#C4BDB4] focus:outline-none focus:border-[#0F2747] focus:ring-2 focus:ring-[#0F2747]/10 transition-all"
         />
       </div>
 
@@ -147,7 +147,7 @@ export function LeadsPage() {
                     <td className="px-4 py-3">
                       <button
                         onClick={() => navigate(`/admin/leads/${lead.id}`)}
-                        className="text-left hover:text-[#A94420] transition-colors"
+                        className="text-left hover:text-[#0F2747] transition-colors"
                       >
                         <p className="font-medium text-[#1A1A1A]">{lead.fullName}</p>
                         <p className="text-[11px] text-[#9E968C]">{lead.phone}</p>
@@ -163,7 +163,7 @@ export function LeadsPage() {
                         value={lead.status}
                         disabled={changingStatus === lead.id}
                         onChange={e => handleStatusChange(lead, e.target.value as LeadStatus)}
-                        className="text-[11.5px] border border-[#E5E2DC] rounded-lg px-2 py-1 bg-white focus:outline-none focus:border-[#A94420] cursor-pointer"
+                        className="text-[11.5px] border border-[#E5E2DC] rounded-lg px-2 py-1 bg-white focus:outline-none focus:border-[#0F2747] cursor-pointer"
                         onClick={e => e.stopPropagation()}
                       >
                         {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}

@@ -109,18 +109,18 @@ export const WhatBringsYouHere: React.FC<WhatBringsYouHereProps> = ({
                 <div className="pt-3 border-t border-[#F0EBE3] flex items-center justify-between gap-2">
                   <Link
                     to={`/conditions/${condition.slug}`}
-                    className="text-xs font-semibold text-[#A94420] hover:text-[#8F3717] flex items-center gap-1 group/btn"
+                    className="text-xs font-semibold text-[#0F2747] hover:text-[#0B1D3A] flex items-center gap-1 group/btn"
                   >
-                    <span>View Treatment Plan</span>
-                    <ChevronRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
+                    <span>View Care Approach</span>
+                    <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
                   </Link>
 
                   <button
                     type="button"
-                    onClick={onOpenBooking}
-                    className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-[#FAF0EB] text-[#A94420] hover:bg-[#F5E2D8] transition-colors border border-[#ECCDC1]"
+                    onClick={() => onOpenBooking(condition.title)}
+                    className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-[#F0F4F8] text-[#0F2747] hover:bg-[#D4E2F0] transition-colors border border-[#CBD8E6]"
                   >
-                    Book
+                    Book for this
                   </button>
                 </div>
               </div>
@@ -131,8 +131,8 @@ export const WhatBringsYouHere: React.FC<WhatBringsYouHereProps> = ({
         {/* Bottom Banner */}
         <div className="mt-12 bg-white rounded-2xl p-6 border border-[#E8E4DC] shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#FAF0EB] text-[#A94420] flex items-center justify-center flex-shrink-0 border border-[#ECCDC1]">
-              <Sparkles className="w-5 h-5 text-[#D49E58]" />
+            <div className="w-10 h-10 rounded-xl bg-[#F0F4F8] text-[#0F2747] flex items-center justify-center flex-shrink-0 border border-[#CBD8E6]">
+              <Sparkles className="w-5 h-5 text-[#0F2747]" />
             </div>
             <div className="text-left">
               <h4 className="text-sm font-bold text-[#1A1A1A] font-serif">

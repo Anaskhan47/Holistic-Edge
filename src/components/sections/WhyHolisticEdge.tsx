@@ -54,31 +54,6 @@ export const WhyHolisticEdge: React.FC<WhyHolisticEdgeProps> = ({
 
             {/* Key Pillars */}
             <div className="space-y-3.5">
-              <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-lg bg-[#FAF0EB] text-[#A94420] flex items-center justify-center flex-shrink-0 mt-0.5 border border-[#ECCDC1]">
-                  <Award className="w-4 h-4" />
-                </div>
-                <div>
-                  <h4 className="text-sm font-bold text-[#1A1A1A]">25 Years Dedicated Clinical Legacy</h4>
-                  <p className="text-xs text-[#5A544E] leading-relaxed">
-                    Over 12,000 patients treated with personalized care protocols refined across a quarter-century of practice.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-lg bg-[#EAF2ED] text-[#1B4332] flex items-center justify-center flex-shrink-0 mt-0.5 border border-[#C5DACB]">
-                  <HeartPulse className="w-4 h-4" />
-                </div>
-                <div>
-                  <h4 className="text-sm font-bold text-[#1A1A1A]">True Multidisciplinary Care</h4>
-                  <p className="text-xs text-[#5A544E] leading-relaxed">
-                    Integrating Chiropractic adjustments, sterile Acupuncture, Cupping therapy, and active rehabilitation under one roof.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
                 <div className="w-8 h-8 rounded-lg bg-[#FAF4ED] text-[#D49E58] flex items-center justify-center flex-shrink-0 mt-0.5 border border-[#EADBCE]">
                   <ShieldCheck className="w-4 h-4" />
                 </div>
@@ -105,7 +80,7 @@ export const WhyHolisticEdge: React.FC<WhyHolisticEdgeProps> = ({
                 <span className="text-xs font-bold uppercase tracking-widest text-[#736C63]">
                   Treatment Comparison
                 </span>
-                <span className="text-xs font-semibold text-[#A94420] bg-[#FAF0EB] px-2.5 py-0.5 rounded-full border border-[#ECCDC1]">
+                <span className="text-xs font-semibold text-[#0F2747] bg-[#F0F4F8] px-2.5 py-0.5 rounded-full border border-[#CBD8E6]">
                   Root Cause vs Masking
                 </span>
               </div>

@@ -23,7 +23,7 @@ export const MobileBottomBar: React.FC<MobileBottomBarProps> = ({ onOpenBooking 
           href={`tel:${clinicInfo.phone.replace(/\s+/g, '')}`}
           className="flex-1 flex flex-col items-center justify-center py-1.5 px-2 rounded-xl bg-[#F2EDE4] text-[#1A1A1A] font-semibold text-xs border border-[#DDD5C7] active:bg-[#E5DDCF] transition-colors"
         >
-          <Phone className="w-4 h-4 text-[#A94420] mb-0.5" />
+          <Phone className="w-4 h-4 text-[#0F2747] mb-0.5" />
           <span>Call</span>
         </a>
 
@@ -54,7 +54,7 @@ export const MobileBottomBar: React.FC<MobileBottomBarProps> = ({ onOpenBooking 
           type="button"
           id="mobile-bar-book-btn"
           onClick={onOpenBooking}
-          className="flex-[2] flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-[#A94420] text-white font-bold text-xs shadow-md shadow-[#A94420]/25 active:scale-98 transition-all"
+          className="flex-[2] flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-[#0F2747] text-white font-bold text-xs shadow-md shadow-[#0F2747]/25 active:scale-98 transition-all"
         >
           <Calendar className="w-4 h-4" />
           <span>Book Appointment</span>

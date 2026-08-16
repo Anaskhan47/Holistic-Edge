@@ -30,7 +30,7 @@ const STATUS_MAP: Record<string, { label: string; bg: string; text: string; dot:
   Rejected:          { label: 'Rejected',    bg: 'bg-red-50',    text: 'text-red-700',    dot: 'bg-red-500' },
   Archived:          { label: 'Archived',    bg: 'bg-gray-100',  text: 'text-gray-500',   dot: 'bg-gray-400' },
   // Notifications
-  unread:            { label: 'Unread',      bg: 'bg-[#FBF2EC]', text: 'text-[#A94420]',  dot: 'bg-[#A94420]' },
+  unread:            { label: 'Unread',      bg: 'bg-[#F0F4F8]', text: 'text-[#0F2747]',  dot: 'bg-[#0F2747]' },
   read:              { label: 'Read',        bg: 'bg-gray-100',  text: 'text-gray-500',   dot: 'bg-gray-400' },
   // Content
   Published:         { label: 'Published',   bg: 'bg-green-50',  text: 'text-green-700',  dot: 'bg-green-500' },

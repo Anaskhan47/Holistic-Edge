@@ -27,7 +27,7 @@ export function FaqPage() {
               {items.map(q => (
                 <div key={q.id} className="bg-[#F8F7F4] rounded-xl p-3.5 space-y-1">
                   <p className="text-xs font-semibold text-[#1A1A1A] flex items-center gap-2">
-                    <HelpCircle size={14} className="text-[#A94420] flex-shrink-0" />
+                    <HelpCircle size={14} className="text-[#0F2747] flex-shrink-0" />
                     {q.question}
                   </p>
                   <p className="text-xs text-[#5A544E] pl-5 leading-relaxed">{q.answer}</p>

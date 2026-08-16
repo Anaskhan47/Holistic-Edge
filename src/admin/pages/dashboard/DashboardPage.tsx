@@ -134,35 +134,36 @@ export function DashboardPage() {
           sub={`${todayAppts.filter(a => a.status === 'Confirmed').length} confirmed`}
           icon={<CalendarDays size={17} className="text-[#1B4332]" />}
           color="bg-green-50"
+          icon={<CalendarDays size={17} className="text-[#0F2747]" />}
+          color="bg-blue-50"
           onClick={() => navigate('/admin/appointments')}
         />
         <MetricCard
           label="New Leads"
           value={metrics.newLeads}
           sub="Awaiting contact"
-          icon={<Activity size={17} className="text-[#1A365D]" />}
-          color="bg-[#EFF6FF]"
+          icon={<Activity size={17} className="text-[#0F2747]" />}
+          color="bg-blue-50"
           onClick={() => navigate('/admin/leads?status=New')}
         />
         <MetricCard
           label="Pending Follow-ups"
           value={metrics.pendingFollowUps}
           sub="Action required"
-          icon={<Clock size={17} className="text-amber-700" />}
-          color="bg-amber-50"
+          icon={<Clock size={17} className="text-[#0F2747]" />}
+          color="bg-blue-50"
           onClick={() => navigate('/admin/leads?status=Follow-up')}
         />
         <MetricCard
           label="Unread Notifications"
           value={metrics.unreadNotifications}
-          icon={<Bell size={17} className="text-[#A94420]" />}
-          color="bg-[#FBF2EC]"
+          icon={<Bell size={17} className="text-[#0F2747]" />}
+          color="bg-blue-50"
           onClick={() => navigate('/admin/notifications')}
         />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Today's Schedule */}
         <div className="lg:col-span-2 bg-white border border-[#E5E2DC] rounded-2xl overflow-hidden">
           <div className="flex items-center justify-between px-5 py-4 border-b border-[#F0ECE4]">
             <div>

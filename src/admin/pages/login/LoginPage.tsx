@@ -37,7 +37,7 @@ export function LoginPage() {
         <img src={logoImg} alt="Holistic Edge" className="h-10 w-auto object-contain self-start brightness-[1.2]" />
 
         <div className="space-y-4">
-          <div className="w-10 h-10 rounded-xl bg-[#A94420] flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-[#0F2747] flex items-center justify-center">
             <ShieldCheck size={18} className="text-white" />
           </div>
           <h1 className="text-3xl font-bold text-white leading-tight">
@@ -56,8 +56,8 @@ export function LoginPage() {
             'Full audit trail',
           ].map(item => (
             <div key={item} className="flex items-center gap-2.5">
-              <div className="w-4 h-4 rounded-full bg-[#A94420]/20 flex items-center justify-center">
-                <div className="w-1.5 h-1.5 rounded-full bg-[#A94420]" />
+              <div className="w-4 h-4 rounded-full bg-[#0F2747]/20 flex items-center justify-center">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#0F2747]" />
               </div>
               <span className="text-white/60 text-sm">{item}</span>
             </div>
@@ -88,7 +88,7 @@ export function LoginPage() {
                 onChange={e => setEmail(e.target.value)}
                 autoComplete="email"
                 placeholder="admin@holisticedge.in"
-                className="w-full h-11 px-3.5 rounded-xl border border-[#E5E2DC] bg-white text-sm text-[#1A1A1A] placeholder:text-[#C4BDB4] focus:outline-none focus:border-[#A94420] focus:ring-2 focus:ring-[#A94420]/10 transition-all"
+                className="w-full h-11 px-3.5 rounded-xl border border-[#E5E2DC] bg-white text-sm text-[#1A1A1A] placeholder:text-[#C4BDB4] focus:outline-none focus:border-[#0F2747] focus:ring-2 focus:ring-[#0F2747]/10 transition-all"
               />
             </div>
 
@@ -102,7 +102,7 @@ export function LoginPage() {
                   onChange={e => setPassword(e.target.value)}
                   autoComplete="current-password"
                   placeholder="••••••••"
-                  className="w-full h-11 px-3.5 pr-10 rounded-xl border border-[#E5E2DC] bg-white text-sm text-[#1A1A1A] placeholder:text-[#C4BDB4] focus:outline-none focus:border-[#A94420] focus:ring-2 focus:ring-[#A94420]/10 transition-all"
+                  className="w-full h-11 px-3.5 pr-10 rounded-xl border border-[#E5E2DC] bg-white text-sm text-[#1A1A1A] placeholder:text-[#C4BDB4] focus:outline-none focus:border-[#0F2747] focus:ring-2 focus:ring-[#0F2747]/10 transition-all"
                 />
                 <button
                   type="button"
@@ -125,7 +125,7 @@ export function LoginPage() {
             <button
               type="submit"
               disabled={submitting || isLoading}
-              className="w-full h-11 rounded-xl bg-[#A94420] hover:bg-[#8F3717] text-white text-sm font-semibold transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
+              className="w-full h-11 rounded-xl bg-[#0F2747] hover:bg-[#0B1D3A] text-white text-sm font-semibold transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
             >
               {submitting ? (
                 <>
