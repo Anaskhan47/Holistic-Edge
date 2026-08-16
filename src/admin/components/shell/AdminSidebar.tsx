@@ -103,7 +103,7 @@ export function AdminSidebar({ collapsed, onToggle, onNavClick }: AdminSidebarPr
         collapsed ? 'justify-center h-14 px-0' : 'gap-2.5 h-14 px-4'
       )}>
         {!collapsed && (
-          <img src={logoImg} alt="Holistic Edge" className="h-7 w-auto object-contain brightness-[1.15]" />
+          <img src="/brand/holistic-edge-logo-transparent.png" alt="Holistic Edge" className="h-7 w-auto object-contain brightness-[1.15]" />
         )}
         {collapsed && (
           <div className="w-7 h-7 rounded-lg bg-[#0F2747] flex items-center justify-center">

@@ -33,9 +33,9 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBooking }) => {
               className="inline-block focus:outline-none"
             >
               <img
-                src={logoImg}
+                src="/brand/holistic-edge-logo-transparent.png"
                 alt="Holistic Edge Wellness Centre"
-                className="h-12 object-contain bg-white p-1.5 rounded-lg"
+                className="h-12 object-contain"
               />
             </Link>
 

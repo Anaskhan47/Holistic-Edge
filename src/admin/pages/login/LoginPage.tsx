@@ -34,7 +34,7 @@ export function LoginPage() {
     <div className="min-h-screen flex bg-[#F8F7F4]">
       {/* Left panel — branding */}
       <div className="hidden lg:flex flex-col justify-between w-[420px] flex-shrink-0 bg-[#111110] p-10">
-        <img src={logoImg} alt="Holistic Edge" className="h-10 w-auto object-contain self-start brightness-[1.2]" />
+        <img src="/brand/holistic-edge-logo-transparent.png" alt="Holistic Edge" className="h-10 w-auto object-contain self-start brightness-[1.2]" />
 
         <div className="space-y-4">
           <div className="w-10 h-10 rounded-xl bg-[#0F2747] flex items-center justify-center">
@@ -70,7 +70,7 @@ export function LoginPage() {
         <div className="w-full max-w-sm">
           {/* Mobile logo */}
           <div className="lg:hidden flex justify-center mb-8">
-            <img src={logoImg} alt="Holistic Edge" className="h-10 w-auto object-contain" />
+            <img src="/brand/holistic-edge-logo-transparent.png" alt="Holistic Edge" className="h-10 w-auto object-contain" />
           </div>
 
           <div className="mb-8">

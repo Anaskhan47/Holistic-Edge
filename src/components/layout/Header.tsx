@@ -128,7 +128,7 @@ export const Header: React.FC<HeaderProps> = ({
           className="flex items-center focus:outline-none max-w-[240px] flex-shrink-0"
         >
           <img
-            src={logoImg}
+            src="/brand/holistic-edge-logo-transparent.png"
             alt="Holistic Edge Wellness Centre"
             className="h-10 sm:h-12 object-contain"
           />
