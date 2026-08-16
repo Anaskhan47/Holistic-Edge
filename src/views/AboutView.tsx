@@ -122,7 +122,7 @@ export const AboutView: React.FC<AboutViewProps> = ({
 
                 <div className="grid grid-cols-2 gap-3 pt-2">
                   <div className="bg-white p-4 rounded-xl border border-[#E8E4DC] shadow-xs">
-                    <span className="text-2xl font-normal text-[#A94420] block font-serif">25+</span>
+                    <span className="text-2xl font-normal text-[#0F2747] block font-serif">25+</span>
                     <span className="text-xs text-[#5A544E] font-medium">Years Dedicated Practice</span>
                   </div>
                   <div className="bg-white p-4 rounded-xl border border-[#E8E4DC] shadow-xs">

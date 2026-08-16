@@ -130,7 +130,7 @@ export const Header: React.FC<HeaderProps> = ({
           <img
             src="/brand/holistic-edge-logo-transparent.png"
             alt="Holistic Edge Wellness Centre"
-            className="h-10 sm:h-12 object-contain"
+            className="h-12 sm:h-15 xl:h-16 object-contain max-h-[64px]"
           />
         </Link>
 

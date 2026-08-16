@@ -141,7 +141,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
                 {/* Founder Overlay Tag */}
-                <div className="absolute bottom-4 left-4 right-4 text-white p-3.5 rounded-2xl bg-[#1A1A1A]/85 backdrop-blur-md border border-white/15">
+                <div className="absolute bottom-4 left-4 right-4 text-white p-3.5 rounded-2xl bg-[#1A1A1A]/85 backdrop-blur-md border border-white/15 z-10">
                   <div className="flex items-center justify-between">
                     <div>
                       <div className="text-[10px] font-bold uppercase tracking-widest text-[#D49E58]">
@@ -153,7 +153,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                     </div>
                     <Link
                       to="/about/dr-abdul-mallik"
-                      className="text-xs text-[#D49E58] font-semibold flex items-center gap-1 hover:underline"
+                      className="text-xs text-[#D49E58] font-semibold flex items-center gap-1 hover:underline z-20"
                     >
                       <span>Read Bio</span>
                       <ArrowRight className="w-3 h-3" />
@@ -162,8 +162,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 </div>
               </div>
 
-              {/* Floating Verified Rating Badge */}
-              <div className="absolute -top-4 -left-4 sm:-left-6 bg-white p-3.5 rounded-2xl shadow-lg border border-[#E8E4DC] flex items-center gap-3">
+              {/* Desktop Floating Rating Badge (>= lg) */}
+              <div className="hidden lg:flex absolute -top-5 -left-6 bg-white p-3.5 rounded-2xl shadow-xl border border-[#E8E4DC] items-center gap-3 z-20">
                 <div className="w-10 h-10 rounded-xl bg-[#FAF4ED] text-[#D49E58] flex items-center justify-center border border-[#EADBCE]">
                   <Star className="w-5 h-5 fill-[#D49E58]" />
                 </div>
@@ -176,14 +176,37 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 </div>
               </div>
 
-              {/* Floating 12,000+ Treated Badge */}
-              <div className="absolute -bottom-4 -right-2 sm:-right-4 bg-white p-3.5 rounded-2xl shadow-lg border border-[#E8E4DC] flex items-center gap-3">
+              {/* Desktop Floating 12,000+ Treated Badge (>= lg) - Anchored at top-right to prevent overlap */}
+              <div className="hidden lg:flex absolute -top-5 -right-6 bg-white p-3.5 rounded-2xl shadow-xl border border-[#E8E4DC] items-center gap-3 z-20">
                 <div className="w-10 h-10 rounded-xl bg-[#F0F4F8] text-[#0F2747] flex items-center justify-center border border-[#CBD8E6]">
                   <Users className="w-5 h-5" />
                 </div>
                 <div className="text-left">
                   <div className="text-sm font-bold text-[#1A1A1A] font-serif">12,000+</div>
                   <div className="text-[11px] text-[#736C63]">Patients Treated in Hyd</div>
+                </div>
+              </div>
+
+              {/* Mobile & Tablet stacked cards below image (< lg) */}
+              <div className="grid grid-cols-2 gap-3 mt-4 lg:hidden">
+                <div className="bg-white p-3 rounded-2xl shadow-xs border border-[#E8E4DC] flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-[#FAF4ED] text-[#D49E58] flex items-center justify-center border border-[#EADBCE] flex-shrink-0">
+                    <Star className="w-4 h-4 fill-[#D49E58]" />
+                  </div>
+                  <div className="text-left min-w-0">
+                    <div className="text-xs font-bold text-[#1A1A1A]">4.6★ / 4.7★</div>
+                    <div className="text-[10px] text-[#736C63] truncate">Verified Ratings</div>
+                  </div>
+                </div>
+
+                <div className="bg-white p-3 rounded-2xl shadow-xs border border-[#E8E4DC] flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-[#F0F4F8] text-[#0F2747] flex items-center justify-center border border-[#CBD8E6] flex-shrink-0">
+                    <Users className="w-4 h-4" />
+                  </div>
+                  <div className="text-left min-w-0">
+                    <div className="text-xs font-bold text-[#1A1A1A] font-serif">12,000+</div>
+                    <div className="text-[10px] text-[#736C63] truncate">Patients Treated</div>
+                  </div>
                 </div>
               </div>
             </div>

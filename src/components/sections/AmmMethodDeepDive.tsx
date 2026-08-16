@@ -47,7 +47,7 @@ export const AmmMethodDeepDive: React.FC<AmmMethodDeepDiveProps> = ({
         </div>
 
         {/* 3 Step Interactive Selector */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8 items-stretch">
           {ammMethodStages.map(stage => {
             const isActive = stage.stepNumber === activeStage;
             return (
@@ -55,37 +55,59 @@ export const AmmMethodDeepDive: React.FC<AmmMethodDeepDiveProps> = ({
                 key={stage.stepNumber}
                 type="button"
                 onClick={() => setActiveStage(stage.stepNumber)}
-                className={`p-5 rounded-2xl text-left transition-all duration-300 border relative ${
+                className={`p-6 rounded-2xl text-left transition-all duration-300 border flex flex-col justify-between h-full relative group outline-none ${
                   isActive
-                    ? 'bg-[#1A1A1A] text-[#FAF9F6] border-[#1A1A1A] shadow-md scale-[1.01]'
-                    : 'bg-white text-[#1A1A1A] border-[#E8E4DC] hover:border-[#D5CFC5] hover:bg-[#FAF8F5]'
+                    ? 'bg-[#0F2747] text-white border-[#0F2747] shadow-xl shadow-[#0F2747]/15 ring-2 ring-[#0F2747]/20 scale-[1.01]'
+                    : 'bg-white text-[#1A1A1A] border-[#CBD8E6] hover:border-[#0F2747]/40 hover:bg-[#F0F4F8]/60 shadow-sm'
                 }`}
               >
-                <div className="flex items-center justify-between mb-3">
-                  <span
-                    className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-sm ${
-                      isActive ? 'bg-[#0F2747] text-white' : 'bg-[#F0F4F8] text-[#0F2747]'
+                <div>
+                  {/* Badges Row */}
+                  <div className="flex items-center justify-between gap-2 mb-4">
+                    <span
+                      className={`px-3 py-1 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center transition-colors ${
+                        isActive
+                          ? 'bg-[#0284C7] text-white shadow-xs'
+                          : 'bg-[#F0F4F8] text-[#0F2747] border border-[#CBD8E6]'
+                      }`}
+                    >
+                      STAGE {stage.stepNumber}
+                    </span>
+                    <span
+                      className={`px-3 py-1 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center transition-colors ${
+                        isActive
+                          ? 'bg-[#0B1D3A] text-blue-200 border border-blue-400/30'
+                          : 'bg-[#F0F4F8] text-[#0F2747] border border-[#CBD8E6]'
+                      }`}
+                    >
+                      CODE: {stage.code}
+                    </span>
+                  </div>
+
+                  {/* Title & Subtitle */}
+                  <h3 className={`text-xl font-bold font-serif leading-tight ${
+                    isActive ? 'text-white' : 'text-[#1A1A1A]'
+                  }`}>
+                    {stage.name}
+                  </h3>
+                  <p
+                    className={`text-xs mt-1.5 leading-relaxed font-medium ${
+                      isActive ? 'text-blue-100/90' : 'text-[#5A544E]'
                     }`}
                   >
-                    Stage {stage.stepNumber}
-                  </span>
-                  <span
-                    className={`text-xs font-bold px-2 py-0.5 rounded-md uppercase tracking-wider ${
-                      isActive ? 'bg-[#0F2747] text-white' : 'bg-[#F2EDE4] text-[#736C63]'
-                    }`}
-                  >
-                    Code: {stage.code}
-                  </span>
+                    {stage.shortName}
+                  </p>
                 </div>
 
-                <h3 className="text-lg font-bold font-serif">{stage.name}</h3>
-                <p
-                  className={`text-xs mt-1 ${
-                    isActive ? 'text-[#D4CEC5]' : 'text-[#736C63]'
-                  }`}
-                >
-                  {stage.shortName}
-                </p>
+                {/* Card Footer Indicator */}
+                <div className={`mt-5 pt-3 border-t text-[11px] font-semibold flex items-center justify-between ${
+                  isActive ? 'border-white/15 text-blue-200' : 'border-[#F0ECE4] text-[#0F2747]'
+                }`}>
+                  <span>{isActive ? 'Active Protocol' : 'Explore Protocol'}</span>
+                  <ArrowRight className={`w-3.5 h-3.5 transition-transform group-hover:translate-x-1 ${
+                    isActive ? 'text-blue-200' : 'text-[#0F2747]'
+                  }`} />
+                </div>
               </button>
             );
           })}
