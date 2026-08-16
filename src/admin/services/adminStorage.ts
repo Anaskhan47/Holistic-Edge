@@ -383,7 +383,7 @@ const DEFAULT_SETTINGS: ClinicSettings = {
   seoTitle: 'Holistic Edge | Premium Chiropractic & Wellness in Hyderabad',
   seoDescription: 'Expert chiropractic care, cupping, acupuncture and the A.M.M Method™ for lasting pain relief in Hyderabad.',
   experienceYears: 25,
-  patientsTreated: '12,000+',
+  patientsTreated: '50,000+',
   specialistsCount: 3,
 };
 

@@ -15,7 +15,7 @@ export const teamData: TeamMember[] = [
       'Postural & Joint Biomechanics'
     ],
     qualifications: '25+ Years Dedicated Clinical Practice • Holistic Pain Care Pioneer',
-    bio: 'With over 25 years of hands-on clinical experience in Hyderabad, Dr. Abdul Mallik has personally guided more than 12,000 patients through drug-free recovery from severe spine, joint, and nerve disorders. He is the originator of the A.M.M Method™ (Adjustment, Mobilization, Muscle Strengthening), a structured tripartite approach designed to deliver lasting musculoskeletal rehabilitation without invasive surgery.',
+    bio: 'With over 25 years of hands-on clinical experience in Hyderabad, Dr. Abdul Mallik has personally guided more than 50,000 patients through drug-free recovery from severe spine, joint, and nerve disorders. He is the originator of the A.M.M Method™ (Adjustment, Mobilization, Muscle Strengthening), a structured tripartite approach designed to deliver lasting musculoskeletal rehabilitation without invasive surgery.',
     philosophy: 'Pain is a signal from the body that something is out of balance. Our mission is not to mask the signal with pills, but to restore the natural structural harmony that allows the human body to heal itself.',
     image: ammImg,
     statusVerified: true

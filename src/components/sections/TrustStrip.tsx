@@ -13,7 +13,7 @@ export const TrustStrip: React.FC = () => {
       bgColor: 'bg-[#F0F4F8]'
     },
     {
-      value: '12,000+',
+      value: '50,000+',
       label: 'Patients Treated',
       sublabel: 'In Mehdipatnam, Hyd',
       icon: Users,

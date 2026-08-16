@@ -50,7 +50,7 @@ export const FounderSection: React.FC<FounderSectionProps> = ({
                 </div>
                 <div className="text-left">
                   <div className="text-xs sm:text-sm font-bold text-[#1A1A1A]">25+ Years of Clinical Practice</div>
-                  <div className="text-xs text-[#736C63]">Over 12,000+ Patients Treated in Hyderabad</div>
+                  <div className="text-xs text-[#736C63]">Over 50,000+ Patients Treated in Hyderabad</div>
                 </div>
               </div>
             </div>

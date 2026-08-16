@@ -12,7 +12,7 @@ export const faqsData: FaqItem[] = [
     id: 'faq-2',
     category: 'General',
     question: 'Who is Dr. Abdul Mallik and what is his experience?',
-    answer: 'Dr. Abdul Mallik is the Founder and Lead Clinical Director of Holistic Edge, bringing over 25 years of specialized clinical experience in chiropractic care and integrative musculoskeletal rehabilitation. Over his career, he has personally guided more than 12,000 patients toward pain relief in Hyderabad.',
+    answer: 'Dr. Abdul Mallik is the Founder and Lead Clinical Director of Holistic Edge, bringing over 25 years of specialized clinical experience in chiropractic care and integrative musculoskeletal rehabilitation. Over his career, he has personally guided more than 50,000 patients toward pain relief in Hyderabad.',
     featured: true
   },
   {

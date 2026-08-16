@@ -111,7 +111,7 @@ export const AboutView: React.FC<AboutViewProps> = ({
                   The Journey Since 1999
                 </Badge>
                 <h2 className="text-2xl sm:text-3xl font-normal text-[#1A1A1A] font-serif">
-                  From a Vision of Natural Healing to Over 12,000 Recoveries
+                  From a Vision of Natural Healing to Over 50,000 Recoveries
                 </h2>
                 <p className="text-sm text-[#3E3A35] leading-relaxed">
                   Holistic Edge was established with a singular conviction: musculoskeletal pain should be treated at its mechanical root rather than silenced with painkillers or rushed into invasive surgeries.
@@ -126,7 +126,7 @@ export const AboutView: React.FC<AboutViewProps> = ({
                     <span className="text-xs text-[#5A544E] font-medium">Years Dedicated Practice</span>
                   </div>
                   <div className="bg-white p-4 rounded-xl border border-[#E8E4DC] shadow-xs">
-                    <span className="text-2xl font-normal text-[#1B4332] block font-serif">12,000+</span>
+                    <span className="text-2xl font-normal text-[#1B4332] block font-serif">50,000+</span>
                     <span className="text-xs text-[#5A544E] font-medium">Patients Treated</span>
                   </div>
                 </div>

@@ -209,7 +209,7 @@ export const servicesData: Service[] = [
     title: 'The A.M.M Method™',
     subtitle: 'Adjustment • Mobilization • Muscle Strengthening',
     shortDescription: 'Our signature 3-phase clinical protocol developed through 25 years of practice, addressing joint alignment, soft tissue mobility, and structural muscle stabilization for lasting pain relief.',
-    fullDescription: 'The A.M.M Method™ is Holistic Edge’s signature clinical framework formulated by Dr. Abdul Mallik over 25 years of treating 12,000+ patients. Rather than offering short-lived symptom relief, the A.M.M Method integrates three sequential pillars: (1) Adjustment of structural misalignments, (2) Mobilization of restricted joints and fascia, and (3) Muscle Strengthening to secure lasting biomechanical stability.',
+    fullDescription: 'The A.M.M Method™ is Holistic Edge’s signature clinical framework formulated by Dr. Abdul Mallik over 25 years of treating 50,000+ patients. Rather than offering short-lived symptom relief, the A.M.M Method integrates three sequential pillars: (1) Adjustment of structural misalignments, (2) Mobilization of restricted joints and fascia, and (3) Muscle Strengthening to secure lasting biomechanical stability.',
     iconName: 'Layers',
     accentColor: '#0066CC',
     durationMinutes: '45 - 60 Mins',

@@ -13,7 +13,7 @@ export const clinicInfo: ClinicInfo = {
   state: 'Telangana',
   pincode: '500028',
   experienceYears: 25,
-  patientsTreated: '12,000+',
+  patientsTreated: '50,000+',
   specialistsCount: 7,
   ratings: {
     justdial: {

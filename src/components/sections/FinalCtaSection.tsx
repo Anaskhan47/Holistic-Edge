@@ -16,7 +16,7 @@ export const FinalCtaSection: React.FC<FinalCtaProps> = ({ onOpenBooking }) => {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-6">
         <div className="inline-flex items-center gap-2 bg-[#FAF9F6]/10 border border-white/10 px-3.5 py-1 rounded-full text-xs font-semibold text-[#D49E58]">
           <ShieldCheck className="w-3.5 h-3.5" />
-          <span>25 Years • 12,000+ Treated • Hyderabad</span>
+          <span>25 Years • 50,000+ Treated • Hyderabad</span>
         </div>
 
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-normal font-serif text-[#FAF9F6] tracking-tight leading-tight">

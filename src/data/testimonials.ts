@@ -70,7 +70,7 @@ export const testimonialsData: Testimonial[] = [
 
 export const trustAggregates = {
   averageRating: '4.65',
-  totalTreated: '12,000+',
+  totalTreated: '50,000+',
   totalYears: 25,
   verifiedRatings: [
     { platform: 'Justdial', score: '4.6', badge: 'Verified 4.6/5' },

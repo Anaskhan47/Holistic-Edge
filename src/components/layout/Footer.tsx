@@ -50,7 +50,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenBooking }) => {
                 <span className="text-[11px] text-[#8E867C]">Years Experience</span>
               </div>
               <div className="bg-[#211E1C] border border-[#332E2A] rounded-xl p-2.5 text-center">
-                <span className="text-lg font-bold text-[#D49E58] font-serif block">12,000+</span>
+                <span className="text-lg font-bold text-[#D49E58] font-serif block">50,000+</span>
                 <span className="text-[11px] text-[#8E867C]">Patients Treated</span>
               </div>
               <div className="bg-[#211E1C] border border-[#332E2A] rounded-xl p-2.5 text-center col-span-2 sm:col-span-1">

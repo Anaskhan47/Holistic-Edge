@@ -56,7 +56,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               className="text-3xl sm:text-4xl md:text-5xl lg:text-[54px] font-normal text-[#1A1A1A] leading-[1.12] font-serif tracking-tight"
             >
               25 Years of Experience. <br className="hidden sm:inline" />
-              <span className="text-[#0F2747] italic font-medium">12,000+ Patients Treated.</span> <br />
+              <span className="text-[#0F2747] italic font-medium">50,000+ Patients Treated.</span> <br />
               <span className="text-[#2B2723] text-2xl sm:text-3xl md:text-4xl font-normal font-serif">
                 A Different Approach to Pain Care.
               </span>
@@ -182,7 +182,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                     <Users className="w-4 h-4" />
                   </div>
                   <div className="text-left min-w-0">
-                    <div className="text-xs font-bold text-[#1A1A1A] font-serif">12,000+</div>
+                    <div className="text-xs font-bold text-[#1A1A1A] font-serif">50,000+</div>
                     <div className="text-[10.5px] text-[#736C63] truncate">Patients Treated in Hyd</div>
                   </div>
                 </div>
