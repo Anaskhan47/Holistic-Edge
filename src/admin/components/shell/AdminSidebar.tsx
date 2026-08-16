@@ -66,6 +66,7 @@ export function AdminSidebar({ collapsed, onToggle, onNavClick }: AdminSidebarPr
       title: 'Content',
       items: [
         { label: 'Testimonials', path: '/admin/testimonials', icon: <Star size={16} />, badge: metrics.pendingTestimonials > 0 ? metrics.pendingTestimonials : undefined },
+        { label: 'Google Reviews', path: '/admin/reviews/google', icon: <Star size={16} className="text-[#4285F4]" /> },
         { label: 'Services', path: '/admin/services', icon: <Stethoscope size={16} /> },
         { label: 'Conditions', path: '/admin/conditions', icon: <BookOpen size={16} /> },
         { label: 'FAQ', path: '/admin/faq', icon: <HelpCircle size={16} /> },

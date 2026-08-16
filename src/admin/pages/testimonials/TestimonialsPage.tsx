@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Check, X, Star, Archive, Eye, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Plus, Check, X, Star, Archive, Eye, Trash2, ChevronLeft, ChevronRight, Globe, EyeOff } from 'lucide-react';
 import { useAdminStore } from '../../context/AdminStoreContext';
 import { testimonialStorage, notificationStorage } from '../../services/adminStorage';
 import { StatusBadge } from '../../components/ui/StatusBadge';
@@ -145,9 +145,21 @@ export function TestimonialsPage() {
                       </>
                     )}
                     {t.status === 'Approved' && (
-                      <button onClick={() => handleFeatureToggle(t)}
-                        className={cn('flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors', t.featured ? 'bg-amber-50 text-amber-700 border-amber-100 hover:bg-amber-100' : 'bg-[#F8F7F4] text-[#5A544E] border-[#E5E2DC] hover:bg-[#F0ECE4]')}>
-                        <Star size={11} /> {t.featured ? 'Unfeature' : 'Feature'}
+                      <>
+                        <button onClick={() => setConfirmAction({ id: t.id, action: 'publish', status: 'Published', label: 'Publish to Website' })}
+                          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#0F2747] text-white text-xs font-semibold hover:bg-[#0B1D3A]">
+                          <Globe size={11} /> Publish to Website
+                        </button>
+                        <button onClick={() => handleFeatureToggle(t)}
+                          className={cn('flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors', t.featured ? 'bg-amber-50 text-amber-700 border-amber-100 hover:bg-amber-100' : 'bg-[#F8F7F4] text-[#5A544E] border-[#E5E2DC] hover:bg-[#F0ECE4]')}>
+                          <Star size={11} /> {t.featured ? 'Unfeature' : 'Feature'}
+                        </button>
+                      </>
+                    )}
+                    {t.status === 'Published' && (
+                      <button onClick={() => setConfirmAction({ id: t.id, action: 'unpublish', status: 'Unpublished', label: 'Unpublish' })}
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-50 text-amber-800 text-xs font-semibold hover:bg-amber-100 border border-amber-200">
+                        <EyeOff size={11} /> Unpublish
                       </button>
                     )}
                     {t.status !== 'Archived' && (

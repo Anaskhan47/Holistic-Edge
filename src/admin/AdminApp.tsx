@@ -24,6 +24,7 @@ import { FaqPage } from './pages/faq/FaqPage';
 import { TeamPage } from './pages/team/TeamPage';
 import { ClinicPage } from './pages/clinic/ClinicPage';
 import { MediaPage } from './pages/media/MediaPage';
+import { GoogleReviewsPage } from './pages/reviews/GoogleReviewsPage';
 import { Loader2 } from 'lucide-react';
 
 function ProtectedAdminRoute({ children }: { children: React.ReactNode }) {
@@ -72,11 +73,10 @@ export function AdminApp() {
             {/* Leads */}
             <Route path="leads" element={<LeadsPage />} />
             <Route path="leads/new" element={<LeadForm />} />
-            <Route path="leads/:id" element={<LeadDetailPage />} />
-
-            {/* Testimonials */}
+            {/* Testimonials & Google Reviews */}
             <Route path="testimonials" element={<TestimonialsPage />} />
             <Route path="testimonials/new" element={<TestimonialForm />} />
+            <Route path="reviews/google" element={<GoogleReviewsPage />} />
 
             {/* Content */}
             <Route path="services" element={<ServicesPage />} />

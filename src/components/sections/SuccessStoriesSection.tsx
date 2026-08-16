@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { testimonialsData, trustAggregates } from '../../data/testimonials';
+import { googleReviewsStorage } from '../../services/api/cmsStorage';
 import { Star, CheckCircle2, Quote, ArrowRight, ShieldCheck } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
 import { Card } from '../ui/Card';
-
 import { Link } from 'react-router-dom';
 
 export interface SuccessStoriesProps {
@@ -15,6 +15,11 @@ export const SuccessStoriesSection: React.FC<SuccessStoriesProps> = ({
   onOpenBooking
 }) => {
   const [filterSource, setFilterSource] = useState<string>('All');
+  const [googleReviews, setGoogleReviews] = useState(() => googleReviewsStorage.getPublishedOnWebsite());
+
+  useEffect(() => {
+    setGoogleReviews(googleReviewsStorage.getPublishedOnWebsite());
+  }, []);
 
   const sources = ['All', 'Justdial', 'Cybo', 'Direct Patient Feedback'];
 

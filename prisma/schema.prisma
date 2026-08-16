@@ -1,0 +1,329 @@
+// Prisma Schema for Holistic Edge Real CMS, Admin System & Google Business Profile Integration
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==========================================
+// ENUMS
+// ==========================================
+
+enum UserRole {
+  SUPER_ADMIN
+  ADMIN
+  MANAGER
+  CONTENT_EDITOR
+}
+
+enum ContentStatus {
+  DRAFT
+  PENDING
+  APPROVED
+  REJECTED
+  PUBLISHED
+  UNPUBLISHED
+  ARCHIVED
+}
+
+enum ReviewSource {
+  GOOGLE
+  WEBSITE_DIRECT
+  MANUAL_IMPORT
+  PATIENT_FEEDBACK
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  SCHEDULED
+  CONVERTED
+  DISQUALIFIED
+}
+
+enum AppointmentStatus {
+  REQUESTED
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+// ==========================================
+// ADMIN USER & PERMISSIONS
+// ==========================================
+
+model AdminUser {
+  id           String      @id @default(cuid())
+  email        String      @unique
+  passwordHash String
+  fullName     String
+  role         UserRole    @default(ADMIN)
+  avatarUrl    String?
+  isActive     Boolean     @default(true)
+  lastLoginAt  DateTime?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  auditLogs    AuditLog[]
+
+  @@map("admin_users")
+}
+
+// ==========================================
+// CMS MANAGED CONTENT MODELS
+// ==========================================
+
+model Service {
+  id               String        @id @default(cuid())
+  slug             String        @unique
+  title            String
+  subtitle         String
+  shortDescription String
+  fullDescription  String
+  iconName         String
+  displayOrder     Int           @default(0)
+  benefits         String[]
+  modalities       String[]
+  status           ContentStatus @default(PUBLISHED)
+  publishedAt      DateTime?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  @@map("services")
+}
+
+model Condition {
+  id               String        @id @default(cuid())
+  slug             String        @unique
+  title            String
+  subtitle         String
+  shortDescription String
+  fullDescription  String
+  iconName         String
+  displayOrder     Int           @default(0)
+  symptoms         String[]
+  causes           String[]
+  treatmentMethod  String
+  status           ContentStatus @default(PUBLISHED)
+  publishedAt      DateTime?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  @@map("conditions")
+}
+
+model FAQ {
+  id           String        @id @default(cuid())
+  question     String
+  answer       String
+  category     String        @default("General")
+  displayOrder Int           @default(0)
+  isFeatured   Boolean       @default(false)
+  status       ContentStatus @default(PUBLISHED)
+  publishedAt  DateTime?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@map("faqs")
+}
+
+model TeamMember {
+  id             String        @id @default(cuid())
+  slug           String        @unique
+  name           String
+  role           String
+  credentials    String
+  experienceYears Int          @default(0)
+  bio            String
+  philosophy     String?
+  specialization String[]
+  image          String
+  isFounder      Boolean       @default(false)
+  displayOrder   Int           @default(0)
+  status         ContentStatus @default(PUBLISHED)
+  publishedAt    DateTime?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@map("team_members")
+}
+
+model SuccessStory {
+  id             String        @id @default(cuid())
+  patientName    String
+  ageGender      String?
+  condition      String
+  treatmentPlan  String
+  initialState   String
+  finalOutcome   String
+  durationWeeks  Int?
+  isFeatured     Boolean       @default(false)
+  status         ContentStatus @default(PUBLISHED)
+  publishedAt    DateTime?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@map("success_stories")
+}
+
+model Testimonial {
+  id           String        @id @default(cuid())
+  displayName  String
+  patientName  String
+  condition    String
+  service      String?
+  rating       Int           @default(5)
+  review       String
+  source       ReviewSource  @default(WEBSITE_DIRECT)
+  status       ContentStatus @default(APPROVED)
+  isFeatured   Boolean       @default(false)
+  verified     Boolean       @default(true)
+  publishedAt  DateTime?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@map("testimonials")
+}
+
+// ==========================================
+// GOOGLE BUSINESS PROFILE REVIEW INTEGRATION
+// ==========================================
+
+model GoogleReview {
+  id                    String        @id @default(cuid())
+  googleReviewId        String        @unique
+  reviewerName          String
+  reviewerPhotoUrl      String?
+  starRating            Int
+  comment               String?
+  reviewTimestamp       DateTime
+  updateTimestamp       DateTime?
+  replyComment          String?
+  replyTimestamp        DateTime?
+  hasReply              Boolean       @default(false)
+  source                ReviewSource  @default(GOOGLE)
+  location              String        @default("Mehdipatnam, Hyderabad")
+  status                ContentStatus @default(PENDING)
+  isApproved            Boolean       @default(false)
+  isPublishedOnWebsite  Boolean       @default(false)
+  importedAt            DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+
+  @@map("google_reviews")
+}
+
+model GoogleIntegrationSetting {
+  id                     String    @id @default("default")
+  isConnected            Boolean   @default(false)
+  accountName            String?
+  accountId              String?
+  locationId             String?
+  locationName           String?
+  accessTokenEncrypted   String?
+  refreshTokenEncrypted  String?
+  tokenExpiry            DateTime?
+  lastSyncedAt           DateTime?
+  syncStatus             String    @default("Idle")
+  lastError              String?
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+
+  @@map("google_integration_settings")
+}
+
+// ==========================================
+// OPERATIONS & MEDIA ASSETS
+// ==========================================
+
+model Lead {
+  id          String     @id @default(cuid())
+  fullName    String
+  phone       String
+  email       String?
+  condition   String
+  message     String?
+  source      String     @default("Website Form")
+  status      LeadStatus @default(NEW)
+  notes       String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@map("leads")
+}
+
+model Appointment {
+  id          String            @id @default(cuid())
+  patientName String
+  phone       String
+  email       String?
+  service     String
+  condition   String?
+  date        String
+  timeSlot    String
+  notes       String?
+  source      String            @default("Website Booking Modal")
+  status      AppointmentStatus @default(REQUESTED)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@map("appointments")
+}
+
+model MediaAsset {
+  id          String   @id @default(cuid())
+  filename    String
+  url         String
+  category    String   @default("Clinic")
+  altText     String?
+  sizeBytes   Int      @default(0)
+  mimeType    String   @default("image/png")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("media_assets")
+}
+
+model SiteSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  group     String   @default("general")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("site_settings")
+}
+
+model Notification {
+  id          String   @id @default(cuid())
+  type        String   @default("system")
+  title       String
+  message     String
+  status      String   @default("unread")
+  link        String?
+  entityId    String?
+  entityType  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("notifications")
+}
+
+model AuditLog {
+  id         String     @id @default(cuid())
+  actorId    String?
+  actorEmail String?
+  action     String
+  entity     String
+  entityId   String?
+  metadata   String?
+  timestamp  DateTime   @default(now())
+
+  adminUser  AdminUser? @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@map("audit_logs")
+}
