@@ -1,4 +1,4 @@
-﻿import express from 'express';
+import express from 'express';
 import { authenticate } from '../middleware/auth.js';
 import { getActiveDataProvider } from '../providers/dataProvider.js';
 import { scheduleReminder, processDueReminders, generateSignedBookingToken } from '../services/reminderService.js';
@@ -118,6 +118,7 @@ router.post('/:id/send-now', authenticate, async (req, res) => {
       success: true,
       message: `Follow-up email initiated for ${patient.email || patient.name}`,
       reminder: updated,
+      reminderToken: secureToken,
     });
   } catch (err) {
     console.error('[FollowUpSendNow] Fallback:', err.message);

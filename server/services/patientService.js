@@ -1,4 +1,4 @@
-﻿import { getActiveDataProvider } from '../providers/dataProvider.js';
+import { getActiveDataProvider } from '../providers/dataProvider.js';
 import { db } from '../db.js';
 
 const dataProvider = getActiveDataProvider();
@@ -49,6 +49,12 @@ export async function matchPatient({ name, phone, email, registrationTokenNumber
     if (phoneMatches.length === 1) {
       return { status: 'MATCHED_EXACT', patient: phoneMatches[0], confidence: 'HIGH' };
     } else if (phoneMatches.length > 1) {
+      if (cleanEmail) {
+        const exactBoth = phoneMatches.find(p => p.email && p.email.toLowerCase().trim() === cleanEmail);
+        if (exactBoth) {
+          return { status: 'MATCHED_EXACT', patient: exactBoth, confidence: 'HIGH_EXACT' };
+        }
+      }
       return { status: 'AMBIGUOUS', matches: phoneMatches, confidence: 'HIGH_AMBIGUOUS' };
     }
   }
@@ -59,6 +65,12 @@ export async function matchPatient({ name, phone, email, registrationTokenNumber
     if (emailMatches.length === 1) {
       return { status: 'MATCHED_EXACT', patient: emailMatches[0], confidence: 'MEDIUM' };
     } else if (emailMatches.length > 1) {
+      if (cleanPhone) {
+        const exactBoth = emailMatches.find(p => p.phone && p.phone.replace(/\D/g, '') === cleanPhone);
+        if (exactBoth) {
+          return { status: 'MATCHED_EXACT', patient: exactBoth, confidence: 'MEDIUM_EXACT' };
+        }
+      }
       return { status: 'AMBIGUOUS', matches: emailMatches, confidence: 'MEDIUM_AMBIGUOUS' };
     }
   }

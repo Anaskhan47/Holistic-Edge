@@ -1,4 +1,4 @@
-﻿import express from 'express';
+import express from 'express';
 import { getActiveDataProvider } from '../providers/dataProvider.js';
 import { createBookingTransaction } from '../services/bookingService.js';
 import { verifySignedBookingToken } from '../services/reminderService.js';
@@ -90,7 +90,7 @@ router.post('/book', async (req, res) => {
   try {
     const { patientData, date, time, slotId, service, notes, idempotencyKey, reminderId, token } = req.body;
 
-    let forcePatientId = null;
+    let forcePatientId = req.body.useExistingPatientId || req.body.patientId || null;
     let bookingSource = 'WEBSITE_PUBLIC';
 
     if (token) {
@@ -101,10 +101,50 @@ router.post('/book', async (req, res) => {
       }
     }
 
+    let resolvedPatientData = patientData || {
+      name: (req.body.fullName || req.body.name || '').trim(),
+      phone: (req.body.phone || '').trim(),
+      email: (req.body.email || '').trim(),
+      symptomDuration: req.body.symptomDuration,
+    };
+
+    if ((!resolvedPatientData.name || !resolvedPatientData.phone) && forcePatientId) {
+      try {
+        const existing = (await dataProvider.getPatientById(forcePatientId)) || db.find('patients', p => p.id === forcePatientId);
+        if (existing) {
+          resolvedPatientData = {
+            name: resolvedPatientData.name || existing.name,
+            phone: resolvedPatientData.phone || existing.phone,
+            email: resolvedPatientData.email || existing.email,
+            symptomDuration: resolvedPatientData.symptomDuration || existing.symptomDuration,
+          };
+        }
+      } catch (err) {
+        console.warn('[PublicBooking] Fallback patient resolution:', err.message);
+      }
+    }
+
+    if (!resolvedPatientData.name || !resolvedPatientData.phone) {
+      return res.status(400).json({ error: 'Patient full name and phone number are required.' });
+    }
+
+    if (resolvedPatientData.email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+      if (!emailRegex.test(resolvedPatientData.email)) {
+        return res.status(400).json({
+          error: 'Please provide a valid email address with a domain (e.g. name@example.com).',
+          field: 'email'
+        });
+      }
+    }
+
+    const resolvedDate = date || req.body.selectedDate || new Date(Date.now() + 86400000 * 3).toISOString().split('T')[0];
+    const resolvedTime = time || req.body.selectedSlot || '10:00 AM';
+
     const result = await createBookingTransaction({
-      patientData,
-      date,
-      time,
+      patientData: resolvedPatientData,
+      date: resolvedDate,
+      time: resolvedTime,
       slotId,
       service: service || 'Chiropractic Consultation',
       source: bookingSource,
