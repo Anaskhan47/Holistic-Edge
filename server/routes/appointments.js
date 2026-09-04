@@ -1,13 +1,26 @@
 import express from 'express';
 import { db } from '../db.js';
 import { authenticate } from '../middleware/auth.js';
+import { getActiveDataProvider } from '../providers/dataProvider.js';
+import { sendAppointmentConfirmationEmail } from '../services/emailService.js';
 
 const router = express.Router();
+const dataProvider = getActiveDataProvider();
 
 // GET /api/appointments
-router.get('/', (req, res) => {
-  const appointments = db.get('appointments');
-  res.json({ success: true, count: appointments.length, appointments });
+router.get('/', async (req, res) => {
+  try {
+    let appointments = [];
+    try {
+      appointments = await dataProvider.getAppointments(req.query);
+    } catch (e) {
+      appointments = db.get('appointments') || [];
+    }
+    res.json({ success: true, count: appointments.length, appointments });
+  } catch (err) {
+    const appointments = db.get('appointments') || [];
+    res.json({ success: true, count: appointments.length, appointments });
+  }
 });
 
 // GET /api/appointments/:id
@@ -18,7 +31,7 @@ router.get('/:id', (req, res) => {
 });
 
 // POST /api/appointments (Public booking & Admin creation)
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   const {
     fullName,
     patientName,
@@ -72,7 +85,47 @@ router.post('/', (req, res) => {
     updatedAt: new Date().toISOString(),
   };
 
-  db.insert('appointments', newAppt);
+  // Find or create patient for admin appointment
+  let patient = db.find('patients', p => (p.phone && p.phone === phone) || (email && p.email === email));
+  if (!patient) {
+    const token = `HE-${Date.now().toString().slice(-6)}`;
+    patient = {
+      id: `pt_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+      name: pName,
+      phone,
+      email: email || '',
+      registrationTokenNumber: token,
+      patientType: 'Standard',
+      status: 'ACTIVE',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    try {
+      await dataProvider.createPatient(patient);
+    } catch (e) {
+      db.insert('patients', patient);
+    }
+  }
+
+  newAppt.patientId = patient.id;
+  newAppt.registrationTokenNumber = patient.registrationTokenNumber;
+
+  try {
+    await dataProvider.createAppointment(newAppt);
+  } catch (err) {
+    db.insert('appointments', newAppt);
+  }
+
+  // Trigger confirmation email if email provided
+  let emailSent = false;
+  if (email) {
+    try {
+      const emailResult = await sendAppointmentConfirmationEmail(newAppt, patient);
+      emailSent = Boolean(emailResult?.success);
+    } catch (err) {
+      console.warn('[AdminAppointments] Confirmation email send error:', err.message);
+    }
+  }
 
   // Auto-create lead
   const leadId = `LEAD-${Date.now().toString().slice(-6)}`;
@@ -93,7 +146,7 @@ router.post('/', (req, res) => {
   db.insert('notifications', {
     id: `notif_${Date.now()}`,
     type: 'appointment',
-    title: 'New Online Appointment Booking',
+    title: 'New Appointment Booking',
     message: `${pName} booked ${service} for ${pDate} (${pTime})`,
     entityId: apptId,
     entityType: 'appointment',
@@ -113,7 +166,7 @@ router.post('/', (req, res) => {
     timestamp: new Date().toISOString(),
   });
 
-  res.status(201).json({ success: true, appointment: newAppt });
+  res.status(201).json({ success: true, appointment: newAppt, patient, emailSent });
 });
 
 // PUT /api/appointments/:id

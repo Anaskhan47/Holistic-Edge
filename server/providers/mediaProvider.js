@@ -1,4 +1,4 @@
-﻿import { google } from 'googleapis';
+import { google } from 'googleapis';
 import fs from 'fs';
 import { Readable } from 'stream';
 import { db } from '../db.js';
@@ -156,12 +156,11 @@ export class GoogleDriveMediaProvider extends MediaProvider {
             scopes: ['https://www.googleapis.com/auth/drive'],
           });
         } else {
-          auth = new google.auth.JWT(
-            this.serviceAccountEmail,
-            null,
-            this.privateKey.replace(/\\n/g, '\n'),
-            ['https://www.googleapis.com/auth/drive']
-          );
+          auth = new google.auth.JWT({
+            email: this.serviceAccountEmail,
+            key: this.privateKey.replace(/\\n/g, '\n'),
+            scopes: ['https://www.googleapis.com/auth/drive'],
+          });
         }
         this.driveApi = google.drive({ version: 'v3', auth });
       } catch (err) {

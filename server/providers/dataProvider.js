@@ -146,12 +146,11 @@ export class GoogleSheetsDataProvider extends DataProvider {
     if (this.isConfigured) {
       try {
         if (process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL && process.env.GOOGLE_PRIVATE_KEY) {
-          const auth = new google.auth.JWT(
-            process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-            null,
-            process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
-            ['https://www.googleapis.com/auth/spreadsheets']
-          );
+          const auth = new google.auth.JWT({
+            email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+            key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+            scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+          });
           this.sheetsApi = google.sheets({ version: 'v4', auth });
         } else if (this.credentialsPath && fs.existsSync(this.credentialsPath)) {
           const auth = new google.auth.GoogleAuth({
@@ -236,7 +235,7 @@ export class GoogleSheetsDataProvider extends DataProvider {
         spreadsheetId: this.spreadsheetId,
         range: 'PATIENTS!A2:I1000',
       });
-      const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('TIMEOUT')), 1500));
+      const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('TIMEOUT')), 6000));
       const res = await Promise.race([sheetsFetch, timeout]);
 
       const rows = res.data.values || [];
@@ -343,7 +342,7 @@ export class GoogleSheetsDataProvider extends DataProvider {
         spreadsheetId: this.spreadsheetId,
         range: 'APPOINTMENTS!A2:K1000',
       });
-      const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('TIMEOUT')), 1500));
+      const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('TIMEOUT')), 6000));
       const res = await Promise.race([sheetsFetch, timeout]);
 
       const rows = res.data.values || [];
