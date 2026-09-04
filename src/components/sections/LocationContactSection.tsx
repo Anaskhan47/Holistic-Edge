@@ -273,7 +273,7 @@ export const LocationContactSection: React.FC<LocationContactProps> = ({ onOpenB
 
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-wider text-[#4A443D] mb-1">
-                      Mobile Number (WhatsApp Enabled) *
+                      Mobile Number *
                     </label>
                     <input
                       type="tel"

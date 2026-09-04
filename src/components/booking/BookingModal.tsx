@@ -497,7 +497,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-[#4A443D] mb-1">
-              Mobile Phone Number (WhatsApp Enabled) *
+              Mobile Phone Number *
             </label>
             <div className="relative">
               <Phone className="w-4 h-4 text-[#8A847C] absolute left-3.5 top-3.5" />
