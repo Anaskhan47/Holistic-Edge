@@ -1,4 +1,4 @@
-﻿import express from 'express';
+import express from 'express';
 import { db } from '../db.js';
 import { authenticate } from '../middleware/auth.js';
 import { getAuthProvider } from '../providers/index.js';
@@ -110,6 +110,12 @@ router.get('/me', authenticate, async (req, res) => {
       },
     },
   });
+});
+
+// GET /api/auth/users & /api/auth/staff
+router.get(['/users', '/staff'], authenticate, (req, res) => {
+  const users = db.get('users') || [];
+  res.json({ success: true, count: users.length, users });
 });
 
 export default router;

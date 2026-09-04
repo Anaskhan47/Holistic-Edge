@@ -1,13 +1,26 @@
 import test from 'node:test';
 import assert from 'node:assert';
 
-const BASE_URL = process.env.TEST_API_URL || 'http://localhost:5000';
-const ADMIN_HEADER = {
-  Authorization: 'Bearer admin_session_token',
+const BASE_URL = process.env.TEST_API_URL || 'https://holistic-edge-pied.vercel.app';
+let ADMIN_HEADER = {
   'x-admin-user-email': 'admin@holisticedge.in',
 };
 
 test('HE-QA-05: API Contract & Route Integrity Verification', async (t) => {
+  // Pre-auth step
+  try {
+    const authRes = await fetch(`${BASE_URL}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: 'admin@holisticedge.in', password: 'HolisticEdge@2025' })
+    });
+    const authJson = await authRes.json();
+    if (authJson.token) {
+      ADMIN_HEADER.Authorization = `Bearer ${authJson.token}`;
+    }
+  } catch (e) {
+    // fallback to header auth
+  }
   // 1. Health endpoint
   await t.test('GET /api/health returns operational status', async () => {
     const res = await fetch(`${BASE_URL}/api/health`);

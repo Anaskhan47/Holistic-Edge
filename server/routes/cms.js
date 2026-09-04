@@ -24,8 +24,8 @@ router.get('/conditions', (req, res) => {
   res.json({ success: true, count: conditions.length, conditions });
 });
 
-// GET /api/cms/faqs
-router.get('/faqs', (req, res) => {
+// GET /api/cms/faqs & /api/cms/faq
+router.get(['/faqs', '/faq'], (req, res) => {
   const publishedOnly = req.query.published === 'true';
   let faqs = db.get('cmsFaqs');
   if (publishedOnly) {

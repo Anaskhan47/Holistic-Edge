@@ -1,4 +1,4 @@
-﻿import { db } from '../db.js';
+import { db } from '../db.js';
 import { getAuthProvider } from '../providers/index.js';
 
 export async function authenticate(req, res, next) {
@@ -28,17 +28,17 @@ export async function authenticate(req, res, next) {
           }
           req.user = verification.user;
           return next();
+        } else {
+          return res.status(401).json({ error: 'Unauthorized: Invalid or expired session token.' });
         }
       } catch (err) {
-        console.warn('[AuthMiddleware] Token verification warning:', err.message);
+        console.warn('[AuthMiddleware] Token verification error:', err.message);
+        return res.status(401).json({ error: 'Unauthorized: Invalid session token.' });
       }
     }
   }
 
-  // Fallback to primary admin user for internal server requests
-  const adminUser = db.find('users', u => u.role === 'SUPER_ADMIN') || db.get('users')[0];
-  req.user = adminUser;
-  next();
+  return res.status(401).json({ error: 'Unauthorized: Authentication token required.' });
 }
 
 export function requireRole(allowedRoles = []) {
