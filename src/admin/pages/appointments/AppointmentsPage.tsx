@@ -27,7 +27,7 @@ export function AppointmentsPage() {
   const { appointments, refreshAppointments, refreshMetrics, showToast, logAudit } = useAdminStore();
 
   const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string>(searchParams.get('status') ?? 'All');
+  const [statusFilter, setStatusFilter] = useState<string>(searchParams.get('status') || 'All');
   const [page, setPage] = useState(1);
   const [confirmAction, setConfirmAction] = useState<{ id: string; action: AppointmentStatus; label: string } | null>(null);
   const [actionLoading, setActionLoading] = useState(false);
@@ -43,10 +43,10 @@ export function AppointmentsPage() {
     if (search.trim()) {
       const q = search.toLowerCase();
       data = data.filter(a =>
-        a.fullName.toLowerCase().includes(q) ||
-        a.phone.includes(q) ||
-        a.service.toLowerCase().includes(q) ||
-        a.id.toLowerCase().includes(q)
+        (a.fullName || '').toLowerCase().includes(q) ||
+        (a.phone || '').includes(q) ||
+        (a.service || '').toLowerCase().includes(q) ||
+        (a.id || '').toLowerCase().includes(q)
       );
     }
     return data;
@@ -85,9 +85,9 @@ export function AppointmentsPage() {
   };
 
   return (
-    <div className="p-6 space-y-5">
+    <div className="p-3 sm:p-6 space-y-5">
       {/* Header */}
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-lg font-bold text-[#1A1A1A]">Appointments</h1>
           <p className="text-sm text-[#9E968C]">{filtered.length} appointment{filtered.length !== 1 ? 's' : ''}</p>
@@ -109,7 +109,7 @@ export function AppointmentsPage() {
           <input
             value={search}
             onChange={e => { setSearch(e.target.value); setPage(1); }}
-            placeholder="Name, phone, service…"
+            placeholder="Name, phone, service..."
             className="w-full h-9 pl-8 pr-3 rounded-xl border border-[#E5E2DC] bg-white text-sm text-[#1A1A1A] placeholder:text-[#C4BDB4] focus:outline-none focus:border-[#0F2747] focus:ring-2 focus:ring-[#0F2747]/10 transition-all"
           />
         </div>
@@ -263,8 +263,8 @@ export function AppointmentsPage() {
       <ConfirmDialog
         open={!!confirmAction}
         title={`Mark as ${confirmAction?.action}`}
-        message={`Are you sure you want to mark this appointment as "${confirmAction?.action}"? This action will update the appointment status and be recorded in the audit log.`}
-        confirmLabel={confirmAction?.label ?? 'Confirm'}
+        message={`Are you sure you want to mark this appointment as "${confirmAction?.action}"• This action will update the appointment status and be recorded in the audit log.`}
+        confirmLabel={confirmAction?.label || 'Confirm'}
         variant={confirmAction?.action === 'Cancelled' || confirmAction?.action === 'No-show' ? 'danger' : 'warning'}
         isLoading={actionLoading}
         onConfirm={() => confirmAction && handleStatusChange(confirmAction.id, confirmAction.action)}
@@ -273,3 +273,4 @@ export function AppointmentsPage() {
     </div>
   );
 }
+

@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { ScrollText, RefreshCw, Activity, Check, Plus, Trash2, Eye, Star } from 'lucide-react';
 import { useAdminStore } from '../../context/AdminStoreContext';
 
@@ -22,7 +22,7 @@ export function AuditLogsPage() {
   const { auditEntries } = useAdminStore();
 
   return (
-    <div className="p-6 space-y-5">
+    <div className="p-3 sm:p-6 space-y-5">
       <div>
         <h1 className="text-lg font-bold text-[#1A1A1A]">Audit Logs</h1>
         <p className="text-sm text-[#9E968C]">{auditEntries.length} entries · Last 500 actions</p>
@@ -52,7 +52,7 @@ export function AuditLogsPage() {
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2">
                         <div className="w-6 h-6 rounded-md bg-[#F4F1EA] flex items-center justify-center flex-shrink-0">
-                          {ACTION_ICONS[entry.action] ?? <Activity size={12} className="text-[#9E968C]" />}
+                          {ACTION_ICONS[entry.action] || <Activity size={12} className="text-[#9E968C]" />}
                         </div>
                         <span className="text-[12.5px] font-medium text-[#1A1A1A] capitalize">{entry.action.replace(/_/g, ' ')}</span>
                       </div>
@@ -76,3 +76,4 @@ export function AuditLogsPage() {
     </div>
   );
 }
+

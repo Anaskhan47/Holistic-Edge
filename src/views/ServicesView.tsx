@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { servicesData } from '../data/services';
+import { usePublishedServices, usePublishedService } from '../hooks/useCmsContent';
 import {
   Activity,
   Zap,
@@ -19,9 +19,10 @@ import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
 import { Card } from '../components/ui/Card';
 import { Accordion } from '../components/ui/Accordion';
+import { SuccessStoriesSection } from '../components/sections/SuccessStoriesSection';
 
 export interface ServicesViewProps {
-  onOpenBooking: (serviceName?: string) => void;
+  onOpenBooking: (serviceName: string) => void;
 }
 
 export const ServicesView: React.FC<ServicesViewProps> = ({
@@ -30,7 +31,9 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
 
-  const selectedService = servicesData.find(s => s.slug === slug);
+  const rawPublishedServices = usePublishedServices();
+  const publishedServices = rawPublishedServices.filter(s => s.id !== 'cupping-therapy' && s.slug !== 'cupping-therapy');
+  const selectedService = usePublishedService(slug);
 
   const getIcon = (iconName: string) => {
     switch (iconName) {
@@ -51,10 +54,23 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
 
   // If a single service is selected, render the deep-dive service template
   if (selectedService) {
+    const title = selectedService.title || (selectedService as any).name || 'Service';
+    const faqs: { question: string; answer: string }[] = (selectedService as any).faqs || (selectedService as any).faq || [];
+    const benefits: string[] = selectedService.benefits || [];
+    const howItWorks: string[] = selectedService.howItWorks || [];
+    const whoIsItFor: string[] = (selectedService as any).whoIsItFor || (selectedService as any).whoItsFor || [];
+    const rawExpect: any[] = selectedService.whatToExpect || [];
+    const whatToExpect: string[] = rawExpect.map((item: any) =>
+      typeof item === 'string' ? item : `${item.title || item.step || 'Step'}: ${item.description || ''}`
+    );
+    const safetyNotes: string[] = (selectedService as any).safetyNotes || [];
+    const relatedConditions: string[] = selectedService.relatedConditions || [];
+    const heroImg = selectedService.heroImage || (selectedService as any).image || '/brand/holistic-edge-logo-transparent.png';
+
     return (
       <div className="w-full py-12 md:py-20 bg-[#FAF9F6]">
         <Helmet>
-          <title>{selectedService.title} | Holistic Edge Services</title>
+          <title>{title} | Holistic Edge Services</title>
           <meta name="description" content={selectedService.shortDescription} />
         </Helmet>
         
@@ -62,10 +78,16 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
           {/* Back button */}
           <button
             type="button"
-            onClick={() => navigate('/services')}
-            className="inline-flex items-center gap-2 text-xs font-bold text-[#0F2747] hover:underline"
+            onClick={() => {
+              if (window.history.state && window.history.state.idx > 0) {
+                navigate(-1);
+              } else {
+                navigate('/services');
+              }
+            }}
+            className="inline-flex items-center gap-2 text-xs font-bold text-[#0F2747] hover:underline cursor-pointer group"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
             <span>Back to All Clinical Services</span>
           </button>
 
@@ -77,7 +99,7 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
                   <Badge variant="editorial" size="md">
                     Clinical Modality
                   </Badge>
-                  {selectedService.isFlagship && (
+                  {((selectedService as any).isFlagship || selectedService.featured) && (
                     <Badge variant="accent" size="md">
                       Flagship Protocol
                     </Badge>
@@ -85,7 +107,7 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
                 </div>
 
                 <h1 className="text-3xl sm:text-4xl font-normal text-[#1A1A1A] font-serif">
-                  {selectedService.title}
+                  {title}
                 </h1>
                 <p className="text-sm font-semibold text-[#0F2747] uppercase tracking-wider">
                   {selectedService.subtitle}
@@ -98,23 +120,28 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
                   <Button
                     variant="accent"
                     size="md"
-                    onClick={() => onOpenBooking(selectedService.title)}
+                    onClick={() => onOpenBooking(title)}
                     leftIcon={<Calendar className="w-4 h-4" />}
                   >
-                    Book Consultation for {selectedService.title}
+                    Book Consultation for {title}
                   </Button>
                   <div className="flex items-center gap-1.5 text-xs text-[#5A544E] font-medium px-3 py-2 bg-[#FAF8F5] rounded-xl border border-[#E8E4DC]">
                     <Clock className="w-4 h-4 text-[#736C63]" />
-                    <span>Typical Session: {selectedService.durationMinutes}</span>
+                    <span>Typical Session: {(selectedService as any).durationMinutes || '45–60 min'}</span>
                   </div>
                 </div>
               </div>
 
               <div className="lg:col-span-5 h-full min-h-[300px] relative bg-[#FAF8F5]">
                 <img
-                  src={selectedService.image}
-                  alt={selectedService.title}
+                  src={heroImg}
+                  alt={title}
                   className="w-full h-full object-cover"
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    target.onerror = null;
+                    target.src = 'https://images.unsplash.com/photo-1576091160550-2173dba999ef•q=80&w=900&auto=format&fit=crop';
+                  }}
                   referrerPolicy="no-referrer"
                 />
               </div>
@@ -130,7 +157,7 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
                 <span>Primary Clinical Benefits</span>
               </h3>
               <ul className="space-y-2.5 text-xs sm:text-sm text-[#3E3A35]">
-                {selectedService.benefits.map((b, idx) => (
+                {benefits.map((b, idx) => (
                   <li key={idx} className="flex items-start gap-2">
                     <div className="w-1.5 h-1.5 rounded-full bg-[#1B4332] mt-2 flex-shrink-0" />
                     <span>{b}</span>
@@ -146,7 +173,7 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
                 <span>How the Treatment is Administered</span>
               </h3>
               <ul className="space-y-2.5 text-xs sm:text-sm text-[#3E3A35]">
-                {selectedService.howItWorks.map((hw, idx) => (
+                {howItWorks.map((hw, idx) => (
                   <li key={idx} className="flex items-start gap-2">
                     <div className="w-1.5 h-1.5 rounded-full bg-[#0F2747] mt-2 flex-shrink-0" />
                     <span>{hw}</span>
@@ -160,10 +187,10 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card padding="lg" className="border-[#E8E4DC] space-y-4 text-left bg-white">
               <h3 className="text-lg font-bold text-[#1A1A1A] font-serif">
-                Who Is This Treatment Recommended For?
+                Who Is This Treatment Recommended For•
               </h3>
               <ul className="space-y-2.5 text-xs sm:text-sm text-[#3E3A35]">
-                {selectedService.whoIsItFor.map((w, idx) => (
+                {whoIsItFor.map((w, idx) => (
                   <li key={idx} className="flex items-start gap-2">
                     <CheckCircle2 className="w-4 h-4 text-[#1B4332] flex-shrink-0 mt-0.5" />
                     <span>{w}</span>
@@ -177,7 +204,7 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
                 What to Expect During Your Session
               </h3>
               <ul className="space-y-2.5 text-xs sm:text-sm text-[#3E3A35]">
-                {selectedService.whatToExpect.map((e, idx) => (
+                {whatToExpect.map((e, idx) => (
                   <li key={idx} className="flex items-start gap-2">
                     <div className="w-1.5 h-1.5 rounded-full bg-[#736C63] mt-2 flex-shrink-0" />
                     <span>{e}</span>
@@ -188,26 +215,28 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
           </div>
 
           {/* Safety & Considerations */}
-          <div className="bg-[#EAF2ED] border border-[#C5DACB] rounded-2xl p-6 text-left space-y-2">
-            <h4 className="text-sm font-bold text-[#1B4332] font-serif flex items-center gap-2">
-              <Shield className="w-4 h-4 text-[#1B4332]" />
-              <span>Safety & Clinical Considerations</span>
-            </h4>
-            <ul className="space-y-1.5 text-xs text-[#2C2926]">
-              {selectedService.safetyNotes.map((sn, idx) => (
-                <li key={idx}>• {sn}</li>
-              ))}
-            </ul>
-          </div>
+          {safetyNotes.length > 0 && (
+            <div className="bg-[#EAF2ED] border border-[#C5DACB] rounded-2xl p-6 text-left space-y-2">
+              <h4 className="text-sm font-bold text-[#1B4332] font-serif flex items-center gap-2">
+                <Shield className="w-4 h-4 text-[#1B4332]" />
+                <span>Safety & Clinical Considerations</span>
+              </h4>
+              <ul className="space-y-1.5 text-xs text-[#2C2926]">
+                {safetyNotes.map((sn, idx) => (
+                  <li key={idx}>• {sn}</li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {/* Related Conditions */}
-          {selectedService.relatedConditions.length > 0 && (
+          {relatedConditions.length > 0 && (
             <div className="bg-white p-6 rounded-2xl border border-[#E8E4DC] space-y-3 text-left">
               <h4 className="text-sm font-bold text-[#1A1A1A] font-serif">
-                Related Conditions Often Treated with {selectedService.title}:
+                Related Conditions Often Treated with {title}:
               </h4>
               <div className="flex flex-wrap gap-2">
-                {selectedService.relatedConditions.map(rcSlug => (
+                {relatedConditions.map(rcSlug => (
                   <Link
                     key={rcSlug}
                     to={`/conditions/${rcSlug}`}
@@ -221,14 +250,14 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
           )}
 
           {/* FAQs */}
-          {selectedService.faqs.length > 0 && (
+          {faqs.length > 0 && (
             <div className="space-y-4 text-left">
               <h3 className="text-xl font-bold text-[#1A1A1A] font-serif flex items-center gap-2">
                 <HelpCircle className="w-5 h-5 text-[#0F2747]" />
-                <span>Frequently Asked Questions About {selectedService.title}</span>
+                <span>Frequently Asked Questions About {title}</span>
               </h3>
               <Accordion
-                items={selectedService.faqs.map((f, i) => ({
+                items={faqs.map((f, i) => ({
                   id: `srv-faq-${i}`,
                   title: f.question,
                   content: f.answer
@@ -237,13 +266,18 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
             </div>
           )}
 
+          {/* Verified Patient Experiences & Google Reviews */}
+          <div className="pt-4">
+            <SuccessStoriesSection onOpenBooking={() => onOpenBooking(selectedService.title)} />
+          </div>
+
           {/* Bottom Conversion Banner */}
           <div className="bg-[#1A1A1A] text-[#FAF9F6] p-8 rounded-3xl text-center space-y-4 border border-[#332E2A]">
             <h3 className="text-2xl font-normal font-serif">
-              Ready to schedule your {selectedService.title}?
+              Ready to schedule your {selectedService.title}•
             </h3>
             <p className="text-xs sm:text-sm text-[#D4CEC5] max-w-md mx-auto">
-              Book a consultation with Dr. Abdul Mallik to assess your symptoms and start your recovery.
+              Book a consultation with Healer Abdul Mallik to assess your symptoms and start your recovery.
             </p>
             <Button
               variant="accent"
@@ -280,7 +314,7 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {servicesData.map(service => (
+          {publishedServices.map(service => (
             <Card
               key={service.id}
               hoverable
@@ -289,16 +323,21 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
             >
               <div className="relative h-48 overflow-hidden bg-[#FAF8F5]">
                 <img
-                  src={service.image}
+                  src={service.heroImage || (service as any).image || '/Our Clinical Offerings/Chiropractic Care.jpg'}
                   alt={service.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    target.onerror = null;
+                    target.src = '/Our Clinical Offerings/Chiropractic Care.jpg';
+                  }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A]/80 via-[#1A1A1A]/20 to-transparent" />
                 <div className="absolute top-3 left-3 w-10 h-10 rounded-xl bg-[#FAF9F6]/95 backdrop-blur-md flex items-center justify-center border border-[#E8E4DC]">
-                  {getIcon(service.iconName)}
+                  {getIcon((service as any).iconName || 'Activity')}
                 </div>
-                {service.isFlagship && (
+                {service.featured && (
                   <div className="absolute top-3 right-3">
                     <Badge variant="accent" size="sm">
                       Flagship Protocol
@@ -350,8 +389,14 @@ export const ServicesView: React.FC<ServicesViewProps> = ({
             </Card>
           ))}
         </div>
+
+        {/* Verified Patient Experiences & Google Reviews */}
+        <div className="pt-6">
+          <SuccessStoriesSection onOpenBooking={() => onOpenBooking()} />
+        </div>
       </div>
     </div>
   );
 };
+
 

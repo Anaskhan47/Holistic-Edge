@@ -1,11 +1,11 @@
-import React from 'react';
+﻿import React from 'react';
 import { cn } from '../../lib/utils';
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
-  hoverable?: boolean;
-  bordered?: boolean;
-  padding?: 'none' | 'sm' | 'md' | 'lg' | 'xl';
-  variant?: 'white' | 'warm' | 'dark' | 'outline';
+  hoverable: boolean;
+  bordered: boolean;
+  padding: 'none' | 'sm' | 'md' | 'lg' | 'xl';
+  variant: 'white' | 'warm' | 'dark' | 'outline';
 }
 
 export const Card: React.FC<CardProps> = ({

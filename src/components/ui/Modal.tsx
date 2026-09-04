@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+﻿import React, { useEffect } from 'react';
 import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../../lib/utils';
@@ -6,11 +6,11 @@ import { cn } from '../../lib/utils';
 export interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  title?: string;
-  subtitle?: string;
+  title: string;
+  subtitle: string;
   children: React.ReactNode;
-  maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
-  id?: string;
+  maxWidth: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+  id: string;
 }
 
 export const Modal: React.FC<ModalProps> = ({

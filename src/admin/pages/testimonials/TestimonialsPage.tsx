@@ -68,7 +68,7 @@ export function TestimonialsPage() {
   };
 
   return (
-    <div className="p-6 space-y-5">
+    <div className="p-3 sm:p-6 space-y-5">
       <div className="flex items-center justify-between gap-4">
         <div>
           <h1 className="text-lg font-bold text-[#1A1A1A]">Testimonials</h1>
@@ -107,14 +107,14 @@ export function TestimonialsPage() {
                     <div>
                       <div className="flex items-center gap-2">
                         <p className="text-sm font-semibold text-[#1A1A1A]">{t.displayName}</p>
-                        {t.featured && <span className="text-[10px] bg-amber-50 text-amber-700 px-1.5 py-0.5 rounded-full font-medium">⭐ Featured</span>}
+                        {t.featured && <span className="text-[10px] bg-amber-50 text-amber-700 px-1.5 py-0.5 rounded-full font-medium">★ Featured</span>}
                       </div>
                       <p className="text-[11.5px] text-[#9E968C]">{t.condition} · {t.service} · {t.source}</p>
                     </div>
                     <div className="flex items-center gap-2 flex-shrink-0">
                       <div className="flex gap-0.5">
                         {Array.from({ length: 5 }).map((_, i) => (
-                          <Star key={i} size={12} className={i < t.rating ? 'text-amber-400 fill-amber-400' : 'text-[#E5E2DC]'} />
+                          <Star key={i} size={12} className={i < t.rating ? 'text-[#10B981] fill-amber-400' : 'text-[#E5E2DC]'} />
                         ))}
                       </div>
                       <StatusBadge status={t.status} />
@@ -125,7 +125,7 @@ export function TestimonialsPage() {
                     "{t.review}"
                   </p>
                   {t.review.length > 100 && (
-                    <button onClick={() => setExpandedId(expandedId === t.id ? null : t.id)} className="text-[11px] text-[#0F2747] hover:underline mt-1">
+                    <button onClick={() => setExpandedId(expandedId === t.id ? null: t.id)} className="text-[11px] text-[#0F2747] hover:underline mt-1">
                       {expandedId === t.id ? 'Show less' : 'Show more'}
                     </button>
                   )}
@@ -194,7 +194,7 @@ export function TestimonialsPage() {
         open={!!confirmAction}
         title={`${confirmAction?.label} Testimonial`}
         message={`Are you sure you want to ${confirmAction?.action} this testimonial? ${confirmAction?.status === 'Approved' ? 'It will become visible on the public website.' : confirmAction?.status === 'Rejected' ? 'The review will be hidden.' : ''}`}
-        confirmLabel={confirmAction?.label ?? 'Confirm'}
+        confirmLabel={confirmAction?.label || 'Confirm'}
         variant={confirmAction?.status === 'Rejected' || confirmAction?.status === 'Archived' ? 'danger' : 'warning'}
         isLoading={actionLoading}
         onConfirm={() => confirmAction && handleAction(confirmAction.id, confirmAction.status)}
@@ -203,3 +203,4 @@ export function TestimonialsPage() {
     </div>
   );
 }
+

@@ -41,7 +41,7 @@ export function LeadDetailPage() {
 
   if (!lead) {
     return (
-      <div className="p-6 text-center">
+      <div className="p-3 sm:p-6 text-center">
         <p className="text-sm text-[#9E968C]">Lead not found.</p>
         <button onClick={() => navigate('/admin/leads')} className="mt-3 text-xs text-[#0F2747] hover:underline">← Back to Leads</button>
       </div>
@@ -90,7 +90,7 @@ export function LeadDetailPage() {
   };
 
   return (
-    <div className="p-6 max-w-3xl space-y-5">
+    <div className="p-3 sm:p-6 max-w-3xl space-y-5">
       {/* Header */}
       <div className="flex items-center gap-3">
         <button onClick={() => navigate('/admin/leads')} className="w-8 h-8 rounded-lg border border-[#E5E2DC] flex items-center justify-center text-[#5A544E] hover:bg-[#F8F7F4]">
@@ -158,7 +158,7 @@ export function LeadDetailPage() {
                 value={note}
                 onChange={e => setNote(e.target.value)}
                 rows={2}
-                placeholder="Add a note, follow-up reminder, or observation…"
+                placeholder="Add a note, follow-up reminder, or observation..."
                 className="flex-1 px-3 py-2.5 rounded-xl border border-[#E5E2DC] text-sm placeholder:text-[#C4BDB4] focus:outline-none focus:border-[#0F2747] focus:ring-2 focus:ring-[#0F2747]/10 resize-none transition-all"
                 onKeyDown={e => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) handleAddNote(); }}
               />
@@ -239,3 +239,4 @@ export function LeadDetailPage() {
     </div>
   );
 }
+

@@ -1,4 +1,4 @@
-import { AmmStage } from '../types';
+﻿import { AmmStage } from '../types';
 
 export const ammMethodStages: AmmStage[] = [
   {
@@ -15,7 +15,7 @@ export const ammMethodStages: AmmStage[] = [
       'Cervical & lumbar facet decompression',
       'Extremity joint alignment (shoulders, knees, ankles)'
     ],
-    patientFeeling: 'A sense of instant lightness, reduced local tension, and uninhibited movement.',
+    patientFeeling: '• sense of instant lightness, reduced local tension, and uninhibited movement.',
     icon: 'Activity'
   },
   {

@@ -1,4 +1,4 @@
-import { Condition } from '../types';
+﻿import { Condition } from '../types';
 
 export const conditionsData: Condition[] = [
   {
@@ -7,7 +7,7 @@ export const conditionsData: Condition[] = [
     title: 'Back Pain',
     category: 'Spine',
     shortDescription: 'Acute and chronic lumbar pain caused by spinal misalignments, postural strain, disc compression, or facet joint dysfunction.',
-    image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=900&auto=format&fit=crop',
+    image: '/Condition images/backpain.jpg',
     symptoms: [
       'Dull aching or sharp stabbing pain in the lower or mid back',
       'Stiffness and difficulty standing up straight after sitting',
@@ -29,7 +29,7 @@ export const conditionsData: Condition[] = [
     recoveryTimelineExpectation: 'Many patients report measurable relief in the initial 2–4 sessions, followed by structured stabilization.',
     faqs: [
       {
-        question: 'Can back pain be relieved without surgery or heavy medication?',
+        question: 'Can back pain be relieved without surgery or heavy medication•',
         answer: 'Yes. In the majority of non-emergency musculoskeletal cases, correcting spinal alignment, reducing nerve compression, and strengthening core stabilizers can resolve pain without surgery or drugs.'
       }
     ]
@@ -40,7 +40,7 @@ export const conditionsData: Condition[] = [
     title: 'Neck Pain & Cervical Strain',
     category: 'Spine',
     shortDescription: 'Cervical stiffness, tech-neck syndrome, and restricted head rotation resulting from postural stress or cervical facet irritation.',
-    image: 'https://images.unsplash.com/photo-1512290900672-1f4f5a34e062?q=80&w=900&auto=format&fit=crop',
+    image: '/Condition images/02-neck-pain.jpg',
     symptoms: [
       'Sharp pain or persistent tightness across the neck and upper shoulders',
       'Difficulty turning the head when driving or looking sideways',
@@ -61,8 +61,8 @@ export const conditionsData: Condition[] = [
     recoveryTimelineExpectation: 'Noticeable range-of-motion improvement often achieved within the first few sessions.',
     faqs: [
       {
-        question: 'Is cervical adjustment safe for neck stiffness?',
-        answer: 'At Holistic Edge, cervical adjustments are preceded by careful physical examination. Dr. Abdul Mallik applies gentle, controlled techniques calibrated specifically to your cervical spine structure.'
+        question: 'Is cervical adjustment safe for neck stiffness•',
+        answer: 'At Holistic Edge, cervical adjustments are preceded by careful physical examination. Healer Abdul Mallik applies gentle, controlled techniques calibrated specifically to your cervical spine structure.'
       }
     ]
   },
@@ -72,7 +72,7 @@ export const conditionsData: Condition[] = [
     title: 'Sciatica & Nerve Compression',
     category: 'Nerves',
     shortDescription: 'Radiating nerve pain, burning, or tingling that travels from the lower back through the buttock and down the leg along the sciatic nerve pathway.',
-    image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=900&auto=format&fit=crop',
+    image: '/Condition images/Sciatica & Nerve Compression.jpg',
     symptoms: [
       'Electric, burning, or shooting pain radiating down one leg',
       'Numbness or pins-and-needles in the calf, ankle, or foot',
@@ -93,7 +93,7 @@ export const conditionsData: Condition[] = [
     recoveryTimelineExpectation: 'Gradual reduction of radiating symptoms (centralization) typically progresses over structured multi-week care.',
     faqs: [
       {
-        question: 'How does chiropractic help sciatica?',
+        question: 'How does chiropractic help sciatica•',
         answer: 'By restoring alignment to the lower lumbar vertebrae and pelvis, we take direct pressure off the compressed sciatic nerve root, allowing the nerve to calm down and heal naturally.'
       }
     ]
@@ -104,7 +104,7 @@ export const conditionsData: Condition[] = [
     title: 'Scoliosis Management',
     category: 'Spine',
     shortDescription: 'Non-surgical structural management, pain reduction, and muscular balancing for abnormal lateral curvature of the spine.',
-    image: 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?q=80&w=900&auto=format&fit=crop',
+    image: '/Condition images/Scoliosis Management.jfif',
     symptoms: [
       'Uneven shoulders, shoulder blade prominence, or uneven waistline',
       'Chronic muscular ache along one side of the spine due to muscle compensation',
@@ -125,7 +125,7 @@ export const conditionsData: Condition[] = [
     recoveryTimelineExpectation: 'Ongoing structural support aimed at reducing discomfort and halting functional decline.',
     faqs: [
       {
-        question: 'Can chiropractic care help adults with scoliosis?',
+        question: 'Can chiropractic care help adults with scoliosis•',
         answer: 'While adult structural curves cannot be completely straightened overnight, chiropractic adjustments and muscular rehabilitation significantly relieve scoliosis-associated chronic pain, improve posture, and enhance functional mobility.'
       }
     ]
@@ -136,7 +136,7 @@ export const conditionsData: Condition[] = [
     title: 'Spondylitis & Spondylosis',
     category: 'Spine',
     shortDescription: 'Cervical and lumbar age-related degenerative changes, facet stiffness, and spinal joint inflammation.',
-    image: 'https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?q=80&w=900&auto=format&fit=crop',
+    image: '/Condition images/Spondylitis & Spondylosis.webp',
     symptoms: [
       'Persistent morning stiffness in the neck or lower back',
       'Grinding or clicking sensation when turning the head or bending',
@@ -157,7 +157,7 @@ export const conditionsData: Condition[] = [
     recoveryTimelineExpectation: 'Focus on reducing inflammation, halting stiffness progression, and restoring comfortable movement.',
     faqs: [
       {
-        question: 'Is chiropractic safe for diagnosed spondylosis?',
+        question: 'Is chiropractic safe for diagnosed spondylosis•',
         answer: 'Yes. We utilize gentle mobilization and low-force techniques adapted for degenerative changes, avoiding aggressive high-force maneuvers on compromised segments.'
       }
     ]
@@ -168,7 +168,7 @@ export const conditionsData: Condition[] = [
     title: 'Knee Pain & Osteoarthritis Support',
     category: 'Joints',
     shortDescription: 'Conservative, non-invasive support for knee joint stiffness, patellar tracking issues, and age-related wear-and-tear.',
-    image: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=900&auto=format&fit=crop',
+    image: '/Condition images/Knee Pain & Osteoarthritis Support.jfif',
     symptoms: [
       'Aching or sharp pain while climbing stairs, squatting, or walking',
       'Joint stiffness after periods of rest or sitting',
@@ -189,7 +189,7 @@ export const conditionsData: Condition[] = [
     recoveryTimelineExpectation: 'Progressive improvement in load tolerance and walking comfort within structured protocols.',
     faqs: [
       {
-        question: 'How can spine and pelvis alignment affect knee pain?',
+        question: 'How can spine and pelvis alignment affect knee pain•',
         answer: 'An unlevel pelvis or misaligned hip places uneven weight distribution across the knee joint, accelerating cartilage wear. Realigning the kinetic chain relieves excessive pressure on the knee.'
       }
     ]
@@ -200,7 +200,7 @@ export const conditionsData: Condition[] = [
     title: 'Frozen Shoulder (Adhesive Capsulitis)',
     category: 'Joints',
     shortDescription: 'Progressive shoulder stiffness, intense night pain, and severely restricted glenohumeral and scapular mobility.',
-    image: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=900&auto=format&fit=crop',
+    image: '/Condition images/Frozen Shoulder.jfif',
     symptoms: [
       'Severe difficulty raising the arm overhead or reaching behind the back',
       'Deep, persistent dull ache in the shoulder, often worsening at night',
@@ -221,7 +221,7 @@ export const conditionsData: Condition[] = [
     recoveryTimelineExpectation: 'Gradual stage-by-stage thawing of joint adhesions over consistent weekly sessions.',
     faqs: [
       {
-        question: 'Can cupping and acupuncture help frozen shoulder?',
+        question: 'Can cupping and acupuncture help frozen shoulder•',
         answer: 'Yes. Cupping lifts tightened fascia around the shoulder capsule, while acupuncture modulates the severe pain reflex, allowing mobilization techniques to restore movement much faster.'
       }
     ]
@@ -232,7 +232,7 @@ export const conditionsData: Condition[] = [
     title: 'Migraine & Tension Headaches',
     category: 'Head & Neck',
     shortDescription: 'Cervicogenic headaches, chronic tension bands, and migraine attacks triggered by cervical misalignment and suboccipital tension.',
-    image: 'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?q=80&w=900&auto=format&fit=crop',
+    image: '/Condition images/Migraine & Tension Headaches.jfif',
     symptoms: [
       'Throbbing pain on one or both sides of the head or behind the eyes',
       'Tight band-like constriction around the temples and forehead',
@@ -253,7 +253,7 @@ export const conditionsData: Condition[] = [
     recoveryTimelineExpectation: 'Reduction in headache frequency and intensity typically reported within 3–5 treatment visits.',
     faqs: [
       {
-        question: 'Are migraines related to the neck?',
+        question: 'Are migraines related to the neck•',
         answer: 'Many chronic headaches are cervicogenic — meaning they originate from irritated nerves and compressed joints in the upper neck. Correcting cervical alignment removes this underlying trigger.'
       }
     ]
@@ -264,7 +264,7 @@ export const conditionsData: Condition[] = [
     title: 'Slip Disc & Herniated Disc',
     category: 'Spine',
     shortDescription: 'Disc protrusions, bulges, and herniations causing severe spinal pain and radiating nerve irritation.',
-    image: 'https://images.unsplash.com/photo-1530497610245-94d3c16cda28?q=80&w=900&auto=format&fit=crop',
+    image: '/Condition images/Slip Disc & Herniated Disc.jfif',
     symptoms: [
       'Intense, sharp lower back pain aggravated by coughing, sitting, or bending',
       'Sciatic nerve radiation with tingling or numbness down the leg',
@@ -285,7 +285,7 @@ export const conditionsData: Condition[] = [
     recoveryTimelineExpectation: 'Structured conservative protocol aiming to retract disc pressure and resolve nerve impingement.',
     faqs: [
       {
-        question: 'Can a slipped disc heal without surgery?',
+        question: 'Can a slipped disc heal without surgery•',
         answer: 'Yes, in up to 90% of cases, non-surgical conservative treatments (chiropractic realignment, decompression, and rehabilitation) relieve symptoms and allow the disc to stabilize naturally.'
       }
     ]
@@ -296,7 +296,7 @@ export const conditionsData: Condition[] = [
     title: 'Sports & Musculoskeletal Injuries',
     category: 'Muscles',
     shortDescription: 'Muscle strains, ligament sprains, postural imbalances, and repetitive stress injuries in active individuals and athletes.',
-    image: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=900&auto=format&fit=crop',
+    image: '/Condition images/sports-injuries.jpg',
     symptoms: [
       'Acute muscle pulls, tendon tightness, or restricted joint range',
       'Decreased athletic performance due to biomechanical compensations',
@@ -317,9 +317,12 @@ export const conditionsData: Condition[] = [
     recoveryTimelineExpectation: 'Accelerated recovery protocols to return safely and quickly to active lifestyle.',
     faqs: [
       {
-        question: 'When should an athlete visit after an injury?',
+        question: 'When should an athlete visit after an injury•',
         answer: 'Once acute swelling is managed, conservative care can be initiated to prevent scar tissue adhesions and restore symmetrical biomechanics.'
       }
     ]
   }
 ];
+
+
+

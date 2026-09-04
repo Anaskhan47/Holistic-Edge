@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Bell, Check, Archive, ExternalLink, CalendarDays, Activity, Star, AlertCircle } from 'lucide-react';
+import { Bell, Check, Archive, ExternalLink, CalendarDays, Activity, Star, AlertCircle, Clock, Mail } from 'lucide-react';
 import { useAdminStore } from '../../context/AdminStoreContext';
 import { notificationStorage } from '../../services/adminStorage';
 import type { NotificationType } from '../../types/admin.types';
@@ -12,6 +12,8 @@ const TYPE_META: Record<NotificationType, { icon: React.ReactNode; label: string
   testimonial: { icon: <Star size={14} className="text-amber-600" />, label: 'Testimonial' },
   system: { icon: <AlertCircle size={14} className="text-[#9E968C]" />, label: 'System' },
   content: { icon: <Bell size={14} className="text-[#0F2747]" />, label: 'Content' },
+  reminder: { icon: <Clock size={14} className="text-emerald-600" />, label: 'Reminder' },
+  email: { icon: <Mail size={14} className="text-sky-600" />, label: 'Email' },
 };
 
 function formatRelative(iso: string): string {
@@ -26,12 +28,16 @@ function formatRelative(iso: string): string {
 
 export function NotificationsPage() {
   const navigate = useNavigate();
-  const { notifications, markNotificationRead, markAllNotificationsRead, refreshNotifications } = useAdminStore();
+  const { notifications, markNotificationRead, markAllNotificationsRead, clearAllNotifications, refreshNotifications } = useAdminStore();
   const [filter, setFilter] = useState<'all' | 'unread' | 'read'>('all');
+
+  React.useEffect(() => {
+    markAllNotificationsRead();
+  }, [markAllNotificationsRead]);
 
   const filtered = notifications
     .filter(n => n.status !== 'archived')
-    .filter(n => filter === 'all' ? true : n.status === filter);
+    .filter(n => filter === 'all' ? true: n.status === filter);
 
   const handleArchive = (id: string) => {
     notificationStorage.archive(id);
@@ -39,13 +45,23 @@ export function NotificationsPage() {
   };
 
   return (
-    <div className="p-6 space-y-5">
-      <div className="flex items-center justify-between gap-4">
+    <div className="p-3 sm:p-6 space-y-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-lg font-bold text-[#1A1A1A]">Notifications</h1>
           <p className="text-sm text-[#9E968C]">{notifications.filter(n => n.status === 'unread').length} unread</p>
         </div>
-        <button onClick={markAllNotificationsRead} className="text-xs text-[#0F2747] hover:underline">Mark all read</button>
+        <div className="flex items-center gap-3">
+          <button onClick={markAllNotificationsRead} className="text-xs text-[#0F2747] font-semibold hover:underline">
+            Mark all read
+          </button>
+          <button
+            onClick={clearAllNotifications}
+            className="px-3 py-1.5 rounded-xl bg-red-50 text-red-700 border border-red-200 text-xs font-semibold hover:bg-red-100 transition-colors"
+          >
+            Clear All Notifications
+          </button>
+        </div>
       </div>
 
       <div className="flex gap-1.5">
@@ -94,3 +110,4 @@ export function NotificationsPage() {
     </div>
   );
 }
+

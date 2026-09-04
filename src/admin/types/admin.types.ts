@@ -4,7 +4,7 @@
 
 // ─── Auth ────────────────────────────────────────────────────
 
-export type AdminRole = 'SUPER_ADMIN' | 'ADMIN' | 'MANAGER' | 'STAFF' | 'CONTENT_EDITOR';
+export type AdminRole = 'SUPER_ADMIN' | 'ADMIN' | 'MANAGER' | 'STAFF' | 'CONTENT_EDITOR' | 'RECEPTION';
 
 export interface AdminUser {
   id: string;
@@ -25,17 +25,20 @@ export interface AdminSession {
 // ─── Appointments ─────────────────────────────────────────────
 
 export type AppointmentStatus = 'Pending' | 'Confirmed' | 'Completed' | 'Cancelled' | 'No-show';
-export type AppointmentSource = 'Website' | 'Phone' | 'WhatsApp' | 'Walk-in' | 'Referral';
+export type AppointmentSource = 'Website' | 'Phone' | 'WhatsApp' | 'Walk-in' | 'Referral' | 'Website Form' | 'Booking Modal';
 
 export interface AdminAppointment {
   id: string;
-  fullName: string;
+  fullName?: string;
+  patientName?: string;
   phone: string;
   email?: string;
   service: string;
   condition: string;
-  preferredDate: string;   // "YYYY-MM-DD"
-  preferredTime: string;   // "10:00 AM"
+  preferredDate?: string;   // "YYYY-MM-DD"
+  preferredTime?: string;   // "10:00 AM"
+  date?: string;
+  timeSlot?: string;
   status: AppointmentStatus;
   assignedTo?: string;
   notes?: string;
@@ -73,11 +76,14 @@ export interface AdminLead {
   email?: string;
   condition: string;
   message?: string;
+  service?: string;
+  preferredDate?: string;
+  preferredTime?: string;
   source: LeadSource;
   status: LeadStatus;
   assignedTo?: string;
-  notes: LeadNote[];
-  appointmentIds: string[];
+  notes?: LeadNote[];
+  appointmentIds?: string[];
   createdAt: string;
   updatedAt: string;
   lastContactedAt?: string;
@@ -107,7 +113,7 @@ export interface AdminTestimonial {
 
 // ─── Notifications ────────────────────────────────────────────
 
-export type NotificationType = 'appointment' | 'lead' | 'testimonial' | 'system' | 'content';
+export type NotificationType = 'appointment' | 'lead' | 'testimonial' | 'system' | 'content' | 'reminder' | 'email';
 export type NotificationStatus = 'unread' | 'read' | 'archived';
 
 export interface AdminNotification {
@@ -115,9 +121,9 @@ export interface AdminNotification {
   type: NotificationType;
   title: string;
   message: string;
-  entityId?: string;
-  entityType?: string;
-  link?: string;
+  entityId: string;
+  entityType: string;
+  link: string;
   status: NotificationStatus;
   createdAt: string;
 }
@@ -239,6 +245,80 @@ export interface ToastMessage {
   id: string;
   type: ToastType;
   title: string;
-  message?: string;
-  duration?: number;
+  message: string;
+  duration: number;
+}
+
+// ─── Offers / Promotions ──────────────────────────────────────
+
+export type OfferType =
+  | 'PROMOTIONAL'
+  | 'CONSULTATION'
+  | 'SERVICE'
+  | 'SEASONAL'
+  | 'LIMITED_TIME';
+
+export type OfferStatus =
+  | 'DRAFT'
+  | 'SCHEDULED'
+  | 'ACTIVE'
+  | 'EXPIRED'
+  | 'UNPUBLISHED'
+  | 'ARCHIVED';
+
+export type OfferCtaAction =
+  | 'BOOKING_MODAL'
+  | 'CUSTOM_URL'
+  | 'WHATSAPP'
+  | 'PHONE';
+
+export interface OfferPlacements {
+  showInAnnouncement: boolean;
+  showInHero: boolean;
+  showInMobileSticky: boolean;
+  showOnServices: boolean;
+  showOnConditions: boolean;
+}
+
+export interface AdminOffer {
+  id: string;
+  title: string;
+  slug: string;
+  shortDescription: string;
+  description: string;
+  label: string;
+  type: OfferType;
+  ctaAction: OfferCtaAction;
+  ctaText: string;
+  ctaUrl: string;
+  preselectedService: string;
+  startAt: string;
+  endAt: string;
+  status: OfferStatus;
+  priority: number;
+  featured: boolean;
+  placements: OfferPlacements;
+  image: string;
+  badge: string;
+  terms: string;
+  discountValue: string;
+  isPublished: boolean;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+  publishedBy: string;
+}
+
+
+// — Patients —
+
+export interface AdminPatient {
+  id: string;
+  registrationTokenNumber: string;
+  name: string;
+  phone: string;
+  email?: string;
+  patientType: string;
+  createdAt: string;
+  updatedAt: string;
 }

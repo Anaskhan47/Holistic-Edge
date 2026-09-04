@@ -1,19 +1,19 @@
-import React from 'react';
+﻿import React from 'react';
 import { cn } from '../../lib/utils';
 
 export interface TabItem {
   id: string;
   label: string;
-  count?: number;
-  icon?: React.ReactNode;
+  count: number;
+  icon: React.ReactNode;
 }
 
 export interface TabsProps {
   tabs: TabItem[];
   activeTab: string;
   onChange: (tabId: string) => void;
-  variant?: 'pills' | 'underline' | 'segmented';
-  className?: string;
+  variant: 'pills' | 'underline' | 'segmented';
+  className: string;
 }
 
 export const Tabs: React.FC<TabsProps> = ({

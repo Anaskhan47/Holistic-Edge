@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import {
   Calendar,
   Phone,
@@ -16,15 +16,33 @@ import { clinicInfo } from '../../data/clinicInfo';
 import { motion } from 'motion/react';
 
 import { Link } from 'react-router-dom';
-import clinicImg from '@/Clinc.png';
+import clinicImg from '/holistic-edge-enhanced-clinic-room.svg';
+import { useHeroOffer } from '../../hooks/usePublicOffers';
+import type { AdminOffer } from '../../admin/types/admin.types';
 
 export interface HeroSectionProps {
-  onOpenBooking: () => void;
+  onOpenBooking: (serviceName: string) => void;
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({
   onOpenBooking
 }) => {
+  const heroOffer = useHeroOffer();
+
+  const handleHeroCtaClick = (offer: AdminOffer) => {
+    if (offer.ctaAction === 'BOOKING_MODAL' || !offer.ctaAction) {
+      onOpenBooking(offer.preselectedService || 'Chiropractic & Wellness Consultation');
+    } else if (offer.ctaAction === 'WHATSAPP') {
+      window.open(`https://wa.me/${clinicInfo.whatsapp}•text=${encodeURIComponent(`Hello Holistic Edge, I would like to claim the offer: "${offer.title}".`)}`, '_blank');
+    } else if (offer.ctaAction === 'PHONE') {
+      window.location.href = `tel:${clinicInfo.phoneRaw || clinicInfo.phone.replace(/\s+/g, '')}`;
+    } else if (offer.ctaUrl) {
+      window.location.href = offer.ctaUrl;
+    } else {
+      onOpenBooking();
+    }
+  };
+
   return (
     <section className="relative overflow-hidden bg-[#FAF9F6] pt-8 pb-16 md:pt-14 md:pb-24 border-b border-[#E8E4DC]">
       {/* Subtle Background Geometry */}
@@ -44,7 +62,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             >
               <Badge variant="editorial" size="md" className="py-1 px-3.5 shadow-sm">
                 <ShieldCheck className="w-3.5 h-3.5 text-[#0F2747]" />
-                <span>Mehdipatnam, Hyderabad • Founded by Dr. Abdul Mallik</span>
+                <span>Mehdipatnam, Hyderabad · Founded by Healer Abdul Mallik</span>
               </Badge>
             </motion.div>
 
@@ -55,11 +73,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               transition={{ duration: 0.5, delay: 0.1 }}
               className="text-3xl sm:text-4xl md:text-5xl lg:text-[54px] font-normal text-[#1A1A1A] leading-[1.12] font-serif tracking-tight"
             >
-              25 Years of Experience. <br className="hidden sm:inline" />
-              <span className="text-[#0F2747] italic font-medium">50,000+ Patients Treated.</span> <br />
-              <span className="text-[#2B2723] text-2xl sm:text-3xl md:text-4xl font-normal font-serif">
-                A Different Approach to Pain Care.
-              </span>
+              Non-Surgical Spine & Joint Realignment
             </motion.h1>
 
             {/* Supporting Description */}
@@ -69,9 +83,59 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               transition={{ duration: 0.5, delay: 0.2 }}
               className="text-base sm:text-lg text-[#5A544E] leading-relaxed max-w-2xl"
             >
-              Personalized, non-surgical and non-medicinal approaches for spine, joint, and musculoskeletal conditions. Combining precision Chiropractic adjustments, Cupping, Acupuncture, and our signature{' '}
+              Personalized, non-surgical and non-medicinal approaches for spine, joint, and musculoskeletal conditions. Combining precision Chiropractic care, Acupuncture, and our signature{' '}
               <strong className="text-[#1A1A1A] font-semibold">A.M.M Method™</strong> in Hyderabad.
             </motion.p>
+
+            {/* Active Hero Offer Promotion Card */}
+            {heroOffer && (
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.45, ease: 'easeOut' }}
+                className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0F2747] via-[#0B1D3A] to-[#081528] text-white p-4 sm:p-5 shadow-xl shadow-[#0F2747]/25 border border-white/15"
+              >
+                {/* Subtle Ambient Decorative Glow */}
+                <div className="absolute -top-12 -right-12 w-36 h-36 bg-blue-400/10 rounded-full blur-2xl pointer-events-none" />
+                <div className="absolute -bottom-8 -left-8 w-28 h-28 bg-[#10B981]/10 rounded-full blur-xl pointer-events-none" />
+
+                <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                  {/* Content Side */}
+                  <div className="flex items-start gap-3.5">
+                    <div className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white flex items-center justify-center flex-shrink-0 mt-0.5 shadow-inner">
+                      <Sparkles size={18} className="text-blue-200" />
+                    </div>
+                    <div className="space-y-1.5 text-left">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-[10px] font-bold tracking-wider uppercase bg-white text-[#0F2747] px-2.5 py-0.5 rounded-full shadow-xs">
+                          {heroOffer.label || 'Special Promotion'}
+                        </span>
+                        {heroOffer.discountValue && (
+                          <span className="text-[10.5px] font-bold text-[#FAF9F6] bg-white/15 backdrop-blur-xs border border-white/20 px-2 py-0.5 rounded-full">
+                            {heroOffer.discountValue}
+                          </span>
+                        )}
+                      </div>
+                      <h3 className="text-base sm:text-lg font-bold text-white font-serif tracking-tight leading-snug">
+                        {heroOffer.title}
+                      </h3>
+                      <p className="text-xs sm:text-[13px] text-white/85 leading-relaxed max-w-xl">
+                        {heroOffer.shortDescription}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* High Contrast CT• Button */}
+                  <button
+                    onClick={() => handleHeroCtaClick(heroOffer)}
+                    className="w-full sm:w-auto px-5 py-3 rounded-xl bg-white hover:bg-blue-50 text-[#0F2747] text-xs sm:text-sm font-bold transition-all duration-200 flex items-center justify-center gap-2 whitespace-nowrap shadow-md hover:shadow-lg active:scale-98 flex-shrink-0"
+                  >
+                    <span>{heroOffer.ctaText || 'Claim Offer'}</span>
+                    <ArrowRight size={14} className="text-[#0F2747]" />
+                  </button>
+                </div>
+              </motion.div>
+            )}
 
             {/* Value Highlights */}
             <motion.div
@@ -134,8 +198,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               {/* Primary Visual Image */}
               <div className="rounded-3xl overflow-hidden shadow-xl border-4 border-white bg-[#F0ECE4] relative aspect-[4/3] sm:aspect-[5/4]">
                 <img
-                  src={clinicImg}
-                  alt="Holistic Edge Wellness Clinic Mehdipatnam Hyderabad"
+                  src="/healer-abdul-mallik-desk.jpg"
+                  alt="Healer Abdul Mallik Founder & Clinical Director"
                   className="w-full h-full object-cover object-center"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
@@ -144,16 +208,16 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 <div className="absolute bottom-4 left-4 right-4 text-white p-3.5 rounded-2xl bg-[#1A1A1A]/85 backdrop-blur-md border border-white/15 z-10">
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="text-[10px] font-bold uppercase tracking-widest text-[#D49E58]">
+                      <div className="text-[10px] font-bold uppercase tracking-widest text-[#10B981]">
                         Clinic Founder & Director
                       </div>
                       <div className="text-base font-bold font-serif text-[#FAF9F6]">
-                        Dr. Abdul Mallik
+                        Healer Abdul Mallik
                       </div>
                     </div>
                     <Link
-                      to="/about/dr-abdul-mallik"
-                      className="text-xs text-[#D49E58] font-semibold flex items-center gap-1 hover:underline z-20"
+                      to="/about/healer-abdul-mallik"
+                      className="text-xs text-[#10B981] font-semibold flex items-center gap-1 hover:underline z-20"
                     >
                       <span>Read Bio</span>
                       <ArrowRight className="w-3 h-3" />
@@ -165,8 +229,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               {/* Trust & Metric Cards in Normal Document Flow (Zero Overlap on all viewports) */}
               <div className="grid grid-cols-2 gap-3 mt-4">
                 <div className="bg-white p-3.5 rounded-2xl shadow-sm border border-[#E8E4DC] flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-[#FAF4ED] text-[#D49E58] flex items-center justify-center border border-[#EADBCE] flex-shrink-0">
-                    <Star className="w-4 h-4 fill-[#D49E58]" />
+                  <div className="w-9 h-9 rounded-xl bg-[#FAF4ED] text-[#10B981] flex items-center justify-center border border-[#EADBCE] flex-shrink-0">
+                    <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
                   </div>
                   <div className="text-left min-w-0">
                     <div className="flex items-center gap-1 text-xs font-bold text-[#1A1A1A]">

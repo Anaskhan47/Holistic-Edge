@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { testimonialsData, trustAggregates } from '../../data/testimonials';
+﻿import React, { useState, useEffect } from 'react';
+import { testimonialsData } from '../../data/testimonials';
 import { googleReviewsStorage } from '../../services/api/cmsStorage';
-import { Star, CheckCircle2, Quote, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Star, ArrowRight, ShieldCheck } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
 import { TestimonialsSlider } from '../ui/TestimonialsSlider';
@@ -14,19 +14,68 @@ export interface SuccessStoriesProps {
 export const SuccessStoriesSection: React.FC<SuccessStoriesProps> = ({
   onOpenBooking
 }) => {
-  const [filterSource, setFilterSource] = useState<string>('All');
   const [googleReviews, setGoogleReviews] = useState(() => googleReviewsStorage.getPublishedOnWebsite());
 
   useEffect(() => {
     setGoogleReviews(googleReviewsStorage.getPublishedOnWebsite());
+    
+    // Ensure Elfsight script is loaded & initialized
+    if (!document.querySelector('script[src="https://elfsightcdn.com/platform.js"]')) {
+      const script = document.createElement("script");
+      script.src = "https://elfsightcdn.com/platform.js";
+      script.async = true;
+      document.body.appendChild(script);
+    }
+
+    // Continuously hide Elfsight watermark inside Shadow DOM & Light DOM
+    const removeBadge = () => {
+      const scan = (root: ParentNode) => {
+        if (!root) return;
+        try {
+          const els = root.querySelectorAll('*');
+          els.forEach(el => {
+            if (el.shadowRoot) scan(el.shadowRoot);
+            if (
+              (el.tagName === 'A' && el.getAttribute('href')?.includes('elfsight')) ||
+              el.textContent?.includes('Free Google Reviews Widget') ||
+              (typeof el.className === 'string' && el.className.includes('eapps-link'))
+            ) {
+              (el as HTMLElement).style.setProperty('display', 'none', 'important');
+              (el as HTMLElement).style.setProperty('visibility', 'hidden', 'important');
+              (el as HTMLElement).style.setProperty('opacity', '0', 'important');
+              (el as HTMLElement).style.setProperty('height', '0', 'important');
+              (el as HTMLElement).style.setProperty('pointer-events', 'none', 'important');
+              if (el.parentNode) {
+                try { el.parentNode.removeChild(el); } catch (e) {}
+              }
+            }
+          });
+        } catch (err) {}
+      };
+      scan(document);
+    };
+
+    const interval = setInterval(removeBadge, 200);
+    return () => clearInterval(interval);
   }, []);
 
-  const sources = ['All', 'Justdial', 'Cybo', 'Direct Patient Feedback'];
+  const combinedTestimonials = React.useMemo(() => {
+    const formatted = googleReviews.map(r => ({
+      id: r.id,
+      patientName: r.reviewerName,
+      patientInitial: r.reviewerName.charAt(0).toUpperCase(),
+      conditionTreated: 'Chiropractic Care',
+      review: r.comment || 'Excellent chiropractic treatment and patient care.',
+      source: 'Google Review',
+      location: r.location || 'Mehdipatnam, Hyderabad',
+      rating: r.starRating,
+      isFeatured: r.isFeatured,
+    }));
 
-  const filteredReviews =
-    filterSource === 'All'
-      ? testimonialsData
-      : testimonialsData.filter(t => t.source === filterSource);
+    const featured = formatted.filter(r => r.isFeatured);
+    const regular = formatted.filter(r => !r.isFeatured);
+    return [...featured, ...testimonialsData, ...regular];
+  }, [googleReviews]);
 
   return (
     <section id="patient-success-stories" className="py-16 md:py-24 bg-[#FAF9F6] border-t border-[#E8E4DC]">
@@ -46,24 +95,29 @@ export const SuccessStoriesSection: React.FC<SuccessStoriesProps> = ({
 
           {/* Aggregated Rating Trust Strip */}
           <div className="mt-6 inline-flex flex-wrap items-center justify-center gap-3 bg-white p-3 rounded-2xl border border-[#E8E4DC] shadow-xs">
-            <div className="flex items-center gap-1 text-[#D49E58] font-bold text-sm px-2">
-              <Star className="w-4 h-4 fill-[#D49E58]" />
-              <span>4.6★ Justdial Verified</span>
+            <div className="flex items-center gap-1 text-[#1A1A1A] font-bold text-sm px-2">
+              <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
+              <span>4.6 &bull; Justdial Verified</span>
             </div>
-            <span className="text-[#DDD5C7] hidden sm:inline">•</span>
-            <div className="flex items-center gap-1 text-[#D49E58] font-bold text-sm px-2">
-              <Star className="w-4 h-4 fill-[#D49E58]" />
-              <span>4.7★ Cybo Rating</span>
+            <span className="text-[#DDD5C7] hidden sm:inline">&bull;</span>
+            <div className="flex items-center gap-1 text-[#1A1A1A] font-bold text-sm px-2">
+              <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
+              <span>4.7 &bull; Cybo Rating</span>
             </div>
-            <span className="text-[#DDD5C7] hidden sm:inline">•</span>
+            <span className="text-[#DDD5C7] hidden sm:inline">&bull;</span>
             <span className="text-xs font-semibold text-[#2C2926] px-2 font-serif">
               50,000+ Treated Over 25 Years
             </span>
           </div>
         </div>
 
+        {/* Live Elfsight Google Reviews Floating Container */}
+        <div className="my-6">
+          <div className="elfsight-app-dbf3833d-dbc7-4170-a493-31ca3363edf2" data-elfsight-app-lazy />
+        </div>
+
         {/* Continuous Horizontal Testimonials Slider Rail */}
-        <TestimonialsSlider testimonials={testimonialsData} />
+        <TestimonialsSlider testimonials={combinedTestimonials} />
 
         {/* View All Stories Button */}
         <div className="mt-12 text-center flex flex-wrap justify-center gap-3">

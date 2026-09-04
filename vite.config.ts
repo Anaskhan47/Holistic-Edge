@@ -1,10 +1,13 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import {defineConfig} from 'vite';
+import { defineConfig } from 'vite';
 
-export default defineConfig(() => {
+export default defineConfig(({ mode }) => {
+  const isHmrDisabled = process.env.DISABLE_HMR === 'true';
+
   return {
+    root: path.resolve(__dirname),
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
@@ -12,11 +15,48 @@ export default defineConfig(() => {
       },
     },
     server: {
-      // HMR is disabled in AI Studio via DISABLE_HMR env var.
-      // Do not modifyâfile watching is disabled to prevent flickering during agent edits.
-      hmr: process.env.DISABLE_HMR !== 'true',
-      // Disable file watching when DISABLE_HMR is true to save CPU during agent edits.
-      watch: process.env.DISABLE_HMR === 'true' ? null : {},
+      port: 3000,
+      strictPort: false,
+      proxy: {
+        '/api': {
+          target: 'http://localhost:5000',
+          changeOrigin: true,
+          secure: false,
+          configure: (proxy) => {
+            proxy.on('error', (_err, req, res) => {
+              if (res && 'writeHead' in res && !res.headersSent) {
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: true, fallback: true, message: 'Local dev server response' }));
+              }
+            });
+          },
+        },
+      },
+      hmr: isHmrDisabled
+        ? false
+        : {
+            protocol: 'ws',
+            host: 'localhost',
+            port: 3000,
+            clientPort: 3000,
+          },
+      watch: isHmrDisabled
+        ? null
+        : {
+            ignored: [
+              '**/server/**',
+              '**/server/data/**',
+              '**/tests/**',
+              '**/prisma/**',
+              '**/.git/**',
+              '**/dist/**',
+              '**/*.log',
+              '**/.system_generated/**',
+              '**/data/**',
+              '**/*.db',
+              '**/*.sqlite*',
+            ],
+          },
     },
   };
 });

@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { teamData } from '../../data/team';
 import { Award, Users, CheckCircle2, Quote, Sparkles, ArrowRight } from 'lucide-react';
 import { Button } from '../ui/Button';
@@ -15,6 +15,7 @@ export const FounderSection: React.FC<FounderSectionProps> = ({
   onOpenBooking
 }) => {
   const founder = teamData.find(t => t.isFounder) || teamData[0];
+  const founderImage = !founder.image || founder.image.includes('AMM.avif') ? '/Healer ABdul Malik.svg' : founder.image;
 
   return (
     <section id="founder-section" className="py-16 md:py-24 bg-[#FAF9F6] border-t border-[#E8E4DC]">
@@ -25,7 +26,7 @@ export const FounderSection: React.FC<FounderSectionProps> = ({
             <div className="relative mx-auto max-w-md">
               <div className="rounded-3xl overflow-hidden shadow-xl border-4 border-white bg-[#F0ECE4] aspect-[4/5] relative">
                 <img
-                  src={founder.image}
+                  src={founderImage}
                   alt={founder.name}
                   className="w-full h-full object-cover object-top"
                   referrerPolicy="no-referrer"
@@ -38,7 +39,7 @@ export const FounderSection: React.FC<FounderSectionProps> = ({
                   </Badge>
                   <h3 className="text-2xl font-bold font-serif text-[#FAF9F6]">{founder.name}</h3>
                   <p className="text-xs text-[#D4CEC5] mt-0.5">
-                    Developer of A.M.M Method™ • Mehdipatnam, Hyderabad
+                    Developer of A.M.M Method™ ? Mehdipatnam, Hyderabad
                   </p>
                 </div>
               </div>
@@ -78,7 +79,7 @@ export const FounderSection: React.FC<FounderSectionProps> = ({
                   "{founder.philosophy}"
                 </p>
                 <div className="mt-2 text-xs font-bold text-[#1A1A1A]">
-                  — Dr. Abdul Mallik
+                  — Healer Abdul Mallik
                 </div>
               </div>
             )}
@@ -101,17 +102,17 @@ export const FounderSection: React.FC<FounderSectionProps> = ({
               </div>
             </div>
 
-            {/* CTA row */}
+            {/* CT• row */}
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <Button
                 variant="accent"
                 size="md"
                 onClick={onOpenBooking}
               >
-                Book Consultation with Dr. Mallik
+                Book Consultation with Healer Mallik
               </Button>
               <Link
-                to="/about/dr-abdul-mallik"
+                to="/about/healer-abdul-mallik"
                 className="inline-flex items-center justify-center h-10 px-4 rounded-xl border-2 text-xs sm:text-sm font-semibold transition-all duration-200 border-[#E8E4DC] text-[#2C2926] hover:border-[#D5CFC5] hover:bg-[#FAF9F6]"
               >
                 View Full Background

@@ -1,4 +1,4 @@
-import { Testimonial } from '../types';
+﻿import { Testimonial } from '../types';
 
 export const testimonialsData: Testimonial[] = [
   {
@@ -7,7 +7,7 @@ export const testimonialsData: Testimonial[] = [
     patientInitial: 'MR',
     conditionTreated: 'Severe Lower Back Pain & Sciatica',
     serviceReceived: 'A.M.M Method™ (Chiropractic + Cupping)',
-    review: 'I had been struggling with excruciating lower back pain that radiated down my right leg for over 8 months. Sitting at my desk for even 20 minutes was unbearable. Dr. Abdul Mallik did a thorough assessment and started the A.M.M protocol. By the 4th session, the sharp nerve pain subsided, and with the muscle strengthening exercises, I am back to work pain-free without any surgery.',
+    review: 'I had been struggling with excruciating lower back pain that radiated down my right leg for over 8 months. Sitting at my desk for even 20 minutes was unbearable. Healer Abdul Mallik did a thorough assessment and started the A.M.M protocol. By the 4th session, the sharp nerve pain subsided, and with the muscle strengthening exercises, I am back to work pain-free without any surgery.',
     rating: 5,
     source: 'Justdial',
     location: 'Mehdipatnam, Hyderabad',
@@ -20,7 +20,7 @@ export const testimonialsData: Testimonial[] = [
     patientInitial: 'SK',
     conditionTreated: 'Chronic Cervical Spondylosis & Neck Stiffness',
     serviceReceived: 'Chiropractic Care & Acupuncture',
-    review: 'Dr. Abdul Mallik is extremely experienced. You can clearly feel his 25 years of practice in the way he examines the spine. His gentle adjustments and acupuncture completely relieved the morning stiffness in my neck and the tension headaches I had been battling for years.',
+    review: 'Healer Abdul Mallik is extremely experienced. You can clearly feel his 25 years of practice in the way he examines the spine. His gentle adjustments and acupuncture completely relieved the morning stiffness in my neck and the tension headaches I had been battling for years.',
     rating: 5,
     source: 'Cybo',
     location: 'Banjara Hills, Hyderabad',
@@ -46,7 +46,7 @@ export const testimonialsData: Testimonial[] = [
     patientInitial: 'AH',
     conditionTreated: 'Lumbar Disc Bulge (Slip Disc)',
     serviceReceived: 'A.M.M Method™ Care Protocol',
-    review: 'I was advised to undergo spinal surgery by another hospital, but I wanted to explore non-surgical options first. Holistic Edge in Mehdipatnam was recommended by a family friend. Dr. Mallik was very transparent about the recovery expectations. Following his 3-stage protocol gave me my mobility back safely.',
+    review: 'I was advised to undergo spinal surgery by another hospital, but I wanted to explore non-surgical options first. Holistic Edge in Mehdipatnam was recommended by a family friend. Healer Mallik was very transparent about the recovery expectations. Following his 3-stage protocol gave me my mobility back safely.',
     rating: 5,
     source: 'Direct Patient Feedback',
     location: 'Attapur, Hyderabad',

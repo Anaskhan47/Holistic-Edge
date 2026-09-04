@@ -1,9 +1,9 @@
-import React from 'react';
+﻿import React from 'react';
 import { cn } from '../../lib/utils';
 
 export interface SectionProps extends React.HTMLAttributes<HTMLElement> {
-  spacing?: 'sm' | 'md' | 'lg' | 'xl';
-  background?: 'white' | 'neutral' | 'warm' | 'dark' | 'brand' | 'accent';
+  spacing: 'sm' | 'md' | 'lg' | 'xl';
+  background: 'white' | 'neutral' | 'warm' | 'dark' | 'brand' | 'accent';
 }
 
 export const Section: React.FC<SectionProps> = ({

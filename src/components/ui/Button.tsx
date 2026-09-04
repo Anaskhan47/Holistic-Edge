@@ -1,14 +1,14 @@
-import React from 'react';
+﻿import React from 'react';
 import { cn } from '../../lib/utils';
 import { Loader2 } from 'lucide-react';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'accent' | 'outline' | 'ghost' | 'navy';
-  size?: 'sm' | 'md' | 'lg';
-  isLoading?: boolean;
-  leftIcon?: React.ReactNode;
-  rightIcon?: React.ReactNode;
-  fullWidth?: boolean;
+  variant: 'primary' | 'secondary' | 'accent' | 'outline' | 'ghost' | 'navy';
+  size: 'sm' | 'md' | 'lg';
+  isLoading: boolean;
+  leftIcon: React.ReactNode;
+  rightIcon: React.ReactNode;
+  fullWidth: boolean;
 }
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(

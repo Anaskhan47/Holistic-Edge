@@ -31,7 +31,7 @@ export interface Service {
   fullDescription: string;
   iconName: string;
   accentColor: string;
-  isFlagship?: boolean;
+  isFlagship: boolean;
   benefits: string[];
   howItWorks: string[];
   whoIsItFor: string[];
@@ -47,7 +47,7 @@ export interface Condition {
   id: string;
   slug: string;
   title: string;
-  category: 'Spine' | 'Joints' | 'Nerves' | 'Muscles' | 'Head & Neck';
+  category: 'Spine' | 'Joints' | 'Nerves' | 'Muscles' | 'Head & Neck' | 'TMJ & Jaw' | 'TMJ';
   shortDescription: string;
   symptoms: string[];
   whenToSeekHelp: string[];
@@ -90,7 +90,7 @@ export interface FaqItem {
   category: 'General' | 'Treatment' | 'Conditions' | 'Safety' | 'First Visit' | 'Cost & Booking';
   question: string;
   answer: string;
-  featured?: boolean;
+  featured: boolean;
 }
 
 export interface Testimonial {
@@ -125,27 +125,27 @@ export interface TreatmentStep {
 }
 
 export interface AppointmentRequest {
-  id?: string;
+  id: string;
   fullName: string;
   phone: string;
-  email?: string;
+  email: string;
   preferredService: string;
   primaryCondition: string;
   preferredDate: string;
   preferredTimeSlot: string;
-  symptomDuration?: string;
-  additionalNotes?: string;
+  symptomDuration: string;
+  additionalNotes: string;
   createdAt: string;
   status: 'Pending Review' | 'Confirmed' | 'Completed' | 'Rescheduled';
 }
 
 export interface ContactLead {
-  id?: string;
+  id: string;
   fullName: string;
   phone: string;
-  email?: string;
+  email: string;
   reason: string;
-  message?: string;
+  message: string;
   submittedAt: string;
   status: 'New' | 'Contacted' | 'Closed';
 }

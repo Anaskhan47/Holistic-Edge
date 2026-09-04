@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { NavLink, useNavigate, useLocation } from 'react-router-dom';
+import React from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
 import {
-  LayoutDashboard,
+  LayoutGrid,
   CalendarDays,
   Users,
-  Star,
   Stethoscope,
   BookOpen,
   HelpCircle,
-  UserCircle,
   Image,
   BarChart2,
   Bell,
@@ -17,11 +15,18 @@ import {
   ChevronLeft,
   ChevronRight,
   Building2,
-  Zap,
   ShieldCheck,
   Activity,
+  Tag,
+  Clock,
+  UserCheck,
+  CalendarCheck,
+  Mail,
+  Server,
+  Layers,
 } from 'lucide-react';
 import { useAdminStore } from '../../context/AdminStoreContext';
+import { useAdminAuth } from '../../context/AdminAuthContext';
 import { cn } from '../../../lib/utils';
 import logoImg from '../../../../Logo.png';
 
@@ -29,7 +34,7 @@ interface NavItem {
   label: string;
   path: string;
   icon: React.ReactNode;
-  badge?: number;
+  badge?: number | string;
 }
 
 interface NavGroup {
@@ -44,122 +49,154 @@ interface AdminSidebarProps {
 }
 
 export function AdminSidebar({ collapsed, onToggle, onNavClick }: AdminSidebarProps) {
-  const { metrics, unreadCount } = useAdminStore();
   const location = useLocation();
+  const { offers, unreadNotificationsCount, dueFollowUpsCount, activeLeadsCount } = useAdminStore();
+  const { user } = useAdminAuth();
+
+  const userRole = user?.role || 'ADMIN';
+  const isSuperAdmin = userRole === 'SUPER_ADMIN';
+  const isReception = userRole === 'RECEPTION';
 
   const navGroups: NavGroup[] = [
     {
-      title: 'Overview',
-      items: [
-        { label: 'Dashboard', path: '/admin/dashboard', icon: <LayoutDashboard size={16} /> },
-      ],
-    },
-    {
       title: 'Operations',
       items: [
-        { label: 'Appointments', path: '/admin/appointments', icon: <CalendarDays size={16} />, badge: metrics.todayAppointments > 0 ? metrics.todayAppointments : undefined },
-        { label: 'Leads', path: '/admin/leads', icon: <Activity size={16} />, badge: metrics.newLeads > 0 ? metrics.newLeads : undefined },
-        { label: 'Notifications', path: '/admin/notifications', icon: <Bell size={16} />, badge: unreadCount > 0 ? unreadCount : undefined },
+        { label: 'Dashboard', path: '/admin/dashboard', icon: <LayoutGrid size={18} /> },
+        { label: 'Appointments', path: '/admin/appointments', icon: <CalendarDays size={18} /> },
+        { label: 'Patients', path: '/admin/patients', icon: <Users size={18} /> },
+        { label: 'Slots & Capacity', path: '/admin/booking-slots', icon: <Clock size={18} /> },
+        {
+          label: 'Follow-ups',
+          path: '/admin/follow-ups',
+          icon: <CalendarCheck size={18} />,
+          badge: dueFollowUpsCount > 0 ? dueFollowUpsCount: undefined,
+        },
+        {
+          label: 'Notifications',
+          path: '/admin/notifications',
+          icon: <Bell size={18} />,
+          badge: unreadNotificationsCount > 0 ? unreadNotificationsCount: undefined,
+        },
+        {
+          label: 'Lead Enquiries',
+          path: '/admin/leads',
+          icon: <UserCheck size={18} />,
+          badge: activeLeadsCount > 0 ? activeLeadsCount: undefined,
+        },
       ],
     },
-    {
-      title: 'Content',
-      items: [
-        { label: 'Testimonials', path: '/admin/testimonials', icon: <Star size={16} />, badge: metrics.pendingTestimonials > 0 ? metrics.pendingTestimonials : undefined },
-        { label: 'Google Reviews', path: '/admin/reviews/google', icon: <Star size={16} className="text-[#4285F4]" /> },
-        { label: 'Services', path: '/admin/services', icon: <Stethoscope size={16} /> },
-        { label: 'Conditions', path: '/admin/conditions', icon: <BookOpen size={16} /> },
-        { label: 'FAQ', path: '/admin/faq', icon: <HelpCircle size={16} /> },
-        { label: 'Team', path: '/admin/team', icon: <Users size={16} /> },
-        { label: 'Clinic', path: '/admin/clinic', icon: <Building2 size={16} /> },
-        { label: 'Media', path: '/admin/media', icon: <Image size={16} /> },
-      ],
-    },
-    {
-      title: 'Insights',
-      items: [
-        { label: 'Analytics', path: '/admin/analytics', icon: <BarChart2 size={16} /> },
-      ],
-    },
-    {
-      title: 'System',
-      items: [
-        { label: 'Users & Roles', path: '/admin/users', icon: <ShieldCheck size={16} /> },
-        { label: 'Settings', path: '/admin/settings', icon: <Settings size={16} /> },
-        { label: 'Audit Logs', path: '/admin/audit-logs', icon: <ScrollText size={16} /> },
-      ],
-    },
+    ...(!isReception ? [
+      {
+        title: 'Clinic Content (CMS)',
+        items: [
+          { label: 'Services', path: '/admin/services', icon: <Stethoscope size={18} /> },
+          { label: 'Conditions', path: '/admin/conditions', icon: <Activity size={18} /> },
+          {
+            label: 'Special Offers',
+            path: '/admin/offers',
+            icon: <Tag size={18} />,
+            badge: offers ? offers.filter(o => o.active).length || undefined: undefined,
+          },
+          { label: 'Reviews', path: '/admin/reviews', icon: <BarChart2 size={18} /> },
+          { label: 'FAQ', path: '/admin/faq', icon: <HelpCircle size={18} /> },
+          { label: 'Media Library', path: '/admin/media', icon: <Image size={18} /> },
+        ],
+      },
+      {
+        title: 'Administration',
+        items: [
+          ...(isSuperAdmin ? [
+            { label: 'Staff & Roles', path: '/admin/users', icon: <Building2 size={18} /> },
+            { label: 'Email Logs', path: '/admin/email', icon: <Mail size={18} /> },
+            { label: 'Integrations', path: '/admin/integrations', icon: <Layers size={18} /> },
+            { label: 'System Health', path: '/admin/system-health', icon: <Server size={18} /> },
+            { label: 'Audit Log', path: '/admin/audit-logs', icon: <ScrollText size={18} /> },
+          ] : []),
+          { label: 'Settings', path: '/admin/settings', icon: <Settings size={18} /> },
+        ],
+      },
+    ] : []),
   ];
 
   return (
     <aside
       className={cn(
-        'flex flex-col h-full bg-[#111110] border-r border-white/[0.06] transition-all duration-300 ease-in-out flex-shrink-0',
-        collapsed ? 'w-[56px]' : 'w-[220px]'
+        'flex flex-col h-full bg-[#060B17] border-r border-[#17243A] transition-all duration-300 ease-in-out flex-shrink-0 z-30 font-sans',
+        collapsed ? 'w-[60px]' : 'w-[230px]'
       )}
     >
-      {/* Brand */}
-      <div className={cn(
-        'flex items-center border-b border-white/[0.06] flex-shrink-0',
-        collapsed ? 'justify-center h-14 px-0' : 'gap-2.5 h-14 px-4'
-      )}>
-        {!collapsed && (
-          <img src="/brand/holistic-edge-logo-transparent.png" alt="Holistic Edge" className="h-9 sm:h-10 w-auto object-contain brightness-[1.15]" />
+      {/* Brand Header & Logo */}
+      <div
+        className={cn(
+          'flex items-center border-b border-[#17243A] flex-shrink-0',
+          collapsed ? 'justify-center h-16 px-0' : 'h-16 px-3'
         )}
-        {collapsed && (
-          <div className="w-7 h-7 rounded-lg bg-[#0F2747] flex items-center justify-center">
-            <Zap size={14} className="text-white" />
+      >
+        {!collapsed ? (
+          <div className="bg-white rounded-xl px-2 py-1 shadow-sm max-w-[190px] flex items-center justify-center">
+            <img
+              src="/brand/admin-logo.png"
+              alt="Holistic Edge"
+              className="h-7.5 w-auto object-contain"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = logoImg;
+              }}
+            />
+          </div>
+        ) : (
+          <div className="w-8 h-8 rounded-xl bg-[#0284C7]/20 border border-[#0284C7]/40 flex items-center justify-center text-[#38BDF8]">
+            <ShieldCheck size={16} />
           </div>
         )}
       </div>
 
-      {/* Nav Groups */}
-      <nav className="flex-1 overflow-y-auto py-3 space-y-0.5 scrollbar-none">
+      {/* Nav Groups Container */}
+      <nav className="flex-1 overflow-y-auto py-3 space-y-1 scrollbar-thin scrollbar-thumb-slate-800">
         {navGroups.map((group) => (
-          <div key={group.title} className="mb-1">
-            {!collapsed && (
-              <p className="px-4 pt-3 pb-1 text-[10px] font-semibold tracking-widest text-white/30 uppercase">
+          <div key={group.title} className="mb-2">
+            {!collapsed ? (
+              <p className="px-4 pt-3 pb-1 text-[10px] font-bold tracking-widest text-slate-400 uppercase">
                 {group.title}
               </p>
+            ) : (
+              <div className="my-2 mx-3 border-t border-[#17243A]" />
             )}
-            {collapsed && <div className="my-2 mx-3 border-t border-white/[0.06]" />}
+
             {group.items.map((item) => {
-              const isActive = location.pathname === item.path || location.pathname.startsWith(item.path + '/');
+              const isActive =
+                location.pathname === item.path ||
+                (item.path !== '/admin/dashboard' && location.pathname.startsWith(item.path + '/'));
+
               return (
                 <NavLink
                   key={item.path}
                   to={item.path}
                   onClick={onNavClick}
-                  title={collapsed ? item.label : undefined}
+                  title={collapsed ? item.label: undefined}
                   className={cn(
-                    'relative flex items-center gap-2.5 transition-all duration-150 group',
-                    collapsed ? 'justify-center mx-2 my-0.5 rounded-lg h-9 w-9' : 'mx-2 my-0.5 rounded-lg h-8 px-2.5',
+                    'flex items-center gap-3 px-3 py-2 mx-2 rounded-xl text-xs font-medium transition-all duration-150 group relative',
+                    collapsed && 'justify-center px-0 mx-2',
                     isActive
-                      ? 'bg-white/[0.1] text-white'
-                      : 'text-white/50 hover:text-white/80 hover:bg-white/[0.05]'
+                      ? 'bg-[#0284C7] text-white shadow-md shadow-sky-900/30 font-semibold'
+                      : 'text-slate-300 hover:text-white hover:bg-white/[0.05]'
                   )}
                 >
-                  {/* Active indicator */}
-                  {isActive && (
-                    <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-4 bg-[#2563EB] rounded-full" />
-                  )}
-
-                  <span className={cn(isActive ? 'text-white' : 'text-white/50 group-hover:text-white/70')}>
+                  <span className={cn('flex-shrink-0', isActive ? 'text-white' : 'text-slate-400 group-hover:text-slate-200')}>
                     {item.icon}
                   </span>
 
                   {!collapsed && (
-                    <span className="text-[12.5px] font-medium leading-none flex-1">{item.label}</span>
+                    <span className="flex-1 truncate">{item.label}</span>
                   )}
 
-                  {/* Badge */}
-                  {item.badge !== undefined && (
-                    <span className={cn(
-                      'flex-shrink-0 text-[10px] font-bold leading-none rounded-full bg-[#0F2747] text-white',
-                      collapsed ? 'absolute -top-0.5 -right-0.5 w-4 h-4 flex items-center justify-center' : 'px-1.5 py-0.5'
-                    )}>
-                      {item.badge > 99 ? '99+' : item.badge}
+                  {!collapsed && item.badge !== undefined && Number(item.badge) > 0 && (
+                    <span className="px-1.5 py-0.5 text-[10px] font-bold rounded-full bg-emerald-500 text-white leading-none">
+                      {item.badge}
                     </span>
+                  )}
+
+                  {collapsed && item.badge !== undefined && Number(item.badge) > 0 && (
+                    <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-[#060B17]" />
                   )}
                 </NavLink>
               );
@@ -168,14 +205,21 @@ export function AdminSidebar({ collapsed, onToggle, onNavClick }: AdminSidebarPr
         ))}
       </nav>
 
-      {/* Collapse Toggle */}
-      <div className="flex-shrink-0 border-t border-white/[0.06] p-2">
+      {/* Collapse Toggle Footer */}
+      <div className="p-3 border-t border-[#17243A] flex items-center justify-between">
+        {!collapsed && (
+          <div className="flex items-center gap-2 text-[11px] text-slate-400 pl-1">
+            <span className="w-2 h-2 rounded-full bg-emerald-400" />
+            <span className="truncate">{user?.name || 'Staff User'}</span>
+          </div>
+        )}
         <button
+          type="button"
           onClick={onToggle}
           title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          className="w-full flex items-center justify-center h-8 rounded-lg text-white/30 hover:text-white/60 hover:bg-white/[0.05] transition-colors"
+          className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors ml-auto cursor-pointer"
         >
-          {collapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
+          {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
         </button>
       </div>
     </aside>

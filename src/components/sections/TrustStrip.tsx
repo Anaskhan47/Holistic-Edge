@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Award, Users, UserCheck, Star, Sparkles, ShieldCheck } from 'lucide-react';
 import { clinicInfo } from '../../data/clinicInfo';
 
@@ -33,7 +33,7 @@ export const TrustStrip: React.FC = () => {
       label: 'Justdial Verified',
       sublabel: 'External Patient Rating',
       icon: Star,
-      color: 'text-[#D49E58]',
+      color: 'text-[#00B67A]',
       bgColor: 'bg-[#FAF4ED]',
       isStar: true
     },
@@ -42,7 +42,7 @@ export const TrustStrip: React.FC = () => {
       label: 'Cybo Rating',
       sublabel: 'External Clinic Profile',
       icon: Star,
-      color: 'text-[#D49E58]',
+      color: 'text-[#00B67A]',
       bgColor: 'bg-[#FAF4ED]',
       isStar: true
     }

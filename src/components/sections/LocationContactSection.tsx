@@ -14,6 +14,11 @@ import {
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
 import { Card } from '../ui/Card';
+import {
+  leadStorage,
+  notificationStorage,
+  auditStorage,
+} from '../../admin/services/adminStorage';
 
 export interface LocationContactProps {
   onOpenBooking: () => void;
@@ -44,7 +49,7 @@ export const LocationContactSection: React.FC<LocationContactProps> = ({ onOpenB
     setIsSubmitting(true);
 
     setTimeout(() => {
-      // Save to localStorage leads
+      // Save to localStorage leads & Admin storage
       try {
         const existing = JSON.parse(localStorage.getItem('holistic_edge_leads') || '[]');
         const newLead = {
@@ -57,6 +62,41 @@ export const LocationContactSection: React.FC<LocationContactProps> = ({ onOpenB
           status: 'New'
         };
         localStorage.setItem('holistic_edge_leads', JSON.stringify([newLead, ...existing]));
+
+        // Create Admin Lead
+        const createdLead = leadStorage.create({
+          fullName,
+          phone,
+          condition: reason,
+          message: message || `Inquiry submitted for ${reason}`,
+          source: 'Website Form',
+          status: 'New',
+        });
+
+        // Create Admin Real-time Notification
+        notificationStorage.create({
+          type: 'lead',
+          title: 'New Patient Contact Inquiry',
+          message: `${fullName} submitted inquiry regarding ${reason}`,
+          entityId: createdLead.id,
+          entityType: 'lead',
+          link: `/admin/leads/${createdLead.id}`,
+          status: 'unread',
+        });
+
+        // Create Audit Log
+        auditStorage.log({
+          actor: fullName,
+          actorId: 'public_lead',
+          action: 'created',
+          entity: 'lead',
+          entityId: createdLead.id,
+          description: `Inquiry received from ${fullName} (${reason}) via Contact Form`,
+        });
+
+        // Notify active admin tabs
+        window.dispatchEvent(new Event('storage'));
+        window.dispatchEvent(new CustomEvent('admin_data_updated'));
       } catch (err) {
         console.error(err);
       }
@@ -66,7 +106,7 @@ export const LocationContactSection: React.FC<LocationContactProps> = ({ onOpenB
     }, 600);
   };
 
-  const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+  const googleMapsUrl = `https://www.google.com/maps/search/•api=1&query=${encodeURIComponent(
     'Susheel Apartments, Olive Hospital, Mehdipatnam, Hyderabad 500028'
   )}`;
 
@@ -128,7 +168,7 @@ export const LocationContactSection: React.FC<LocationContactProps> = ({ onOpenB
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-[#FAF4ED] text-[#D49E58] flex items-center justify-center flex-shrink-0 mt-0.5 border border-[#EADBCE]">
+                  <div className="w-8 h-8 rounded-lg bg-[#FAF4ED] text-[#10B981] flex items-center justify-center flex-shrink-0 mt-0.5 border border-[#EADBCE]">
                     <Clock className="w-4 h-4" />
                   </div>
                   <div>
@@ -153,7 +193,7 @@ export const LocationContactSection: React.FC<LocationContactProps> = ({ onOpenB
                 </a>
 
                 <a
-                  href={`https://wa.me/${clinicInfo.whatsapp}?text=${encodeURIComponent(
+                  href={`https://wa.me/${clinicInfo.whatsapp}•text=${encodeURIComponent(
                     'Hello Holistic Edge, I would like to get directions to your Mehdipatnam clinic.'
                   )}`}
                   target="_blank"
@@ -169,7 +209,7 @@ export const LocationContactSection: React.FC<LocationContactProps> = ({ onOpenB
             {/* Travel Distance Helper */}
             <div className="bg-white p-4 rounded-2xl border border-[#E8E4DC] text-xs text-[#5A544E] space-y-1.5 shadow-xs">
               <span className="font-bold text-[#1A1A1A] block">Convenient Driving Distance From:</span>
-              <p>• Banjara Hills (8-12 mins) • Tolichowki (5 mins) • Masab Tank (6 mins) • Attapur (8 mins) • Hitec City / Gachibowli (20-25 mins via PVNR Expressway / Mehdipatnam Flyover).</p>
+              <p>• Banjara Hills (8-12 mins) ? Tolichowki (5 mins) ? Masab Tank (6 mins) ? Attapur (8 mins) ? Hitec City / Gachibowli (20-25 mins via PVNR Expressway / Mehdipatnam Flyover).</p>
             </div>
           </div>
 
@@ -185,7 +225,7 @@ export const LocationContactSection: React.FC<LocationContactProps> = ({ onOpenB
                     Inquiry Received!
                   </h3>
                   <p className="text-sm text-[#5A544E] max-w-sm mx-auto">
-                    Thank you, <strong>{fullName}</strong>. Dr. Abdul Mallik's clinic coordinator will call you at <strong>{phone}</strong> shortly to discuss your consultation.
+                    Thank you, <strong>{fullName}</strong>. Healer Abdul Mallik's clinic coordinator will call you at <strong>{phone}</strong> shortly to discuss your consultation.
                   </p>
                   <Button
                     variant="outline"
@@ -254,10 +294,12 @@ export const LocationContactSection: React.FC<LocationContactProps> = ({ onOpenB
                       className="w-full px-3.5 py-2.5 rounded-xl border border-[#E8E4DC] text-sm text-[#1A1A1A] focus:border-[#1A1A1A] outline-none bg-white"
                     >
                       <option value="General Consultation Inquiry">General Consultation Inquiry</option>
+                      <option value="Chiropractic Care & Spinal Alignment">Chiropractic Care & Spinal Alignment</option>
+                      <option value="TMJ & Jaw Pain Treatment">TMJ & Jaw Pain Treatment</option>
                       <option value="Back Pain & Sciatica Care">Back Pain & Sciatica Care</option>
                       <option value="Cervical Neck & Headache Care">Cervical Neck & Headache Care</option>
-                      <option value="A.M.M Method™ Information">A.M.M Method™ Information</option>
-                      <option value="Cupping Therapy & Acupuncture">Cupping Therapy & Acupuncture</option>
+                      <option value="Acupuncture & Pain Relief">Acupuncture & Pain Relief</option>
+                      <option value="Alternative & Integrative Therapies">Alternative & Integrative Therapies</option>
                       <option value="General Spine Checkup">General Spine Checkup</option>
                     </select>
                   </div>
@@ -292,7 +334,7 @@ export const LocationContactSection: React.FC<LocationContactProps> = ({ onOpenB
                       onClick={onOpenBooking}
                       className="text-xs text-[#0F2747] font-semibold hover:underline"
                     >
-                      Prefer to choose a specific date and time? Book full appointment →
+                      Prefer to choose a specific date and time• Book full appointment →
                     </button>
                   </div>
                 </form>

@@ -1,4 +1,4 @@
-import React, { useState, Suspense, lazy } from 'react';
+﻿import React, { useState, Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { AnnouncementBar } from './components/layout/AnnouncementBar';
@@ -45,14 +45,14 @@ function MainContent() {
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
   const [preselectedService, setPreselectedService] = useState<string | undefined>(undefined);
 
-  const handleOpenBooking = (serviceName?: string) => {
+  const handleOpenBooking = (serviceName: string) => {
     setPreselectedService(serviceName);
     setBookingModalOpen(true);
   };
 
   return (
     <Routes>
-      {/* Isolated Admin SPA */}
+      {/* Isolated Admin SP• */}
       <Route path="/admin/*" element={<AdminApp />} />
 
       {/* Public facing website layout */}
@@ -61,7 +61,7 @@ function MainContent() {
         element={
           <div className="min-h-screen flex flex-col bg-[#FAF9F6] text-[#1A1A1A] font-sans antialiased selection:bg-[#EBF2FA] selection:text-[#0F2747]">
             {/* Top Announcement Bar */}
-            <AnnouncementBar onOpenBooking={() => handleOpenBooking('Chiropractic & Wellness Consultation')} />
+            <AnnouncementBar onOpenBooking={handleOpenBooking} />
 
             {/* Main Header */}
             <Header onOpenBooking={handleOpenBooking} />
@@ -87,8 +87,8 @@ function MainContent() {
             {/* Floating WhatsApp Action */}
             <FloatingWhatsApp />
 
-            {/* Sticky Mobile Bottom CTA Bar */}
-            <MobileBottomBar onOpenBooking={() => handleOpenBooking('Chiropractic & Wellness Consultation')} />
+            {/* Sticky Mobile Bottom CT• Bar */}
+            <MobileBottomBar onOpenBooking={handleOpenBooking} />
 
             {/* Global Consultation Booking Modal */}
             <BookingModal

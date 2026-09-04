@@ -36,3 +36,9 @@ Thumbs.db
 vite.config.ts.timestamp-*
 
 .vercel
+
+# Sensitive credentials & service account key files
+peak-monument-*.json
+*.pem
+*.key
+

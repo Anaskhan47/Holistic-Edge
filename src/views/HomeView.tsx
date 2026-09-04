@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { HeroSection } from '../components/sections/HeroSection';
 import { TrustStrip } from '../components/sections/TrustStrip';
 import { WhatBringsYouHere } from '../components/sections/WhatBringsYouHere';
@@ -8,14 +8,13 @@ import { WhyHolisticEdge } from '../components/sections/WhyHolisticEdge';
 import { TreatmentJourneySection } from '../components/sections/TreatmentJourneySection';
 import { FounderSection } from '../components/sections/FounderSection';
 import { SuccessStoriesSection } from '../components/sections/SuccessStoriesSection';
-import { ClinicExperienceGallery } from '../components/sections/ClinicExperienceGallery';
 import { FaqSection } from '../components/sections/FaqSection';
 import { LocationContactSection } from '../components/sections/LocationContactSection';
 import { FinalCtaSection } from '../components/sections/FinalCtaSection';
 import { Helmet } from 'react-helmet-async';
 
 export interface HomeViewProps {
-  onOpenBooking: (preselectedService?: string) => void;
+  onOpenBooking: (preselectedService: string) => void;
 }
 
 export const HomeView: React.FC<HomeViewProps> = ({
@@ -25,7 +24,10 @@ export const HomeView: React.FC<HomeViewProps> = ({
     <div className="w-full">
       <Helmet>
         <title>Holistic Edge | Premium Chiropractic & Wellness in Hyderabad</title>
-        <meta name="description" content="Experience premium chiropractic care and non-surgical pain relief at Holistic Edge in Hyderabad. Led by Dr. Abdul Mallik." />
+        <meta name="description" content="Experience premium chiropractic care and non-surgical pain relief at Holistic Edge in Hyderabad. Led by Healer Abdul Mallik." />
+        <meta property="og:image" content="/brand/holistic-edge-official-logo.png" />
+        <meta property="og:logo" content="/brand/holistic-edge-official-logo.png" />
+        <meta property="twitter:image" content="/brand/holistic-edge-official-logo.png" />
       </Helmet>
 
       {/* 1. Hero Section */}
@@ -34,7 +36,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
       {/* 2. Trust Strip */}
       <TrustStrip />
 
-      {/* 3. "What Brings You Here?" Interactive Condition Triage */}
+      {/* 3. "What Brings You Here•" Interactive Condition Triage */}
       <WhatBringsYouHere onOpenBooking={() => onOpenBooking()} />
 
       {/* 4. Clinical Services Overview */}
@@ -49,14 +51,12 @@ export const HomeView: React.FC<HomeViewProps> = ({
       {/* 7. Treatment Journey 5-Step Timeline */}
       <TreatmentJourneySection onOpenBooking={() => onOpenBooking()} />
 
-      {/* 8. Dr. Abdul Mallik Founder Profile */}
+      {/* 8. Healer Abdul Mallik Founder Profile */}
       <FounderSection onOpenBooking={() => onOpenBooking()} />
 
       {/* 9. Authentic Success Stories & Verified Ratings */}
       <SuccessStoriesSection onOpenBooking={() => onOpenBooking()} />
 
-      {/* 10. Clinic Facility & Treatment Rooms Gallery */}
-      <ClinicExperienceGallery />
 
       {/* 11. Frequently Asked Questions */}
       <FaqSection onOpenBooking={() => onOpenBooking()} />
@@ -64,9 +64,11 @@ export const HomeView: React.FC<HomeViewProps> = ({
       {/* 12. Location, Maps & Inquiry System */}
       <LocationContactSection onOpenBooking={() => onOpenBooking()} />
 
-      {/* 13. Final Conversion CTA */}
+      {/* 13. Final Conversion CT• */}
       <FinalCtaSection onOpenBooking={() => onOpenBooking()} />
     </div>
   );
 };
+
+
 

@@ -1,9 +1,9 @@
-import { ClinicInfo } from '../types';
+﻿import { ClinicInfo } from '../types';
 
 export const clinicInfo: ClinicInfo = {
   name: 'Holistic Edge',
   tagline: 'Chiropractic & Wellness Support Clinic',
-  founder: 'Dr. Abdul Mallik',
+  founder: 'Healer Abdul Mallik',
   phone: '81426 42051',
   phoneRaw: '+918142642051',
   whatsapp: '918142642051',
@@ -29,7 +29,7 @@ export const clinicInfo: ClinicInfo = {
       verified: true
     }
   },
-  openingHoursNote: 'Consultations by Prior Appointment • Mon - Sat (Contact to confirm daily slot timings)',
+  openingHoursNote: 'Consultations by Prior Appointment ? Mon - Sat (Contact to confirm daily slot timings)',
   emailNote: 'Official clinic email address pending verification confirmation',
   freeConsultationNotice: 'Consultations by prior appointment. Call 81426 42051 to schedule your slot.'
 };

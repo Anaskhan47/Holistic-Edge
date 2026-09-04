@@ -1,46 +1,53 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useCallback,
-  useEffect,
-} from 'react';
+﻿import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import type {
   AdminAppointment,
   AdminLead,
-  AdminTestimonial,
+  AdminOffer,
   AdminNotification,
   AuditEntry,
   DashboardMetrics,
   ToastMessage,
   ToastType,
+  AdminPatient,
 } from '../types/admin.types';
 import {
+  patientStorage,
   appointmentStorage,
   leadStorage,
   testimonialStorage,
   notificationStorage,
+  offerStorage,
   auditStorage,
   computeDashboardMetrics,
+  OFFERS_UPDATED_EVENT,
 } from '../services/adminStorage';
 import { useAdminAuth } from './AdminAuthContext';
 
 interface AdminStoreContextValue {
+  // Patients
+  patients: AdminPatient[];
+  refreshPatients: () => void;
   // Appointments
   appointments: AdminAppointment[];
   refreshAppointments: () => void;
   // Leads
   leads: AdminLead[];
   refreshLeads: () => void;
-  // Testimonials
-  testimonials: AdminTestimonial[];
-  refreshTestimonials: () => void;
+  // Offers
+  offers: AdminOffer[];
+  refreshOffers: () => void;
+  publishOffer: (id: string) => { success: boolean; error?: string; offer?: AdminOffer };
+  unpublishOffer: (id: string) => void;
+  archiveOffer: (id: string) => void;
+  duplicateOffer: (id: string) => AdminOffer | null;
+  deleteOffer: (id: string) => boolean;
   // Notifications
   notifications: AdminNotification[];
   unreadCount: number;
   refreshNotifications: () => void;
   markNotificationRead: (id: string) => void;
   markAllNotificationsRead: () => void;
+  clearAllNotifications: () => void;
   // Audit
   auditEntries: AuditEntry[];
   logAudit: (action: string, entity: string, entityId: string, description: string, metadata?: Record<string, unknown>) => void;
@@ -49,7 +56,7 @@ interface AdminStoreContextValue {
   refreshMetrics: () => void;
   // Toast
   toasts: ToastMessage[];
-  showToast: (type: ToastType, title: string, message?: string, duration?: number) => void;
+  showToast: (type: ToastType, title: string, message: string, duration?: number) => void;
   dismissToast: (id: string) => void;
 }
 
@@ -58,9 +65,10 @@ const AdminStoreContext = createContext<AdminStoreContextValue | null>(null);
 export function AdminStoreProvider({ children }: { children: React.ReactNode }) {
   const { user } = useAdminAuth();
 
+  const [patients, setPatients] = useState<AdminPatient[]>([]);
   const [appointments, setAppointments] = useState<AdminAppointment[]>([]);
   const [leads, setLeads] = useState<AdminLead[]>([]);
-  const [testimonials, setTestimonials] = useState<AdminTestimonial[]>([]);
+  const [offers, setOffers] = useState<AdminOffer[]>([]);
   const [notifications, setNotifications] = useState<AdminNotification[]>([]);
   const [auditEntries, setAuditEntries] = useState<AuditEntry[]>([]);
   const [metrics, setMetrics] = useState<DashboardMetrics>({
@@ -69,10 +77,13 @@ export function AdminStoreProvider({ children }: { children: React.ReactNode }) 
     newLeads: 0,
     pendingFollowUps: 0,
     unreadNotifications: 0,
-    pendingTestimonials: 0,
     cancelledToday: 0,
   });
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
+
+  const refreshPatients = useCallback(() => {
+    setPatients(patientStorage.getAll());
+  }, []);
 
   const refreshAppointments = useCallback(() => {
     setAppointments(appointmentStorage.getAll());
@@ -82,8 +93,8 @@ export function AdminStoreProvider({ children }: { children: React.ReactNode }) 
     setLeads(leadStorage.getAll());
   }, []);
 
-  const refreshTestimonials = useCallback(() => {
-    setTestimonials(testimonialStorage.getAll());
+  const refreshOffers = useCallback(() => {
+    setOffers(offerStorage.getAll());
   }, []);
 
   const refreshNotifications = useCallback(() => {
@@ -97,26 +108,139 @@ export function AdminStoreProvider({ children }: { children: React.ReactNode }) 
   // Load all data on mount / auth change
   useEffect(() => {
     if (user) {
+      refreshPatients();
       refreshAppointments();
       refreshLeads();
-      refreshTestimonials();
+      refreshOffers();
       refreshNotifications();
       setAuditEntries(auditStorage.getAll());
       refreshMetrics();
     }
-  }, [user, refreshAppointments, refreshLeads, refreshTestimonials, refreshNotifications, refreshMetrics]);
+  }, [user, refreshPatients, refreshAppointments, refreshLeads, refreshOffers, refreshNotifications, refreshMetrics]);
+
+  // Listen for offer updates and real-time website submissions across windows/components
+  useEffect(() => {
+    const handleDataChange = () => {
+      refreshPatients();
+      refreshAppointments();
+      refreshLeads();
+      refreshOffers();
+      refreshNotifications();
+      setAuditEntries(auditStorage.getAll());
+      refreshMetrics();
+    };
+    window.addEventListener(OFFERS_UPDATED_EVENT, handleDataChange);
+    window.addEventListener('storage', handleDataChange);
+    window.addEventListener('admin_data_updated', handleDataChange);
+    return () => {
+      window.removeEventListener(OFFERS_UPDATED_EVENT, handleDataChange);
+      window.removeEventListener('storage', handleDataChange);
+      window.removeEventListener('admin_data_updated', handleDataChange);
+    };
+  }, [refreshPatients, refreshAppointments, refreshLeads, refreshOffers, refreshNotifications, refreshMetrics]);
+
+  const publishOffer = useCallback((id: string) => {
+    const res = offerStorage.publish(id, user || undefined);
+    if (res.success && res.offer) {
+      refreshOffers();
+      const actionLabel = res.offer.status === 'SCHEDULED' ? 'scheduled' : 'published';
+      auditStorage.log({
+        actor: user?.name || 'Admin',
+        actorId: user?.id || 'admin',
+        action: actionLabel,
+        entity: 'offer',
+        entityId: id,
+        description: `${res.offer.status === 'SCHEDULED' ? 'Scheduled' : 'Published'} offer: ${res.offer.title}`,
+      });
+      setAuditEntries(auditStorage.getAll());
+    }
+    return res;
+  }, [user, refreshOffers]);
+
+  const unpublishOffer = useCallback((id: string) => {
+    const updated = offerStorage.unpublish(id);
+    if (updated) {
+      refreshOffers();
+      auditStorage.log({
+        actor: user?.name || 'Admin',
+        actorId: user?.id || 'admin',
+        action: 'unpublished',
+        entity: 'offer',
+        entityId: id,
+        description: `Unpublished offer: ${updated.title}`,
+      });
+      setAuditEntries(auditStorage.getAll());
+    }
+  }, [user, refreshOffers]);
+
+  const archiveOffer = useCallback((id: string) => {
+    const updated = offerStorage.archive(id);
+    if (updated) {
+      refreshOffers();
+      auditStorage.log({
+        actor: user?.name || 'Admin',
+        actorId: user?.id || 'admin',
+        action: 'archived',
+        entity: 'offer',
+        entityId: id,
+        description: `Archived offer: ${updated.title}`,
+      });
+      setAuditEntries(auditStorage.getAll());
+    }
+  }, [user, refreshOffers]);
+
+  const duplicateOffer = useCallback((id: string) => {
+    const created = offerStorage.duplicate(id);
+    if (created) {
+      refreshOffers();
+      auditStorage.log({
+        actor: user?.name || 'Admin',
+        actorId: user?.id || 'admin',
+        action: 'created',
+        entity: 'offer',
+        entityId: created.id,
+        description: `Duplicated offer: ${created.title}`,
+      });
+      setAuditEntries(auditStorage.getAll());
+    }
+    return created;
+  }, [user, refreshOffers]);
+
+  const deleteOffer = useCallback((id: string) => {
+    const existing = offerStorage.getById(id);
+    const res = offerStorage.delete(id);
+    if (res) {
+      refreshOffers();
+      auditStorage.log({
+        actor: user?.name || 'Admin',
+        actorId: user?.id || 'admin',
+        action: 'deleted',
+        entity: 'offer',
+        entityId: id,
+        description: `Deleted offer: ${existing?.title || id}`,
+      });
+      setAuditEntries(auditStorage.getAll());
+    }
+    return res;
+  }, [user, refreshOffers]);
 
   const markNotificationRead = useCallback((id: string) => {
     notificationStorage.markRead(id);
-    refreshNotifications();
+    setNotifications(prev => prev.map(n => n.id === id ? { ...n, status: 'read' as const } : n));
     refreshMetrics();
-  }, [refreshNotifications, refreshMetrics]);
+  }, [refreshMetrics]);
 
   const markAllNotificationsRead = useCallback(() => {
     notificationStorage.markAllRead();
-    refreshNotifications();
+    setNotifications(prev => prev.map(n => n.status === 'unread' ? { ...n, status: 'read' as const } : n));
     refreshMetrics();
-  }, [refreshNotifications, refreshMetrics]);
+  }, [refreshMetrics]);
+
+  const clearAllNotifications = useCallback(() => {
+    notificationStorage.clearAll();
+    setNotifications([]);
+    refreshMetrics();
+  }, [refreshMetrics]);
 
   const logAudit = useCallback((
     action: string,
@@ -126,18 +250,18 @@ export function AdminStoreProvider({ children }: { children: React.ReactNode }) 
     metadata?: Record<string, unknown>
   ) => {
     const entry = auditStorage.log({
-      actor: user?.name ?? 'Unknown',
-      actorId: user?.id ?? 'unknown',
+      actor: user?.name || 'Unknown',
+      actorId: user?.id || 'unknown',
       action,
       entity,
       entityId,
       description,
-      metadata,
+      metadata: metadata || {},
     });
     setAuditEntries(prev => [entry, ...prev]);
   }, [user]);
 
-  const showToast = useCallback((type: ToastType, title: string, message?: string, duration = 4000) => {
+  const showToast = useCallback((type: ToastType, title: string, message: string, duration = 4000) => {
     const id = `toast_${Date.now()}`;
     const toast: ToastMessage = { id, type, title, message, duration };
     setToasts(prev => [...prev, toast]);
@@ -154,17 +278,25 @@ export function AdminStoreProvider({ children }: { children: React.ReactNode }) 
 
   return (
     <AdminStoreContext.Provider value={{
+      patients,
+      refreshPatients,
       appointments,
       refreshAppointments,
       leads,
       refreshLeads,
-      testimonials,
-      refreshTestimonials,
+      offers,
+      refreshOffers,
+      publishOffer,
+      unpublishOffer,
+      archiveOffer,
+      duplicateOffer,
+      deleteOffer,
       notifications,
       unreadCount,
       refreshNotifications,
       markNotificationRead,
       markAllNotificationsRead,
+      clearAllNotifications,
       auditEntries,
       logAudit,
       metrics,

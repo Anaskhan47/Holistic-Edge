@@ -1,57 +1,75 @@
-import { Service } from '../types';
+export interface ServiceItem {
+  id: string;
+  slug: string;
+  title: string;
+  subtitle: string;
+  shortDescription: string;
+  fullDescription: string;
+  iconName: string;
+  accentColor: string;
+  durationMinutes: string;
+  isFlagship: boolean;
+  heroImage?: string;
+  image: string;
+  benefits: string[];
+  howItWorks: string[];
+  whoIsItFor: string[];
+  whatToExpect: string[];
+  safetyNotes: string[];
+  relatedConditions: string[];
+  faqs: { question: string; answer: string }[];
+}
 
-export const servicesData: Service[] = [
+export const servicesData: ServiceItem[] = [
   {
     id: 'chiropractic-care',
     slug: 'chiropractic-care',
     title: 'Chiropractic Care',
     subtitle: 'Precision spinal adjustments & neuromuscular realignment',
-    shortDescription: 'Hands-on spinal adjustments and joint manipulations designed to relieve nerve compression, restore spinal alignment, and enhance natural mobility without surgery or drugs.',
-    fullDescription: 'At Holistic Edge, our Chiropractic Care is built upon 25 years of specialized clinical practice led by Dr. Abdul Mallik. We address subluxations, postural misalignments, and spinal biomechanical dysfunctions that cause radiating pain, stiffness, and restricted movement. Through safe, controlled, and targeted adjustments, we alleviate mechanical stress on spinal discs and surrounding nervous tissues.',
+    shortDescription: 'Gentle, high-velocity low-amplitude (HVLA) spinal adjustments and joint manipulations designed to relieve spinal subluxation, reduce nerve compression, and restore natural posture.',
+    fullDescription: 'Chiropractic Care at Holistic Edge focuses on diagnosing, treating, and preventing mechanical disorders of the musculoskeletal system, particularly the spine. Guided by Healer Abdul Mallik’s 25+ years of clinical expertise, each adjustment is preceded by a thorough spinal palpation and range-of-motion assessment.',
     iconName: 'Activity',
-    accentColor: '#0066CC',
-    durationMinutes: '30 - 45 Mins',
+    accentColor: '#0F2747',
+    durationMinutes: '20 - 30 Mins',
     isFlagship: false,
-    image: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=900&auto=format&fit=crop',
+    image: '/Our Clinical Offerings/Chiropractic Care.jpg',
     benefits: [
-      'Alleviates mechanical pressure on spinal nerves and nerve roots',
-      'Improves joint range of motion and overall spinal flexibility',
-      'Reduces chronic muscle guarding and localized tension',
-      'Assists postural restoration for desk workers and active individuals',
-      'Provides non-invasive, drug-free pain relief for spine-related conditions'
+      'Relieves nerve compression and nerve root irritation (e.g., Sciatica, Radiculopathy)',
+      'Restores physiological joint range of motion across cervical, thoracic, and lumbar segments',
+      'Corrects postural misalignments caused by prolonged sitting, desk work, or physical trauma',
+      'Reduces chronic spinal inflammation without relying on oral anti-inflammatory drugs',
+      'Enhances natural brain-to-body neurological pathways for overall vitality'
     ],
     howItWorks: [
-      'Comprehensive spinal palpation and range-of-motion assessment',
-      'Precise high-velocity, low-amplitude (HVLA) manual adjustments',
-      'Gentle joint mobilization for sensitive or degenerative segments',
-      'Ergonomic and postural correction advice tailored to daily routine'
+      'Comprehensive clinical history, spinal range-of-motion test, and nerve pressure check',
+      'Palpation of vertebral segments to pinpoint subluxations and biomechanical fixations',
+      'Application of controlled, gentle spinal thrusts or instrument-assisted adjustments',
+      'Post-adjustment postural check and immediate mobility re-assessment'
     ],
     whoIsItFor: [
-      'Individuals suffering from acute or chronic lower back pain',
-      'Patients experiencing neck stiffness, cervical pain, or tech-neck',
-      'People with disc bulges, sciatica, or radiating leg/arm numbness',
-      'Athletes seeking to restore optimal biomechanical movement'
+      'Individuals suffering from chronic lower back pain, neck stiffness, or shoulder tension',
+      'Patients diagnosed with Sciatica, Spondylosis, Disc Bulge, or Pinched Nerves',
+      'Office workers and professionals with long desk hours experiencing postural fatigue',
+      'Athletes and active individuals recovering from joint misalignments or sports injuries'
     ],
     whatToExpect: [
-      'Detailed discussion of your medical history and specific pain triggers',
-      'Physical spine examination assessing posture, curvature, and tenderness',
-      'Targeted, gentle manual adjustment on specialized chiropractic tables',
-      'Post-treatment movement test and immediate mobility review'
+      '• focused clinical assessment and clear explanation before any spinal adjustment',
+      'Audible release of trapped gas bubbles (joint cavitation) which is entirely normal and painless',
+      'Immediate reduction in joint stiffness accompanied by a feeling of lightness across the spine'
     ],
     safetyNotes: [
-      'Adjustments are performed only after careful clinical screening',
-      'A mild release sound ("cavitation") may occur, which is normal gas release within the joint capsule',
-      'Mild soreness can occasionally occur for 24 hours, similar to a new exercise session'
+      'All adjustments are personalized based on age, bone density, and diagnostic history',
+      'Pediatric, geriatric, and hyper-sensitive patients receive ultra-gentle low-force techniques'
     ],
-    relatedConditions: ['back-pain', 'neck-pain', 'sciatica', 'scoliosis', 'slip-disc'],
+    relatedConditions: ['back-pain', 'neck-pain', 'sciatica', 'spondylitis', 'slip-disc', 'headaches-migraines'],
     faqs: [
       {
-        question: 'Is chiropractic adjustment painful?',
-        answer: 'Most patients feel immediate relief and lightness following an adjustment. While slight muscle tenderness may occasionally occur following the first session as muscles adjust to realignment, the adjustment itself is gentle and controlled.'
+        question: 'Is chiropractic adjustment safe•',
+        answer: 'Yes. When performed by a qualified, experienced practitioner like Healer Abdul Mallik, chiropractic care is recognized worldwide as one of the safest non-invasive healthcare modalities for spine and joint conditions.'
       },
       {
-        question: 'How many chiropractic sessions will I need?',
-        answer: 'Treatment frequency depends on whether your condition is acute (recent strain) or chronic (longstanding postural misalignment). An individualized recommendation is provided following your initial consultation and assessment.'
+        question: 'Does spinal adjustment hurt•',
+        answer: 'Most patients feel immediate relief. You may hear a popping sound caused by nitrogen gas releasing from joint capsules, but the procedure itself is gentle and non-painful.'
       }
     ]
   },
@@ -60,100 +78,46 @@ export const servicesData: Service[] = [
     slug: 'acupuncture',
     title: 'Acupuncture',
     subtitle: 'Targeted meridian & neuro-fascial pathway stimulation',
-    shortDescription: 'Sterile, ultra-fine needle therapy designed to stimulate specific anatomical points, modulate pain perception pathways, improve local microcirculation, and trigger natural healing.',
-    fullDescription: 'Our clinical acupuncture integrates traditional meridian knowledge with contemporary neuro-anatomical understanding. By stimulating key acupoints, acupuncture promotes local blood flow, encourages the release of natural endorphins, and calms overstimulated pain pathways across the central nervous system.',
+    shortDescription: 'Sterile, ultra-fine needle insertion at specific anatomical and neurological trigger points to stimulate natural endorphin release, clear energy blockages, and promote vascular healing.',
+    fullDescription: 'Clinical Acupuncture at Holistic Edge integrates classical meridian science with modern neuro-anatomical trigger point therapy. By inserting single-use micro-needles into targeted neuro-vascular zones, acupuncture modulates pain signals along peripheral nerves, relaxes deep muscular spasms, and triggers local micro-circulation.',
     iconName: 'Zap',
-    accentColor: '#00A896',
-    durationMinutes: '35 - 50 Mins',
+    accentColor: '#1B4332',
+    durationMinutes: '30 - 45 Mins',
     isFlagship: false,
-    image: 'https://images.unsplash.com/photo-1512290900672-1f4f5a34e062?q=80&w=900&auto=format&fit=crop',
+    image: '/Our Clinical Offerings/Acupuncture.jfif',
     benefits: [
-      'Calms hyperactive pain pathways and nervous system tension',
-      'Enhances microcirculation and oxygenation in tense or inflamed tissues',
-      'Promotes deep neuromuscular relaxation and stress relief',
-      'Assists in treating chronic headaches, migraines, and nerve irritation',
-      'Complements spinal adjustments by releasing deep myofascial trigger points'
+      'Triggers rapid endorphin and enkephalin release for immediate, drug-free pain relief',
+      'Decompresses chronic muscle trigger points and deep fascial adhesions',
+      'Enhances micro-vascular blood flow and cellular oxygen delivery to damaged tissues',
+      'Calms hyperactive nervous system states, reducing stress, anxiety, and tension headaches',
+      'Accelerates healing in stubborn tendonitis, ligament sprains, and nerve inflammations'
     ],
     howItWorks: [
-      'Identification of exact meridian points and myofascial trigger zones',
-      'Insertion of single-use, pre-sterilized, ultra-fine medical needles',
-      'Retention of needles in a calm, therapeutic environment for 20-30 minutes',
-      'Gentle removal followed by relaxation assessment'
+      'Pulse and anatomical point assessment to map meridian and nerve pathways',
+      'Sanitisation of targeted acupuncture zones using clinical-grade alcohol swabs',
+      'Insertion of sterile, single-use micro-fine needles into specific trigger points',
+      '20-30 minute rest phase allowing neuro-vascular stimulation and deep relaxation'
     ],
     whoIsItFor: [
-      'Individuals dealing with persistent tension headaches or migraines',
-      'Patients with chronic fibromyalgia, neck stiffness, or joint discomfort',
-      'Those seeking holistic pain modulation without heavy reliance on painkillers',
-      'Patients needing nervous system calming alongside physical rehabilitation'
+      'Patients dealing with chronic persistent pain resistant to standard medication',
+      'Individuals with tension headaches, migraines, facial pain, or trigeminal discomfort',
+      'People with joint arthritis, knee pain, frozen shoulder, or plantar fasciitis',
+      'Anyone seeking a deeply restorative treatment that balances nerve function and stress'
     ],
     whatToExpect: [
-      'Minimal sensation upon needle placement — most patients report a slight tingling or deep dull ache',
-      'A deeply relaxing 20–30 minute rest session during needle retention',
-      'A calm, unhurried treatment setting designed for patient comfort'
+      '• virtually painless insertion process using needles as thin as a human hair',
+      '• mild sensation of warmth, heaviness, or subtle tingling (known as De Qi)',
+      '• profound state of muscular relaxation during and after the session'
     ],
     safetyNotes: [
-      'Only 100% single-use, sterile, disposable needles are used',
-      'Treatment is administered by trained, certified practitioners',
-      'Patients on specific anticoagulant medications will undergo prior suitability screening'
+      '100% single-use, pre-sterilized disposable needles opened in front of the patient',
+      'No medication or chemical coating is used on the needles; action is purely physiological'
     ],
-    relatedConditions: ['migraine', 'neck-pain', 'frozen-shoulder', 'knee-pain', 'sciatica'],
+    relatedConditions: ['headaches-migraines', 'knee-pain', 'frozen-shoulder', 'neck-pain'],
     faqs: [
       {
-        question: 'Do acupuncture needles hurt?',
-        answer: 'Acupuncture needles are hair-thin, significantly finer than medical injection needles. Most patients feel only a faint tap or mild warmth when inserted.'
-      },
-      {
-        question: 'Is acupuncture safe and hygienic at Holistic Edge?',
-        answer: 'Yes. We strictly adhere to single-use, disposable medical-grade needles unpacked in front of the patient in sanitized clinical suites.'
-      }
-    ]
-  },
-  {
-    id: 'cupping-therapy',
-    slug: 'cupping-therapy',
-    title: 'Cupping Therapy',
-    subtitle: 'Deep tissue decompression & localized circulation enhancement',
-    shortDescription: 'Specialized therapeutic suction applied to muscular and fascial zones to decompress tissue, draw fresh circulation, clear stagnant metabolites, and release stubborn knots.',
-    fullDescription: 'Cupping Therapy creates negative pressure (decompression) on the skin and underlying fascia. Unlike standard massage which applies positive pressure inward, cupping lifts connective tissue, dramatically improving microvascular blood flow, clearing metabolic waste, and releasing deep fibrous adhesions that limit joint range.',
-    iconName: 'Shield',
-    accentColor: '#FF6B35',
-    durationMinutes: '30 - 40 Mins',
-    isFlagship: false,
-    image: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=900&auto=format&fit=crop',
-    benefits: [
-      'Decompresses stiff fascia and deep muscular trigger knots',
-      'Accelerates local lymph drainage and metabolic waste clearance',
-      'Relieves intense shoulder, upper back, and lumbar tightness',
-      'Improves tissue elasticity and joint range of motion',
-      'Prepares deep tissues for spinal alignment and mobility protocols'
-    ],
-    howItWorks: [
-      'Target area skin preparation and clinical assessment of muscle tone',
-      'Application of specialized medical suction cups over targeted tension zones',
-      'Controlled static or gliding suction tailored to patient tolerance',
-      'Post-cup soothing tissue application and movement check'
-    ],
-    whoIsItFor: [
-      'Desk workers with intense trapezius, neck, and upper back tightness',
-      'Athletes with localized muscle stiffness and delayed recovery',
-      'Patients with chronic lumbar tightness resistant to standard stretching',
-      'Individuals with frozen shoulder or restricted scapular movement'
-    ],
-    whatToExpect: [
-      'A soothing suction sensation that lifts tension away from deep muscle beds',
-      'Temporary circular discoloration (petechiae) which naturally fades in 3–7 days',
-      'Noticeable lightness and reduced muscular resistance following the session'
-    ],
-    safetyNotes: [
-      'Suction pressure is strictly monitored and adapted to individual skin sensitivity',
-      'Marks left on the skin are the result of microcirculation suction, not bruises or burns',
-      'Treated areas should be kept warm and shielded from direct cold drafts for 24 hours'
-    ],
-    relatedConditions: ['frozen-shoulder', 'back-pain', 'neck-pain', 'sports-injuries'],
-    faqs: [
-      {
-        question: 'Why does cupping leave circular marks?',
-        answer: 'The suction draws stagnant blood and metabolic fluids from deep muscle layers toward the surface, allowing new oxygenated blood to flood the area. These marks are non-painful and fade naturally in a few days.'
+        question: 'Are acupuncture needles painful•',
+        answer: 'No. Acupuncture needles are micro-thin — far smaller than hypodermic injection needles. Most patients feel only a slight tap upon insertion followed by a relaxing sensation.'
       }
     ]
   },
@@ -168,7 +132,7 @@ export const servicesData: Service[] = [
     accentColor: '#028071',
     durationMinutes: '30 - 45 Mins',
     isFlagship: false,
-    image: 'https://images.unsplash.com/photo-1519823551278-64ac92734fb1?q=80&w=900&auto=format&fit=crop',
+    image: '/Our Clinical Offerings/Alternative Therapies.jpg',
     benefits: [
       'Addresses soft tissue imbalances that pull joints out of alignment',
       'Supports natural tissue recovery without reliance on oral painkillers',
@@ -187,7 +151,7 @@ export const servicesData: Service[] = [
       'People recovering from chronic postural strain and muscle imbalances'
     ],
     whatToExpect: [
-      'A thorough, patient-centered consultation focused on your daily habits',
+      '• thorough, patient-centered consultation focused on your daily habits',
       'Hands-on muscular and soft tissue therapy designed for your comfort level',
       'Practical takeaway advice on workspace ergonomics and daily stretching'
     ],
@@ -198,7 +162,7 @@ export const servicesData: Service[] = [
     relatedConditions: ['spondylitis', 'knee-pain', 'sports-injuries', 'back-pain'],
     faqs: [
       {
-        question: 'Can alternative therapies be combined with other medical treatments?',
+        question: 'Can alternative therapies be combined with other medical treatments•',
         answer: 'Yes. Our non-invasive therapies are designed to complement overall wellness. We encourage patients to share any ongoing medical history during the initial consultation.'
       }
     ]
@@ -207,14 +171,14 @@ export const servicesData: Service[] = [
     id: 'amm-method',
     slug: 'amm-method',
     title: 'The A.M.M Method™',
-    subtitle: 'Adjustment • Mobilization • Muscle Strengthening',
+    subtitle: 'Adjustment · Mobilization · Muscle Strengthening',
     shortDescription: 'Our signature 3-phase clinical protocol developed through 25 years of practice, addressing joint alignment, soft tissue mobility, and structural muscle stabilization for lasting pain relief.',
-    fullDescription: 'The A.M.M Method™ is Holistic Edge’s signature clinical framework formulated by Dr. Abdul Mallik over 25 years of treating 50,000+ patients. Rather than offering short-lived symptom relief, the A.M.M Method integrates three sequential pillars: (1) Adjustment of structural misalignments, (2) Mobilization of restricted joints and fascia, and (3) Muscle Strengthening to secure lasting biomechanical stability.',
+    fullDescription: 'The A.M.M Method™ is Holistic Edge’s signature clinical framework formulated by Healer Abdul Mallik over 25 years of treating 50,000+ patients. Rather than offering short-lived symptom relief, the A.M.M Method integrates three sequential pillars: (1) Adjustment of structural misalignments, (2) Mobilization of restricted joints and fascia, and (3) Muscle Strengthening to secure lasting biomechanical stability.',
     iconName: 'Layers',
     accentColor: '#0066CC',
     durationMinutes: '45 - 60 Mins',
     isFlagship: true,
-    image: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=900&auto=format&fit=crop',
+    image: '/Our Clinical Offerings/A.M.M Method.jpg',
     benefits: [
       'Addresses both structural misalignment and muscular root causes',
       'Prevents recurrent pain by strengthening supporting stabilizers',
@@ -223,7 +187,7 @@ export const servicesData: Service[] = [
       'Proven through 25 years of clinical refinement in Mehdipatnam, Hyderabad'
     ],
     howItWorks: [
-      'Stage 1 (A - Adjustment): Realignment of spinal vertebrae and peripheral joints to remove nerve impingement',
+      'Stage 1 (• - Adjustment): Realignment of spinal vertebrae and peripheral joints to remove nerve impingement',
       'Stage 2 (M - Mobilization): Passive and active joint articulation to restore full physiological range',
       'Stage 3 (M - Muscle Strengthening): Isometric and functional rehabilitation of postural support muscles'
     ],
@@ -244,7 +208,7 @@ export const servicesData: Service[] = [
     relatedConditions: ['back-pain', 'neck-pain', 'sciatica', 'spondylitis', 'scoliosis', 'slip-disc'],
     faqs: [
       {
-        question: 'Why is the A.M.M Method different from standard therapy?',
+        question: 'Why is the A.M.M Method different from standard therapy•',
         answer: 'Many therapies only address one aspect — either cracking a joint or doing exercises. If you strengthen a misaligned spine, you reinforce dysfunction. If you adjust without strengthening, the pain returns. The A.M.M Method aligns first, mobilizes tissue second, and reinforces muscle third for sustainable wellness.'
       }
     ]

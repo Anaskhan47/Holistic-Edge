@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { motion, AnimatePresence } from 'motion/react';
@@ -7,9 +7,9 @@ export interface AccordionItemProps {
   id: string;
   title: string;
   children: React.ReactNode;
-  isOpen?: boolean;
-  onToggle?: () => void;
-  badge?: string;
+  isOpen: boolean;
+  onToggle: () => void;
+  badge: string;
 }
 
 export const AccordionItem: React.FC<AccordionItemProps> = ({
@@ -73,10 +73,10 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
 };
 
 export interface AccordionProps {
-  items: { id: string; title: string; content: React.ReactNode; badge?: string }[];
-  allowMultiple?: boolean;
-  defaultOpenIndex?: number;
-  className?: string;
+  items: { id: string; title: string; content: React.ReactNode; badge: string }[];
+  allowMultiple: boolean;
+  defaultOpenIndex: number;
+  className: string;
 }
 
 export const Accordion: React.FC<AccordionProps> = ({

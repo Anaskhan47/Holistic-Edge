@@ -49,13 +49,13 @@ export const WhyHolisticEdge: React.FC<WhyHolisticEdgeProps> = ({
             </h2>
 
             <p className="text-sm sm:text-base text-[#5A544E] leading-relaxed">
-              Living with chronic back pain, cervical stiffness, or sciatica diminishes your quality of life. For 25 years, Dr. Abdul Mallik and our team of 7 professionals in Mehdipatnam have provided patients with a safer, drug-free alternative to invasive spine surgeries.
+              Living with chronic back pain, cervical stiffness, or sciatica diminishes your quality of life. For 25 years, Healer Abdul Mallik and our team of 7 professionals in Mehdipatnam have provided patients with a safer, drug-free alternative to invasive spine surgeries.
             </p>
 
             {/* Key Pillars */}
             <div className="space-y-3.5">
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-lg bg-[#FAF4ED] text-[#D49E58] flex items-center justify-center flex-shrink-0 mt-0.5 border border-[#EADBCE]">
+                <div className="w-8 h-8 rounded-lg bg-[#FAF4ED] text-[#10B981] flex items-center justify-center flex-shrink-0 mt-0.5 border border-[#EADBCE]">
                   <ShieldCheck className="w-4 h-4" />
                 </div>
                 <div>

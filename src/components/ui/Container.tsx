@@ -1,8 +1,8 @@
-import React from 'react';
+﻿import React from 'react';
 import { cn } from '../../lib/utils';
 
 export interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
-  size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
+  size: 'sm' | 'md' | 'lg' | 'xl' | 'full';
 }
 
 export const Container: React.FC<ContainerProps> = ({

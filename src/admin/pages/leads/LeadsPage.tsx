@@ -30,7 +30,7 @@ export function LeadsPage() {
   const { leads, refreshLeads, refreshMetrics, showToast, logAudit } = useAdminStore();
 
   const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string>(searchParams.get('status') ?? 'All');
+  const [statusFilter, setStatusFilter] = useState<string>(searchParams.get('status') || 'All');
   const [page, setPage] = useState(1);
   const [changingStatus, setChangingStatus] = useState<string | null>(null);
 
@@ -40,9 +40,9 @@ export function LeadsPage() {
     if (search.trim()) {
       const q = search.toLowerCase();
       data = data.filter(l =>
-        l.fullName.toLowerCase().includes(q) ||
-        l.phone.includes(q) ||
-        l.condition.toLowerCase().includes(q)
+        (l.fullName || '').toLowerCase().includes(q) ||
+        (l.phone || '').includes(q) ||
+        (l.condition || '').toLowerCase().includes(q)
       );
     }
     return data;
@@ -72,12 +72,12 @@ export function LeadsPage() {
   }, [leads]);
 
   return (
-    <div className="p-6 space-y-5">
+    <div className="p-3 sm:p-6 space-y-5">
       {/* Header */}
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-lg font-bold text-[#1A1A1A]">Leads & Inquiries</h1>
-          <p className="text-sm text-[#9E968C]">{leads.length} total · {counts['New'] ?? 0} new</p>
+          <p className="text-sm text-[#9E968C]">{leads.length} total · {counts['New'] || 0} new</p>
         </div>
         <button
           onClick={() => navigate('/admin/leads/new')}
@@ -111,7 +111,7 @@ export function LeadsPage() {
         <input
           value={search}
           onChange={e => { setSearch(e.target.value); setPage(1); }}
-          placeholder="Name, phone, condition…"
+          placeholder="Name, phone, condition..."
           className="w-full h-9 pl-8 pr-3 rounded-xl border border-[#E5E2DC] bg-white text-sm placeholder:text-[#C4BDB4] focus:outline-none focus:border-[#0F2747] focus:ring-2 focus:ring-[#0F2747]/10 transition-all"
         />
       </div>
@@ -229,3 +229,4 @@ export function LeadsPage() {
     </div>
   );
 }
+

@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Sparkles, Calendar, Phone, CheckCircle2 } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { clinicInfo } from '../../data/clinicInfo';
@@ -17,17 +17,17 @@ export const FreeConsultationBanner: React.FC<FreeConsultationBannerProps> = ({ 
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
             <div className="lg:col-span-8 space-y-4 text-left">
-              <div className="inline-flex items-center gap-2 bg-[#FAF9F6]/10 backdrop-blur-md px-3.5 py-1 rounded-full text-xs font-semibold text-[#D49E58] border border-white/10">
+              <div className="inline-flex items-center gap-2 bg-[#FAF9F6]/10 backdrop-blur-md px-3.5 py-1 rounded-full text-xs font-semibold text-[#10B981] border border-white/10">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Personal Review by Lead Clinical Director</span>
               </div>
 
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal font-serif text-[#FAF9F6] tracking-tight">
-                Ready to Take the Next Step?
+                Ready to Take the Next Step•
               </h2>
 
               <p className="text-sm sm:text-base text-[#D4CEC5] leading-relaxed max-w-2xl">
-                Discuss your back, neck, or joint pain directly with Dr. Abdul Mallik. We will evaluate your symptoms, review previous MRI/X-ray reports, and design a non-surgical care plan tailored to you.
+                Discuss your back, neck, or joint pain directly with Healer Abdul Mallik. We will evaluate your symptoms, review previous MRI/X-ray reports, and design a non-surgical care plan tailored to you.
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 text-xs font-medium text-[#D4CEC5]">
@@ -46,7 +46,7 @@ export const FreeConsultationBanner: React.FC<FreeConsultationBannerProps> = ({ 
               </div>
             </div>
 
-            {/* CTA Box */}
+            {/* CT• Box */}
             <div className="lg:col-span-4 bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/10 text-center space-y-3">
               <Button
                 fullWidth

@@ -1,11 +1,11 @@
-import { TreatmentStep } from '../types';
+﻿import { TreatmentStep } from '../types';
 
 export const treatmentJourneySteps: TreatmentStep[] = [
   {
     stepNumber: 1,
     title: 'Initial Consultation',
     subtitle: 'Understand Your Condition and Options',
-    description: 'A focused initial discussion with Dr. Abdul Mallik to review your pain history, examine relevant MRI/X-ray reports, and assess if Holistic Edge’s modalities are right for you.',
+    description: '• focused initial discussion with Healer Abdul Mallik to review your pain history, examine relevant MRI/X-ray reports, and assess if Holistic Edge’s modalities are right for you.',
     details: [
       'Detailed discussion of pain triggers and daily limitations',
       'Initial spine, posture, and kinetic chain mobility screening',
@@ -43,7 +43,7 @@ export const treatmentJourneySteps: TreatmentStep[] = [
     subtitle: 'Gentle, Progressive Clinical Care',
     description: 'Hands-on clinical sessions in our calm, sanitized therapy suites in Mehdipatnam, systematically restoring alignment, freeing restricted tissue, and reducing pain.',
     details: [
-      'Safe, controlled adjustments by Dr. Abdul Mallik',
+      'Safe, controlled adjustments by Healer Abdul Mallik',
       'Myofascial decompression & targeted acupoint stimulation',
       'Immediate post-session mobility and relief assessment'
     ],

@@ -4,7 +4,7 @@ import { userStorage } from '../../services/adminStorage';
 import { useAdminStore } from '../../context/AdminStoreContext';
 import type { AdminUser, AdminRole } from '../../types/admin.types';
 
-const ROLES: AdminRole[] = ['SUPER_ADMIN', 'ADMIN', 'MANAGER', 'STAFF', 'CONTENT_EDITOR'];
+const ROLES: AdminRole[] = ['SUPER_ADMIN', 'ADMIN', 'RECEPTION', 'MANAGER', 'STAFF', 'CONTENT_EDITOR'];
 
 export function UsersPage() {
   const { showToast, logAudit } = useAdminStore();
@@ -36,7 +36,7 @@ export function UsersPage() {
   };
 
   return (
-    <div className="p-6 max-w-4xl space-y-6">
+    <div className="p-3 sm:p-6 max-w-4xl space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-lg font-bold text-[#1A1A1A]">Users & Roles</h1>
@@ -89,7 +89,12 @@ export function UsersPage() {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <span className="text-xs bg-[#F4F1EA] text-[#5A544E] px-2.5 py-1 rounded-lg font-medium">{u.role}</span>
+              <span className={`text-xs px-2.5 py-1 rounded-lg font-medium ${
+                u.role === 'RECEPTION' ? 'bg-[#EBF5FF] text-[#0066CC] font-semibold border border-[#B3D8FF]' :
+                u.role === 'SUPER_ADMIN' ? 'bg-[#0F2747] text-white font-semibold' : 'bg-[#F4F1EA] text-[#5A544E]'
+              }`}>
+                {u.role === 'RECEPTION' ? '★ Reception (Leads & Appointments)' : u.role}
+              </span>
               {users.length > 1 && (
                 <button onClick={() => handleDelete(u)} className="text-red-500 hover:text-red-700 p-1">
                   <Trash2 size={15} />
@@ -102,3 +107,4 @@ export function UsersPage() {
     </div>
   );
 }
+

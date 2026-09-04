@@ -1,256 +1,203 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, X, CalendarDays, Activity, Star, Stethoscope, BookOpen, Users, ArrowRight } from 'lucide-react';
-import { appointmentStorage, leadStorage, testimonialStorage } from '../../services/adminStorage';
-import { servicesData } from '../../../data/services';
-import { conditionsData } from '../../../data/conditions';
-import { teamData } from '../../../data/team';
-import { cn } from '../../../lib/utils';
-
-interface SearchResult {
-  id: string;
-  type: 'appointment' | 'lead' | 'testimonial' | 'service' | 'condition' | 'team';
-  label: string;
-  sublabel?: string;
-  path: string;
-}
-
-const TYPE_META: Record<SearchResult['type'], { icon: React.ReactNode; color: string; label: string }> = {
-  appointment: { icon: <CalendarDays size={13} />, color: 'text-[#1B4332]', label: 'Appointment' },
-  lead: { icon: <Activity size={13} />, color: 'text-[#1A365D]', label: 'Lead' },
-  testimonial: { icon: <Star size={13} />, color: 'text-[#92400E]', label: 'Testimonial' },
-  service: { icon: <Stethoscope size={13} />, color: 'text-[#0F2747]', label: 'Service' },
-  condition: { icon: <BookOpen size={13} />, color: 'text-[#5A544E]', label: 'Condition' },
-  team: { icon: <Users size={13} />, color: 'text-[#1A1A1A]', label: 'Team' },
-};
+import { Search, X, Calendar, Users, FileText, Settings, ShieldAlert, ArrowRight, UserCheck } from 'lucide-react';
+import { useAdminStore } from '../../context/AdminStoreContext';
 
 interface CommandPaletteProps {
-  open: boolean;
+  isOpen: boolean;
   onClose: () => void;
 }
 
-export function CommandPalette({ open, onClose }: CommandPaletteProps) {
+export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState<SearchResult[]>([]);
-  const [selectedIdx, setSelectedIdx] = useState(0);
-  const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const { patients, appointments, leads } = useAdminStore();
 
   useEffect(() => {
-    if (open) {
-      setQuery('');
-      setResults([]);
-      setSelectedIdx(0);
-      setTimeout(() => inputRef.current?.focus(), 50);
-    }
-  }, [open]);
+    if (!isOpen) return;
 
-  // Cmd+K global shortcut
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
         e.preventDefault();
-        if (!open) onClose(); // toggle — handled by parent
+        onClose();
       }
     };
-    document.addEventListener('keydown', handler);
-    return () => document.removeEventListener('keydown', handler);
-  }, [open, onClose]);
 
-  const search = useCallback((q: string) => {
-    if (!q.trim()) {
-      setResults([]);
-      return;
-    }
-    const lower = q.toLowerCase();
-    const found: SearchResult[] = [];
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
 
-    // Appointments
-    appointmentStorage.getAll()
-      .filter(a => a.fullName.toLowerCase().includes(lower) || a.phone.includes(lower) || a.service.toLowerCase().includes(lower))
-      .slice(0, 3)
-      .forEach(a => found.push({
-        id: a.id, type: 'appointment',
-        label: a.fullName,
-        sublabel: `${a.service} · ${a.preferredDate} · ${a.status}`,
-        path: `/admin/appointments/${a.id}`,
-      }));
+  if (!isOpen) return null;
 
-    // Leads
-    leadStorage.getAll()
-      .filter(l => l.fullName.toLowerCase().includes(lower) || l.phone.includes(lower) || l.condition.toLowerCase().includes(lower))
-      .slice(0, 3)
-      .forEach(l => found.push({
-        id: l.id, type: 'lead',
-        label: l.fullName,
-        sublabel: `${l.condition} · ${l.status}`,
-        path: `/admin/leads/${l.id}`,
-      }));
-
-    // Testimonials
-    testimonialStorage.getAll()
-      .filter(t => t.displayName.toLowerCase().includes(lower) || t.review.toLowerCase().includes(lower) || t.condition.toLowerCase().includes(lower))
-      .slice(0, 2)
-      .forEach(t => found.push({
-        id: t.id, type: 'testimonial',
-        label: t.displayName,
-        sublabel: `${t.condition} · ${t.status}`,
-        path: `/admin/testimonials`,
-      }));
-
-    // Services
-    servicesData
-      .filter(s => s.title.toLowerCase().includes(lower))
-      .slice(0, 2)
-      .forEach(s => found.push({
-        id: s.id, type: 'service',
-        label: s.title,
-        sublabel: s.shortDescription,
-        path: `/admin/services`,
-      }));
-
-    // Conditions
-    conditionsData
-      .filter(c => c.title.toLowerCase().includes(lower))
-      .slice(0, 2)
-      .forEach(c => found.push({
-        id: c.id, type: 'condition',
-        label: c.title,
-        sublabel: c.shortDescription,
-        path: `/admin/conditions`,
-      }));
-
-    // Team
-    teamData
-      .filter(m => m.name.toLowerCase().includes(lower) || m.role.toLowerCase().includes(lower))
-      .slice(0, 2)
-      .forEach(m => found.push({
-        id: m.id, type: 'team',
-        label: m.name,
-        sublabel: m.role,
-        path: `/admin/team`,
-      }));
-
-    setResults(found.slice(0, 12));
-    setSelectedIdx(0);
-  }, []);
-
-  useEffect(() => {
-    const timer = setTimeout(() => search(query), 120);
-    return () => clearTimeout(timer);
-  }, [query, search]);
-
-  const handleSelect = (result: SearchResult) => {
-    navigate(result.path);
+  const handleSelect = (path: string) => {
+    navigate(path);
     onClose();
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      setSelectedIdx(i => Math.min(i + 1, results.length - 1));
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      setSelectedIdx(i => Math.max(i - 1, 0));
-    } else if (e.key === 'Enter') {
-      if (results[selectedIdx]) handleSelect(results[selectedIdx]);
-    } else if (e.key === 'Escape') {
-      onClose();
-    }
-  };
+  const filteredPatients = patients.filter(
+    (p: any) =>
+      (p.name || '').toLowerCase().includes(query.toLowerCase()) ||
+      (p.registrationTokenNumber || '').toLowerCase().includes(query.toLowerCase()) ||
+      (p.phone || '').includes(query) ||
+      (p.email || '').toLowerCase().includes(query.toLowerCase())
+  );
 
-  if (!open) return null;
+  const filteredAppointments = appointments.filter(
+    (apt: any) =>
+      (apt.fullName || apt.patientName || '').toLowerCase().includes(query.toLowerCase()) ||
+      (apt.phone || '').includes(query) ||
+      (apt.id || '').toLowerCase().includes(query.toLowerCase())
+  );
+
+  const filteredLeads = leads.filter(
+    (lead: any) =>
+      (lead.fullName || lead.name || '').toLowerCase().includes(query.toLowerCase()) ||
+      (lead.phone || '').includes(query) ||
+      (lead.condition || '').toLowerCase().includes(query.toLowerCase())
+  );
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-start justify-center pt-[20vh]">
-      {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
-
-      {/* Palette */}
-      <div className="relative w-full max-w-xl mx-4 bg-white rounded-2xl shadow-2xl border border-[#E5E2DC] overflow-hidden">
-        {/* Input */}
-        <div className="flex items-center gap-3 px-4 py-3 border-b border-[#F0ECE4]">
-          <Search size={16} className="text-[#9E968C] flex-shrink-0" />
+    <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-start justify-center pt-20 px-4">
+      <div className="bg-white w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden border border-slate-100 flex flex-col max-h-[80vh] font-sans">
+        {/* Search Header */}
+        <div className="p-4 border-b border-slate-100 flex items-center gap-3 bg-slate-50/50">
+          <Search className="w-5 h-5 text-slate-400" />
           <input
-            ref={inputRef}
+            type="text"
             value={query}
-            onChange={e => setQuery(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="Search appointments, leads, services…"
-            className="flex-1 text-sm text-[#1A1A1A] placeholder:text-[#9E968C] outline-none bg-transparent"
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search Patients (HE Token, Name, Phone, Email), Appointments & Commands... (ESC)"
+            className="w-full bg-transparent border-none text-slate-900 text-sm font-medium focus:outline-none placeholder:text-slate-400"
+            autoFocus
           />
-          {query && (
-            <button onClick={() => setQuery('')} className="text-[#9E968C] hover:text-[#1A1A1A]">
-              <X size={14} />
-            </button>
-          )}
+          <button
+            type="button"
+            onClick={onClose}
+            className="p-1 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-200/60"
+          >
+            <X className="w-4 h-4" />
+          </button>
         </div>
 
-        {/* Results */}
-        {results.length > 0 && (
-          <ul className="py-2 max-h-72 overflow-y-auto">
-            {results.map((result, idx) => {
-              const meta = TYPE_META[result.type];
-              return (
-                <li key={`${result.type}-${result.id}`}>
+        {/* Results Body */}
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 text-xs">
+          {/* Quick Nav Commands */}
+          {!query && (
+            <div>
+              <p className="px-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
+                Quick Navigation
+              </p>
+              <div className="space-y-1">
+                {[
+                  { label: 'Go to Patient Directory (Google Sheets Dataset)', path: '/admin/patients', icon: <UserCheck className="w-4 h-4 text-emerald-500" /> },
+                  { label: 'Go to Appointments', path: '/admin/appointments', icon: <Calendar className="w-4 h-4 text-sky-500" /> },
+                  { label: 'Go to Leads & Inquiries', path: '/admin/leads', icon: <Users className="w-4 h-4 text-amber-500" /> },
+                  { label: 'Go to Follow-up Reminders', path: '/admin/follow-ups', icon: <FileText className="w-4 h-4 text-purple-500" /> },
+                  { label: 'Go to System Health', path: '/admin/system-health', icon: <Settings className="w-4 h-4 text-[#0284C7]" /> },
+                ].map((cmd) => (
                   <button
-                    onClick={() => handleSelect(result)}
-                    onMouseEnter={() => setSelectedIdx(idx)}
-                    className={cn(
-                      'w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors',
-                      idx === selectedIdx ? 'bg-[#F8F7F4]' : 'hover:bg-[#F8F7F4]'
-                    )}
+                    key={cmd.path}
+                    type="button"
+                    onClick={() => handleSelect(cmd.path)}
+                    className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 text-slate-700 font-medium transition-colors"
                   >
-                    <div className={cn('w-7 h-7 rounded-lg flex items-center justify-center bg-[#F4F1EA] flex-shrink-0', meta.color)}>
-                      {meta.icon}
+                    <div className="flex items-center gap-3">
+                      {cmd.icon}
+                      <span>{cmd.label}</span>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-[#1A1A1A] truncate">{result.label}</p>
-                      {result.sublabel && (
-                        <p className="text-[11.5px] text-[#9E968C] truncate mt-0.5">{result.sublabel}</p>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-1.5 flex-shrink-0">
-                      <span className="text-[10.5px] text-[#9E968C] bg-[#F4F1EA] px-1.5 py-0.5 rounded">
-                        {meta.label}
-                      </span>
-                      {idx === selectedIdx && <ArrowRight size={11} className="text-[#9E968C]" />}
-                    </div>
+                    <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
                   </button>
-                </li>
-              );
-            })}
-          </ul>
-        )}
-
-        {/* Empty / hint */}
-        {query && results.length === 0 && (
-          <div className="py-8 text-center">
-            <p className="text-sm text-[#9E968C]">No results for "<span className="text-[#1A1A1A]">{query}</span>"</p>
-          </div>
-        )}
-        {!query && (
-          <div className="py-4 px-4">
-            <p className="text-[11.5px] text-[#9E968C] mb-2">Quick access</p>
-            <div className="flex flex-wrap gap-2">
-              {['appointments', 'leads', 'testimonials', 'services', 'team'].map(k => (
-                <button
-                  key={k}
-                  onClick={() => setQuery(k)}
-                  className="text-[11px] px-2.5 py-1 rounded-lg bg-[#F4F1EA] text-[#5A544E] hover:bg-[#E8E4DC] transition-colors capitalize"
-                >
-                  {k}
-                </button>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Footer */}
-        <div className="border-t border-[#F0ECE4] px-4 py-2 flex items-center gap-3 text-[10.5px] text-[#C4BDB4]">
-          <span><kbd className="bg-[#F4F1EA] px-1 rounded font-mono">↑↓</kbd> navigate</span>
-          <span><kbd className="bg-[#F4F1EA] px-1 rounded font-mono">↵</kbd> select</span>
-          <span><kbd className="bg-[#F4F1EA] px-1 rounded font-mono">esc</kbd> close</span>
+          {/* Patients Search Results (From Google Sheets / Patients Feature) */}
+          {query && filteredPatients.length > 0 && (
+            <div>
+              <p className="px-2 text-[10px] font-bold text-emerald-600 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                <UserCheck className="w-3.5 h-3.5" />
+                Matching Patients (Google Sheet Patient Directory)
+              </p>
+              <div className="space-y-1">
+                {filteredPatients.map((p: any) => (
+                  <button
+                    key={p.id}
+                    type="button"
+                    onClick={() => handleSelect('/admin/patients')}
+                    className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-emerald-50/50 text-slate-700 font-medium transition-colors border border-transparent hover:border-emerald-100"
+                  >
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <p className="font-bold text-slate-900">{p.name}</p>
+                        <span className="text-[10px] font-bold text-[#0284C7] bg-sky-50 px-2 py-0.5 rounded border border-sky-200">
+                          {p.registrationTokenNumber}
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-slate-500">{p.phone} {p.email ? `· ${p.email}` : ''}</p>
+                    </div>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+                      {p.patientType || 'Patient Record'}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Appointments Search Results */}
+          {query && filteredAppointments.length > 0 && (
+            <div>
+              <p className="px-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
+                Matching Appointments
+              </p>
+              <div className="space-y-1">
+                {filteredAppointments.map((apt: any) => (
+                  <button
+                    key={apt.id}
+                    type="button"
+                    onClick={() => handleSelect(`/admin/appointments/${apt.id}`)}
+                    className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 text-slate-700 font-medium transition-colors"
+                  >
+                    <div>
+                      <p className="font-bold text-slate-900">{apt.fullName || apt.patientName}</p>
+                      <p className="text-[11px] text-slate-500">{apt.preferredDate || apt.date} · {apt.preferredTime || apt.time} · {apt.service}</p>
+                    </div>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-50 text-sky-700 border border-sky-200">
+                      {apt.status}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Leads Search Results */}
+          {query && filteredLeads.length > 0 && (
+            <div>
+              <p className="px-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
+                Matching Leads
+              </p>
+              <div className="space-y-1">
+                {filteredLeads.map((lead: any) => (
+                  <button
+                    key={lead.id}
+                    type="button"
+                    onClick={() => handleSelect(`/admin/leads/${lead.id}`)}
+                    className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 text-slate-700 font-medium transition-colors"
+                  >
+                    <div>
+                      <p className="font-bold text-slate-900">{lead.fullName || lead.name}</p>
+                      <p className="text-[11px] text-slate-500">{lead.phone} · {lead.condition || 'Inquiry'}</p>
+                    </div>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200">
+                      {lead.status}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

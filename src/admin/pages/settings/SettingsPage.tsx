@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { Save, Loader2, Key, Building2, Phone, Share2, Search, Award } from 'lucide-react';
 import { settingsStorage, sessionStorage_admin } from '../../services/adminStorage';
 import { useAdminStore } from '../../context/AdminStoreContext';
@@ -46,7 +46,7 @@ export function SettingsPage() {
   };
 
   return (
-    <div className="p-6 max-w-3xl space-y-6">
+    <div className="p-3 sm:p-6 max-w-3xl space-y-6">
       <div>
         <h1 className="text-lg font-bold text-[#1A1A1A]">Settings</h1>
         <p className="text-sm text-[#9E968C]">Manage clinic profile, contact info, SEO, and admin security</p>
@@ -207,7 +207,7 @@ export function SettingsPage() {
           disabled={saving}
           className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#0F2747] text-white text-sm font-semibold hover:bg-[#0B1D3A] disabled:opacity-60 transition-colors"
         >
-          {saving ? <><Loader2 size={15} className="animate-spin" /> Saving…</> : <><Save size={15} /> Save Settings</>}
+          {saving ? <><Loader2 size={15} className="animate-spin" /> Saving...</> : <><Save size={15} /> Save Settings</>}
         </button>
       </form>
 
@@ -253,10 +253,11 @@ export function SettingsPage() {
             disabled={passSaving}
             className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#1A1A1A] text-white text-xs font-semibold hover:bg-[#2E2C29] disabled:opacity-60 transition-colors"
           >
-            {passSaving ? 'Changing…' : 'Update Password'}
+            {passSaving ? 'Changing...' : 'Update Password'}
           </button>
         </form>
       </div>
     </div>
   );
 }
+

@@ -44,7 +44,7 @@ interface StatusBadgeProps {
 }
 
 export function StatusBadge({ status, size = 'sm', showDot = true }: StatusBadgeProps) {
-  const config = STATUS_MAP[status] ?? {
+  const config = STATUS_MAP[status] || {
     label: status,
     bg: 'bg-gray-100',
     text: 'text-gray-600',

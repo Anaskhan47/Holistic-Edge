@@ -9,7 +9,7 @@ import { conditionsData } from '../../../data/conditions';
 export function TestimonialForm() {
   const navigate = useNavigate();
   const { refreshTestimonials, refreshMetrics, showToast, logAudit } = useAdminStore();
-  const [form, setForm] = useState({ patientName: '', displayName: '', condition: conditionsData[0]?.title ?? '', service: servicesData[0]?.title ?? '', review: '', rating: 5, source: 'Direct Patient Feedback', location: '' });
+  const [form, setForm] = useState({ patientName: '', displayName: '', condition: conditionsData[0]?.title || '', service: servicesData[0]?.title || '', review: '', rating: 5, source: 'Direct Patient Feedback', location: '' });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
 
@@ -30,7 +30,7 @@ export function TestimonialForm() {
     setSaving(true);
     await new Promise(r => setTimeout(r, 400));
     const created = testimonialStorage.create({ patientName: form.patientName.trim(), displayName: form.displayName.trim() || form.patientName.trim(), condition: form.condition, service: form.service, review: form.review.trim(), rating: form.rating, source: form.source, status: 'Pending', featured: false, verified: false, location: form.location });
-    notificationStorage.create({ type: 'testimonial', title: 'New Testimonial Added', message: `Review from ${created.displayName} — pending approval`, entityId: created.id, entityType: 'testimonial', link: '/admin/testimonials' });
+    notificationStorage.create({ type: 'testimonial', title: 'New Testimonial Added', message: `Review from ${created.displayName} — pending approval`, entityId: created.id, entityType: 'testimonial', link: '/admin/testimonials', status: 'unread' });
     refreshTestimonials(); refreshMetrics();
     logAudit('created', 'testimonial', created.id, `Testimonial added from ${created.displayName}`);
     showToast('success', 'Testimonial added', 'Awaiting approval');
@@ -41,7 +41,7 @@ export function TestimonialForm() {
   const ic = (f: string) => `w-full h-10 px-3 rounded-xl border text-sm focus:outline-none focus:ring-2 transition-all ${errors[f] ? 'border-red-300 focus:ring-red-100' : 'border-[#E5E2DC] focus:border-[#0F2747] focus:ring-[#0F2747]/10'}`;
 
   return (
-    <div className="p-6 max-w-xl space-y-5">
+    <div className="p-3 sm:p-6 max-w-xl space-y-5">
       <div className="flex items-center gap-3">
         <button onClick={() => navigate('/admin/testimonials')} className="w-8 h-8 rounded-lg border border-[#E5E2DC] flex items-center justify-center text-[#5A544E] hover:bg-[#F8F7F4]"><ArrowLeft size={15} /></button>
         <h1 className="text-lg font-bold text-[#1A1A1A]">Add Testimonial</h1>
@@ -60,15 +60,16 @@ export function TestimonialForm() {
             <div><label className="block text-xs font-semibold text-[#5A544E] mb-1.5">Source</label><select className={ic('source')} value={form.source} onChange={e => set('source', e.target.value)}>{['Direct Patient Feedback', 'Justdial', 'Cybo', 'Verified Clinic Review'].map(s => <option key={s} value={s}>{s}</option>)}</select></div>
             <div><label className="block text-xs font-semibold text-[#5A544E] mb-1.5">Rating</label><select className={ic('rating')} value={form.rating} onChange={e => set('rating', Number(e.target.value))}>{[5,4,3,2,1].map(r => <option key={r} value={r}>{r} Star{r !== 1 ? 's' : ''}</option>)}</select></div>
           </div>
-          <div><label className="block text-xs font-semibold text-[#5A544E] mb-1.5">Review *</label><textarea rows={4} className={`w-full px-3 py-2.5 rounded-xl border text-sm placeholder:text-[#C4BDB4] focus:outline-none focus:ring-2 resize-none transition-all ${errors.review ? 'border-red-300 focus:ring-red-100' : 'border-[#E5E2DC] focus:border-[#0F2747] focus:ring-[#0F2747]/10'}`} value={form.review} onChange={e => set('review', e.target.value)} placeholder="Patient's review text…" />{errors.review && <p className="mt-1 text-[11px] text-red-600">{errors.review}</p>}</div>
+          <div><label className="block text-xs font-semibold text-[#5A544E] mb-1.5">Review *</label><textarea rows={4} className={`w-full px-3 py-2.5 rounded-xl border text-sm placeholder:text-[#C4BDB4] focus:outline-none focus:ring-2 resize-none transition-all ${errors.review ? 'border-red-300 focus:ring-red-100' : 'border-[#E5E2DC] focus:border-[#0F2747] focus:ring-[#0F2747]/10'}`} value={form.review} onChange={e => set('review', e.target.value)} placeholder="Patient's review text..." />{errors.review && <p className="mt-1 text-[11px] text-red-600">{errors.review}</p>}</div>
         </div>
         <div className="flex gap-3">
           <button type="button" onClick={() => navigate('/admin/testimonials')} className="px-5 py-2.5 rounded-xl border border-[#E5E2DC] text-sm text-[#2C2926] hover:bg-[#F8F7F4]">Cancel</button>
           <button type="submit" disabled={saving} className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#0F2747] text-white text-sm font-semibold hover:bg-[#0B1D3A] disabled:opacity-60">
-            {saving ? <><Loader2 size={14} className="animate-spin" />Adding…</> : <><Save size={14} />Add Testimonial</>}
+            {saving ? <><Loader2 size={14} className="animate-spin" />Adding...</> : <><Save size={14} />Add Testimonial</>}
           </button>
         </div>
       </form>
     </div>
   );
 }
+

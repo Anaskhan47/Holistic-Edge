@@ -1,24 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+﻿import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { clinicInfo } from '../data/clinicInfo';
-import { teamData, clinicStaffNote } from '../data/team';
-import clinicImg from '@/Clinc.png';
+import { usePublishedTeam, usePublishedClinic } from '../hooks/useCmsContent';
+import { clinicStaffNote, teamData } from '../data/team';
+import clinicImg from '/holistic-edge-enhanced-clinic-room.svg';
+import ammImg from '/Healer ABdul Malik.svg';
 import {
   Award,
   Users,
-  CheckCircle2,
-  Quote,
   ShieldCheck,
   HeartHandshake,
   Sparkles,
   MapPin,
-  Calendar,
-  AlertCircle
+  Calendar
 } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
 import { Card } from '../components/ui/Card';
+import { SuccessStoriesSection } from '../components/sections/SuccessStoriesSection';
 
 export interface AboutViewProps {
   onOpenBooking: () => void;
@@ -28,11 +27,41 @@ export const AboutView: React.FC<AboutViewProps> = ({
   onOpenBooking
 }) => {
   const { detailId } = useParams<{ detailId: string }>();
+  const navigate = useNavigate();
   
   const [activeTab, setActiveTab] = useState<string>('story');
 
+  const teamFromCms = usePublishedTeam();
+  const clinic = usePublishedClinic();
+
+  const team = teamFromCms.length > 0 ? teamFromCms: teamData.map((m, i) => ({
+    id: m.id,
+    name: m.name,
+    role: m.role,
+    profilePhoto: m.image,
+    bio: m.bio,
+    qualifications: Array.isArray(m.qualifications) ? m.qualifications.join(' ? ') : m.qualifications,
+    experience: typeof m.experienceYears === 'number' ? `${m.experienceYears} Years` : String(m.experienceYears || '25+ Years'),
+    specializations: m.specialization,
+    profileSlug: m.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+    displayOrder: i + 1,
+    featured: i === 0,
+    status: 'PUBLISHED' as const,
+    publishedAt: new Date().toISOString(),
+    publishedBy: 'System Seed',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  }));
+
   useEffect(() => {
-    if (detailId === 'dr-abdul-mallik') {
+    if (!detailId) {
+      setActiveTab('story');
+    } else if (
+      detailId === 'dr-abdul-mallik' ||
+      detailId === 'healer-abdul-mallik' ||
+      detailId === 'abdul-mallik' ||
+      detailId === 'founder'
+    ) {
       setActiveTab('founder');
     } else if (detailId === 'team') {
       setActiveTab('team');
@@ -41,110 +70,152 @@ export const AboutView: React.FC<AboutViewProps> = ({
     }
   }, [detailId]);
 
-  const founder = teamData.find(t => t.isFounder) || teamData[0];
-  const staffMembers = teamData.filter(t => !t.isFounder);
+  const defaultFounder = {
+    id: 'dr-abdul-mallik',
+    name: 'Healer Abdul Mallik',
+    role: 'Founder & Lead Clinical Director',
+    qualifications: '25+ Years Dedicated Clinical Practice ? Holistic Pain Care Pioneer',
+    profilePhoto: '/healer-abdul-mallik-desk.jpg',
+    image: '/healer-abdul-mallik-desk.jpg',
+    bio: 'With over 25 years of hands-on clinical experience in Hyderabad, Healer Abdul Mallik has personally guided more than 50,000 patients through drug-free recovery from severe spine, joint, and nerve disorders. He is the originator of the A.M.M Method™ (Adjustment, Mobilization, Muscle Strengthening), a structured tripartite approach designed to deliver lasting musculoskeletal rehabilitation without invasive surgery.',
+    philosophy: 'Pain is a signal from the body that something is out of balance. Our mission is not to mask the signal with pills, but to restore the natural structural harmony that allows the human body to heal itself.',
+    specializations: [
+      'Chiropractic Spinal Care',
+      'A.M.M Method™ Developer',
+      'Complex Musculoskeletal Pain Management',
+      'Postural & Joint Biomechanics'
+    ]
+  };
+
+  const founderItem = team.find(t =>
+    t.id === 'dr-abdul-mallik' ||
+    (t as any).isFounder ||
+    t.role?.toLowerCase().includes('founder') ||
+    t.role?.toLowerCase().includes('director')
+  );
+
+  const resolveFounderImage = (img: string) => {
+    if (!img || img.includes('AMM.avif') || img.trim() === '') {
+      return '/healer-abdul-mallik-desk.jpg';
+    }
+    return img;
+  };
+
+  const founder = {
+    name: founderItem?.name || defaultFounder.name,
+    role: founderItem?.role || defaultFounder.role,
+    qualifications: Array.isArray(founderItem?.qualifications)
+      ? founderItem.qualifications.join(' ? ')
+      : (founderItem?.qualifications || defaultFounder.qualifications),
+    bio: founderItem?.bio || defaultFounder.bio,
+    philosophy: (founderItem as any)?.philosophy || defaultFounder.philosophy,
+    image: resolveFounderImage(founderItem?.profilePhoto || (founderItem as any)?.image),
+    specialization: founderItem?.specializations || (founderItem as any)?.specialization || defaultFounder.specializations
+  };
+
+  const staffMembers = team.filter(t => t.id !== founderItem?.id && !t.role?.toLowerCase().includes('founder'));
 
   return (
-    <div className="w-full py-12 md:py-20 bg-[#FAF9F6]">
+    <div className="py-12 md:py-20 bg-[#FAF9F6] min-h-screen">
       <Helmet>
-        <title>About Us | Holistic Edge Chiropractic & Wellness Clinic</title>
-        <meta name="description" content="Learn about Holistic Edge's 25-year history in Mehdipatnam, Hyderabad, and meet our founder Dr. Abdul Mallik and his clinical team." />
+        <title>About Healer Abdul Mallik & Holistic Edge Clinic Hyderabad</title>
+        <meta
+          name="description"
+          content="Learn about Healer Abdul Mallik's 25+ years of clinical excellence, the A.M.M Method™, and our multidisciplinary natural pain care team in Mehdipatnam, Hyderabad."
+        />
       </Helmet>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-        {/* Page Title */}
-        <div className="text-center max-w-3xl mx-auto space-y-3">
+        {/* Header Hero Banner */}
+        <div className="text-center max-w-3xl mx-auto space-y-4">
           <Badge variant="editorial" size="md">
-            About Holistic Edge
+            <Sparkles className="w-3.5 h-3.5 text-[#0F2747] mr-1" />
+            About Holistic Edge Clinic
           </Badge>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-normal text-[#1A1A1A] font-serif tracking-tight">
-            25 Years of Caring for Hyderabad's Spines & Joints
+            25+ Years of Clinical Mastery & Natural Healing
           </h1>
-          <p className="text-sm sm:text-base text-[#5A544E] leading-relaxed">
-            Founded by Dr. Abdul Mallik in Mehdipatnam, Holistic Edge provides personalized, drug-free, and non-surgical musculoskeletal healthcare to restore lasting pain-free movement.
+          <p className="text-base text-[#5A544E] leading-relaxed">
+            Founded by Healer Abdul Mallik, Holistic Edge is Hyderabad's trusted destination for non-surgical spinal alignment, joint mobilization, and long-term musculoskeletal wellness.
           </p>
 
-          {/* Sub Navigation Tabs */}
-          <div className="flex flex-wrap items-center justify-center gap-2 pt-4">
-            <button
-              type="button"
-              onClick={() => setActiveTab('story')}
-              className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
-                activeTab === 'story'
-                  ? 'bg-[#1A1A1A] text-[#FAF9F6] shadow-sm'
-                  : 'bg-white text-[#2C2926] border border-[#E8E4DC] hover:border-[#D5CFC5]'
-              }`}
-            >
-              Our 25-Year Story & Values
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveTab('founder')}
-              className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
-                activeTab === 'founder'
-                  ? 'bg-[#1A1A1A] text-[#FAF9F6] shadow-sm'
-                  : 'bg-white text-[#2C2926] border border-[#E8E4DC] hover:border-[#D5CFC5]'
-              }`}
-            >
-              Dr. Abdul Mallik (Founder)
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveTab('team')}
-              className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
-                activeTab === 'team'
-                  ? 'bg-[#1A1A1A] text-[#FAF9F6] shadow-sm'
-                  : 'bg-white text-[#2C2926] border border-[#E8E4DC] hover:border-[#D5CFC5]'
-              }`}
-            >
-              Our Multidisciplinary Team (7)
-            </button>
+          {/* Tab Navigation */}
+          <div className="pt-6 flex justify-center">
+            <div className="inline-flex p-1.5 bg-white rounded-2xl border border-[#E8E4DC] shadow-xs gap-1">
+              <button
+                onClick={() => { setActiveTab('story'); navigate('/about'); }}
+                className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer ${
+                  activeTab === 'story'
+                    ? 'bg-[#0F2747] text-white shadow-xs'
+                    : 'text-[#5A544E] hover:text-[#1A1A1A] hover:bg-[#FAF9F6]'
+                }`}
+              >
+                Our Clinic Story
+              </button>
+              <button
+                onClick={() => { setActiveTab('founder'); navigate('/about/healer-abdul-mallik'); }}
+                className={`px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer ${
+                  activeTab === 'founder'
+                    ? 'bg-[#0F2747] text-white shadow-xs'
+                    : 'text-[#5A544E] hover:text-[#1A1A1A] hover:bg-[#FAF9F6]'
+                }`}
+              >
+                Healer Abdul Mallik
+              </button>
+
+            </div>
           </div>
         </div>
 
-        {/* TAB 1: OUR STORY & VALUES */}
+        {/* TAB 1: CLINIC STORY */}
         {activeTab === 'story' && (
           <div className="space-y-12">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-              <div className="lg:col-span-6 space-y-5 text-left">
-                <Badge variant="editorial" size="sm">
-                  The Journey Since 1999
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-white p-6 sm:p-10 rounded-3xl border border-[#E8E4DC] shadow-xs">
+              <div className="lg:col-span-6 space-y-4 text-left">
+                <Badge variant="success" size="sm">
+                  <MapPin className="w-3.5 h-3.5 mr-1" />
+                  Mehdipatnam, Hyderabad
                 </Badge>
                 <h2 className="text-2xl sm:text-3xl font-normal text-[#1A1A1A] font-serif">
-                  From a Vision of Natural Healing to Over 50,000 Recoveries
+                  Telangana's Pioneer in Non-Invasive Spine & Joint Care
                 </h2>
-                <p className="text-sm text-[#3E3A35] leading-relaxed">
-                  Holistic Edge was established with a singular conviction: musculoskeletal pain should be treated at its mechanical root rather than silenced with painkillers or rushed into invasive surgeries.
-                </p>
-                <p className="text-sm text-[#3E3A35] leading-relaxed">
-                  Over a quarter-century in Mehdipatnam, Hyderabad, Dr. Abdul Mallik recognized that neither isolated joint cracking nor standard physical therapy exercises alone provided lasting stability. This led to the creation of the <strong>A.M.M Method™</strong> — a proprietary 3-stage protocol uniting Chiropractic Adjustments, Soft-Tissue Mobilization, and Muscle Stabilization.
-                </p>
+                <div className="space-y-3 text-sm sm:text-base text-[#5A544E] leading-relaxed">
+                  <p>
+                    Established in Mehdipatnam right behind Olive Hospital, Holistic Edge was built on a simple promise: providing patients with transparent, high-integrity conservative spine care before considering aggressive surgical interventions or long-term medication dependencies.
+                  </p>
+                  <p>
+                    Our state-of-the-art facility combines modern biomechanical assessment with ancient restorative modalities, creating a serene, hygienic healing environment tailored to individual recovery goals.
+                  </p>
+                </div>
 
-                <div className="grid grid-cols-2 gap-3 pt-2">
-                  <div className="bg-white p-4 rounded-xl border border-[#E8E4DC] shadow-xs">
-                    <span className="text-2xl font-normal text-[#0F2747] block font-serif">25+</span>
+                <div className="grid grid-cols-2 gap-4 pt-2">
+                  <div className="bg-[#FAF9F6] p-4 rounded-xl border border-[#E8E4DC] shadow-xs">
+                    <span className="text-2xl font-normal text-[#10B981] block font-serif">25+</span>
                     <span className="text-xs text-[#5A544E] font-medium">Years Dedicated Practice</span>
                   </div>
-                  <div className="bg-white p-4 rounded-xl border border-[#E8E4DC] shadow-xs">
+                  <div className="bg-[#FAF9F6] p-4 rounded-xl border border-[#E8E4DC] shadow-xs">
                     <span className="text-2xl font-normal text-[#1B4332] block font-serif">50,000+</span>
                     <span className="text-xs text-[#5A544E] font-medium">Patients Treated</span>
                   </div>
                 </div>
               </div>
 
-              <div className="lg:col-span-6 rounded-3xl overflow-hidden shadow-md border border-[#E8E4DC] aspect-[4/3]">
-                <img
-                  src={clinicImg}
-                  alt="Holistic Edge Wellness Clinic Mehdipatnam Hyderabad"
-                  className="w-full h-full object-cover"
-                />
+              <div className="lg:col-span-6 rounded-3xl overflow-hidden shadow-md border border-[#E8E4DC] aspect-[4/3] bg-[#FAF8F5]">
+                <picture>
+                  <source srcSet="/clinic-upper-room-hd.webp" type="image/webp" />
+                  <img
+                    src="/clinic-upper-room-hd.png"
+                    alt="Holistic Edge Wellness Clinic Mehdipatnam Hyderabad"
+                    className="w-full h-full object-cover"
+                  />
+                </picture>
               </div>
             </div>
 
             {/* Mission, Vision, Core Values */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Card padding="lg" className="border-[#E8E4DC] space-y-3 bg-white">
-                <div className="w-10 h-10 rounded-xl bg-[#FAF0EB] text-[#A94420] flex items-center justify-center font-bold border border-[#ECCDC1]">
+                <div className="w-10 h-10 rounded-xl bg-[#FAF0EB] text-[#10B981] flex items-center justify-center font-bold border border-[#ECCDC1]">
                   <HeartHandshake className="w-5 h-5" />
                 </div>
                 <h3 className="text-lg font-normal text-[#1A1A1A] font-serif">Our Mission</h3>
@@ -164,7 +235,7 @@ export const AboutView: React.FC<AboutViewProps> = ({
               </Card>
 
               <Card padding="lg" className="border-[#E8E4DC] space-y-3 bg-white">
-                <div className="w-10 h-10 rounded-xl bg-[#FAF4ED] text-[#D49E58] flex items-center justify-center font-bold border border-[#EADBCE]">
+                <div className="w-10 h-10 rounded-xl bg-[#FAF4ED] text-[#10B981] flex items-center justify-center font-bold border border-[#EADBCE]">
                   <Award className="w-5 h-5" />
                 </div>
                 <h3 className="text-lg font-normal text-[#1A1A1A] font-serif">Our Core Values</h3>
@@ -185,7 +256,7 @@ export const AboutView: React.FC<AboutViewProps> = ({
                   <img
                     src={founder.image}
                     alt={founder.name}
-                    className="w-full h-full object-cover object-top"
+                    className="w-full h-full object-cover object-center contrast-[1.03] brightness-[1.01] transition-all duration-300" style={{ imageRendering: "contrast" }}
                     referrerPolicy="no-referrer"
                   />
                 </div>
@@ -198,7 +269,7 @@ export const AboutView: React.FC<AboutViewProps> = ({
                 <h2 className="text-2xl sm:text-3xl font-normal text-[#1A1A1A] font-serif">
                   {founder.name}
                 </h2>
-                <p className="text-xs font-semibold text-[#A94420] uppercase tracking-wider">
+                <p className="text-xs font-semibold text-[#10B981] uppercase tracking-wider">
                   {founder.qualifications}
                 </p>
                 <p className="text-sm text-[#3E3A35] leading-relaxed">
@@ -229,7 +300,7 @@ export const AboutView: React.FC<AboutViewProps> = ({
 
                 <div className="pt-3">
                   <Button variant="accent" size="md" onClick={onOpenBooking}>
-                    Book Appointment with Dr. Mallik
+                    Book Appointment with Healer Mallik
                   </Button>
                 </div>
               </div>
@@ -237,53 +308,11 @@ export const AboutView: React.FC<AboutViewProps> = ({
           </div>
         )}
 
-        {/* TAB 3: TEAM OF 7 PROFESSIONALS */}
-        {activeTab === 'team' && (
-          <div className="space-y-8">
-            <div className="bg-white p-6 rounded-2xl border border-[#E8E4DC] shadow-xs flex items-start gap-3">
-              <Users className="w-5 h-5 text-[#A94420] flex-shrink-0 mt-0.5" />
-              <div>
-                <h3 className="text-base font-bold text-[#1A1A1A] font-serif">
-                  Multidisciplinary Clinical Team (7 Professionals)
-                </h3>
-                <p className="text-xs text-[#5A544E] mt-1 leading-relaxed">
-                  {clinicStaffNote.note}
-                </p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {staffMembers.map(member => (
-                <Card key={member.id} padding="lg" className="border-[#E8E4DC] space-y-4 text-left bg-white">
-                  <div className="rounded-xl overflow-hidden aspect-[4/3] bg-[#FAF8F5]">
-                    <img
-                      src={member.image}
-                      alt={member.name}
-                      className="w-full h-full object-cover"
-                      referrerPolicy="no-referrer"
-                    />
-                  </div>
-                  <div>
-                    <h4 className="text-base font-bold text-[#1A1A1A] font-serif">
-                      {member.name}
-                    </h4>
-                    <p className="text-xs font-semibold text-[#1B4332]">
-                      {member.role}
-                    </p>
-                    <p className="text-[11px] text-[#736C63] mt-0.5">
-                      {member.qualifications}
-                    </p>
-                    <p className="text-xs text-[#5A544E] mt-2 leading-relaxed">
-                      {member.bio}
-                    </p>
-                  </div>
-                </Card>
-              ))}
-            </div>
-          </div>
-        )}
+        {/* Verified Patient Experiences & Google Reviews */}
+        <div className="pt-6">
+          <SuccessStoriesSection onOpenBooking={onOpenBooking} />
+        </div>
       </div>
     </div>
   );
 };
-

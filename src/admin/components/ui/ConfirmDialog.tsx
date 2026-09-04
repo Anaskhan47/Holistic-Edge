@@ -10,7 +10,7 @@ interface ConfirmDialogProps {
   cancelLabel?: string;
   variant?: 'danger' | 'warning';
   isLoading?: boolean;
-  onConfirm: () => void;
+  onConfirm: () => void | Promise<void>;
   onCancel: () => void;
 }
 
@@ -31,7 +31,7 @@ export function ConfirmDialog({
     <div className="fixed inset-0 z-[250] flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onCancel} />
       <div className="relative bg-white rounded-2xl shadow-2xl border border-[#E5E2DC] w-full max-w-sm p-6">
-        <button
+        <button type="button"
           onClick={onCancel}
           className="absolute top-4 right-4 text-[#9E968C] hover:text-[#1A1A1A]"
         >
@@ -52,14 +52,14 @@ export function ConfirmDialog({
         <p className="text-sm text-[#5A544E] leading-relaxed mb-6">{message}</p>
 
         <div className="flex gap-3">
-          <button
+          <button type="button"
             onClick={onCancel}
             disabled={isLoading}
             className="flex-1 h-10 rounded-xl border border-[#E5E2DC] text-sm text-[#2C2926] hover:bg-[#F8F7F4] transition-colors disabled:opacity-50"
           >
             {cancelLabel}
           </button>
-          <button
+          <button type="button"
             onClick={onConfirm}
             disabled={isLoading}
             className={cn(

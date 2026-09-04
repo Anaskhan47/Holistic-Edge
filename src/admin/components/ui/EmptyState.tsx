@@ -38,9 +38,9 @@ export function EmptyState({ icon, title, description, action, className }: Empt
 
 // ─── Skeleton Rows ─────────────────────────────────────────────
 
-export function SkeletonRow({ cols = 5 }: { cols?: number }) {
+export function SkeletonRow({ cols = 5, ...props }: { cols: number; [key: string]: unknown }) {
   return (
-    <tr>
+    <tr {...props}>
       {Array.from({ length: cols }).map((_, i) => (
         <td key={i} className="px-4 py-3">
           <div className={cn(
@@ -53,7 +53,7 @@ export function SkeletonRow({ cols = 5 }: { cols?: number }) {
   );
 }
 
-export function SkeletonTable({ rows = 5, cols = 5 }: { rows?: number; cols?: number }) {
+export function SkeletonTable({ rows = 5, cols = 5 }: { rows: number; cols: number }) {
   return (
     <>
       {Array.from({ length: rows }).map((_, i) => (

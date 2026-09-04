@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { clinicGalleryData } from '../../data/gallery';
 import { GalleryItem } from '../../types';
 import { Eye, X, ChevronLeft, ChevronRight, ShieldCheck } from 'lucide-react';
@@ -13,8 +13,7 @@ export const ClinicExperienceGallery: React.FC = () => {
 
   const filteredGallery =
     activeCategory === 'All'
-      ? clinicGalleryData
-      : clinicGalleryData.filter(g => g.category === activeCategory);
+      ? clinicGalleryData: clinicGalleryData.filter(g => g.category === activeCategory);
 
   return (
     <section id="clinic-experience" className="py-16 md:py-24 bg-[#FAF9F6] border-t border-[#E8E4DC]">

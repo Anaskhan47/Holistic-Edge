@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { conditionsData } from '../../data/conditions';
 import { ArrowRight, ChevronRight, Activity, Sparkles, CheckCircle2 } from 'lucide-react';
 import { Button } from '../ui/Button';
@@ -16,12 +16,11 @@ export const WhatBringsYouHere: React.FC<WhatBringsYouHereProps> = ({
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
-  const categories = ['All', 'Spine', 'Joints', 'Nerves', 'Head & Neck', 'Muscles'];
+  const categories = ['All', 'Spine', 'Joints', 'Nerves', 'Head & Neck', 'TMJ & Jaw', 'Muscles'];
 
   const filteredConditions =
     selectedCategory === 'All'
-      ? conditionsData
-      : conditionsData.filter(c => c.category === selectedCategory);
+      ? conditionsData: conditionsData.filter(c => c.category === selectedCategory);
 
   return (
     <section id="what-brings-you-here" className="py-16 md:py-24 bg-[#FAF9F6] border-b border-[#E8E4DC]">
@@ -32,7 +31,7 @@ export const WhatBringsYouHere: React.FC<WhatBringsYouHereProps> = ({
             Patient-Centered Triage
           </Badge>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-normal text-[#1A1A1A] font-serif tracking-tight">
-            What Brings You to Holistic Edge Today?
+            What Brings You to Holistic Edge Today•
           </h2>
           <p className="text-sm sm:text-base text-[#5A544E] mt-3 leading-relaxed">
             Select the condition or pain symptom you are experiencing to learn how our non-surgical therapies address the root mechanical cause.
@@ -69,10 +68,15 @@ export const WhatBringsYouHere: React.FC<WhatBringsYouHereProps> = ({
               {/* Image Banner */}
               <div className="relative h-44 overflow-hidden bg-[#F0ECE4]">
                 <img
-                  src={condition.image}
+                  src={condition.image || '/Condition images/sports-injuries.jpg'}
                   alt={condition.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    target.onerror = null;
+                    target.src = '/Condition images/backpain.jpg';
+                  }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                 <div className="absolute top-3 left-3">
@@ -136,10 +140,10 @@ export const WhatBringsYouHere: React.FC<WhatBringsYouHereProps> = ({
             </div>
             <div className="text-left">
               <h4 className="text-sm font-bold text-[#1A1A1A] font-serif">
-                Not sure what is causing your pain?
+                Not sure what is causing your pain•
               </h4>
               <p className="text-xs text-[#5A544E]">
-                Book a consultation with Dr. Abdul Mallik to evaluate your symptoms in person.
+                Book a consultation with Healer Abdul Mallik to evaluate your symptoms in person.
               </p>
             </div>
           </div>

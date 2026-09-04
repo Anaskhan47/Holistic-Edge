@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { faqsData } from '../../data/faqs';
+﻿import React, { useState } from 'react';
+import { usePublishedFaqs } from '../../hooks/useCmsContent';
 import { Accordion } from '../ui/Accordion';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
@@ -10,12 +10,13 @@ export interface FaqSectionProps {
 }
 
 export const FaqSection: React.FC<FaqSectionProps> = ({ onOpenBooking }) => {
+  const publishedFaqs = usePublishedFaqs();
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
-  const categories = ['All', 'General', 'Treatment', 'Safety', 'First Visit', 'Cost & Booking'];
+  const categories = ['All', 'General', 'Safety', 'Appointments', 'Conditions'];
 
-  const filteredFaqs = faqsData.filter(faq => {
+  const filteredFaqs = publishedFaqs.filter(faq => {
     const matchesCategory = selectedCategory === 'All' || faq.category === selectedCategory;
     const matchesSearch =
       searchQuery === '' ||
@@ -100,9 +101,9 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ onOpenBooking }) => {
         {/* Bottom Banner */}
         <div className="mt-10 bg-white p-6 rounded-2xl border border-[#E8E4DC] text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
-            <h4 className="text-sm font-bold text-[#1A1A1A] font-serif">Have a specific question about your symptoms?</h4>
+            <h4 className="text-sm font-bold text-[#1A1A1A] font-serif">Have a specific question about your symptoms•</h4>
             <p className="text-xs text-[#5A544E] mt-0.5">
-              Dr. Abdul Mallik addresses all individual questions during your clinical consultation.
+              Healer Abdul Mallik addresses all individual questions during your clinical consultation.
             </p>
           </div>
           <Button variant="accent" size="sm" onClick={onOpenBooking}>

@@ -38,12 +38,12 @@ export function AppointmentDetailPage() {
     if (!id) return;
     const data = appointmentStorage.getById(id);
     setAppt(data);
-    setEditNotes(data?.notes ?? '');
+    setEditNotes(data?.notes || '');
   }, [id]);
 
   if (!appt) {
     return (
-      <div className="p-6 text-center">
+      <div className="p-3 sm:p-6 text-center">
         <p className="text-sm text-[#9E968C]">Appointment not found.</p>
         <button onClick={() => navigate('/admin/appointments')} className="mt-3 text-xs text-[#0F2747] hover:underline">
           ← Back to Appointments
@@ -108,7 +108,7 @@ export function AppointmentDetailPage() {
   ].filter(Boolean) as { label: string; status: AppointmentStatus; variant: 'danger' | 'warning' }[];
 
   return (
-    <div className="p-6 max-w-3xl space-y-5">
+    <div className="p-3 sm:p-6 max-w-3xl space-y-5">
       {/* Header */}
       <div className="flex items-center gap-3">
         <button
@@ -203,7 +203,7 @@ export function AppointmentDetailPage() {
               value={editNotes}
               onChange={e => setEditNotes(e.target.value)}
               rows={4}
-              placeholder="Add clinical notes, reminders, or follow-up details…"
+              placeholder="Add clinical notes, reminders, or follow-up details..."
               className="w-full px-3 py-2.5 rounded-xl border border-[#E5E2DC] text-sm text-[#1A1A1A] placeholder:text-[#C4BDB4] focus:outline-none focus:border-[#0F2747] focus:ring-2 focus:ring-[#0F2747]/10 resize-none transition-all"
             />
             <button
@@ -211,7 +211,7 @@ export function AppointmentDetailPage() {
               disabled={savingNotes || editNotes === appt.notes}
               className="px-4 py-2 rounded-xl bg-[#1A1A1A] text-white text-xs font-semibold hover:bg-[#2E2C29] disabled:opacity-40 transition-colors"
             >
-              {savingNotes ? 'Saving…' : 'Save Notes'}
+              {savingNotes ? 'Saving...' : 'Save Notes'}
             </button>
           </div>
         </div>
@@ -269,10 +269,10 @@ export function AppointmentDetailPage() {
       {/* Confirm Status Dialog */}
       <ConfirmDialog
         open={!!confirmAction}
-        title={confirmAction?.label ?? ''}
+        title={confirmAction?.label || ''}
         message={`This will update the appointment status to "${confirmAction?.action}" and log the change.`}
-        confirmLabel={confirmAction?.label ?? 'Confirm'}
-        variant={confirmAction?.variant ?? 'warning'}
+        confirmLabel={confirmAction?.label || 'Confirm'}
+        variant={confirmAction?.variant || 'warning'}
         isLoading={actionLoading}
         onConfirm={() => confirmAction && handleStatusChange(confirmAction.action)}
         onCancel={() => setConfirmAction(null)}
@@ -292,3 +292,4 @@ export function AppointmentDetailPage() {
     </div>
   );
 }
+

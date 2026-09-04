@@ -11,7 +11,10 @@ import {
   ArrowLeft,
   Activity,
   MessageCircle,
-  FileCheck
+  FileCheck,
+  ShieldCheck,
+  MapPin,
+  Mail
 } from 'lucide-react';
 import { Modal } from '../ui/Modal';
 import { Button } from '../ui/Button';
@@ -20,12 +23,21 @@ import { clinicInfo } from '../../data/clinicInfo';
 import { servicesData } from '../../data/services';
 import { conditionsData } from '../../data/conditions';
 import { AppointmentRequest } from '../../types';
+import { useBookingSlots } from '../../hooks/useBookingSlots';
+import { bookingSlotStorage } from '../../admin/services/bookingSlotStorage';
+import { calculateRemainingSlots, formatSlotAvailability } from '../../lib/slotContract';
+import {
+  appointmentStorage,
+  leadStorage,
+  notificationStorage,
+  auditStorage,
+} from '../../admin/services/adminStorage';
 
 export interface BookingModalProps {
   isOpen: boolean;
   onClose: () => void;
-  preselectedService?: string;
-  onAppointmentBooked?: (appointment: AppointmentRequest) => void;
+  preselectedService: string;
+  onAppointmentBooked: (appointment: AppointmentRequest) => void;
 }
 
 export const BookingModal: React.FC<BookingModalProps> = ({
@@ -38,7 +50,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
   // Form State
   const [service, setService] = useState<string>(
-    preselectedService || 'Chiropractic & Wellness Consultation'
+    preselectedService || 'Chiropractic Care'
   );
   const [condition, setCondition] = useState<string>('Back Pain');
   const [selectedDate, setSelectedDate] = useState<string>(() => {
@@ -46,7 +58,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     today.setDate(today.getDate() + 1);
     return today.toISOString().split('T')[0];
   });
-  const [selectedSlot, setSelectedSlot] = useState<string>('11:00 AM');
+  const [selectedSlot, setSelectedSlot] = useState<string>('11:30 AM');
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
@@ -54,7 +66,10 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   const [notes, setNotes] = useState('');
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [bookingConfirmation, setBookingConfirmation] = useState<AppointmentRequest | null>(null);
+  const [bookingConfirmation, setBookingConfirmation] = useState<(AppointmentRequest & { registrationTokenNumber: string; emailStatus: string }) | null>(null);
+
+  // Live admin-controlled booking slots for chosen date
+  const { slots: daySlots } = useBookingSlots(selectedDate);
 
   // Generate next 7 days for quick booking
   const availableDates = Array.from({ length: 7 }, (_, i) => {
@@ -97,6 +112,12 @@ export const BookingModal: React.FC<BookingModalProps> = ({
       if (!cleanPhone || cleanPhone.length < 10) {
         currentErrors.phone = 'Please enter a valid 10-digit mobile number.';
       }
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!email.trim()) {
+        currentErrors.email = 'Email address is required for instant booking confirmation.';
+      } else if (!emailRegex.test(email.trim())) {
+        currentErrors.email = 'Please enter a valid email address (e.g. name@example.com).';
+      }
     }
 
     if (Object.keys(currentErrors).length > 0) {
@@ -112,14 +133,53 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     }
   };
 
-  const submitBooking = () => {
+  const submitBooking = async () => {
     setIsSubmitting(true);
-    setTimeout(() => {
-      const newBooking: AppointmentRequest = {
-        id: `HE-${Math.floor(100000 + Math.random() * 900000)}`,
-        fullName,
-        phone,
-        email: email || undefined,
+    setErrors({});
+
+    const idempotencyKey = `public_book_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+
+    try {
+      // Call backend API for automatic server-side validation & immediate booking confirmation
+      const res = await fetch('/api/public/book', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          patientData: {
+            name: fullName.trim(),
+            phone: phone.trim(),
+            email: email.trim() || undefined,
+            symptomDuration,
+          },
+          date: selectedDate,
+          time: selectedSlot,
+          service,
+          notes: notes ? `Notes: ${notes} | Duration: ${symptomDuration}` : `Duration: ${symptomDuration}`,
+          idempotencyKey,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        if (data.code === 'SLOT_FULL') {
+          setErrors({ slot: data.error || 'This time slot is no longer available. Please select another slot.' });
+          setStep(2);
+        } else {
+          setErrors({ submit: data.error || 'Unable to complete booking. Please try again.' });
+        }
+        setIsSubmitting(false);
+        return;
+      }
+
+      const regToken = data.registrationTokenNumber || data.patient?.registrationTokenNumber || 'HE-CONFIRMED';
+      const apptId = data.appointment?.id || `HE-${Math.floor(100000 + Math.random() * 900000)}`;
+
+      const newBooking: AppointmentRequest & { registrationTokenNumber: string; emailStatus: string } = {
+        id: apptId,
+        fullName: fullName.trim(),
+        phone: phone.trim(),
+        email: email.trim() || undefined,
         preferredService: service,
         primaryCondition: condition,
         preferredDate: selectedDate,
@@ -127,15 +187,70 @@ export const BookingModal: React.FC<BookingModalProps> = ({
         symptomDuration,
         additionalNotes: notes || undefined,
         createdAt: new Date().toISOString(),
-        status: 'Confirmed'
+        status: 'Confirmed',
+        registrationTokenNumber: regToken,
+        emailStatus: data.appointment?.emailStatus || 'SENT',
       };
 
-      // Save to localStorage
+      // Save to local storage for Admin offline fallback
       try {
         const existing = JSON.parse(localStorage.getItem('holistic_edge_appointments') || '[]');
         localStorage.setItem('holistic_edge_appointments', JSON.stringify([newBooking, ...existing]));
+
+        appointmentStorage.create({
+          patientName: fullName.trim(),
+          phone: phone.trim(),
+          email: email.trim() || undefined,
+          service,
+          condition: condition || 'General Consultation',
+          date: selectedDate,
+          timeSlot: selectedSlot,
+          notes: notes ? `Notes: ${notes} | Duration: ${symptomDuration}` : `Duration: ${symptomDuration}`,
+          status: 'Confirmed',
+          source: 'Website',
+        });
+
+        leadStorage.create({
+          fullName: fullName.trim(),
+          phone: phone.trim(),
+          email: email.trim() || undefined,
+          service,
+          condition: condition || 'General Consultation',
+          preferredDate: selectedDate,
+          preferredTime: selectedSlot,
+          message: notes || `Booked appointment for ${selectedDate} (${selectedSlot}).`,
+          source: 'Booking Modal',
+          status: 'Converted',
+        });
+
+        notificationStorage.create({
+          type: 'appointment',
+          title: 'New Online Appointment Automatically Confirmed',
+          message: `${fullName} (${regToken}) booked for ${selectedDate} (${selectedSlot})`,
+          entityId: apptId,
+          entityType: 'appointment',
+          link: `/admin/appointments/${apptId}`,
+          status: 'unread',
+        });
+
+        auditStorage.log({
+          actor: 'Patient (Self-Service)',
+          actorId: 'public_web',
+          action: 'APPOINTMENT_AUTO_CONFIRMED',
+          entity: 'appointment',
+          entityId: apptId,
+          description: `Patient ${fullName} (${regToken}) automatically confirmed via Website Booking`,
+        });
+
+        const matchingSlot = daySlots.find(s => s.timeLabel === selectedSlot || s.time === selectedSlot);
+        if (matchingSlot) {
+          bookingSlotStorage.bookSeat(matchingSlot.id);
+        }
+
+        window.dispatchEvent(new Event('storage'));
+        window.dispatchEvent(new CustomEvent('admin_data_updated'));
       } catch (err) {
-        console.error('Storage error', err);
+        console.error('[BookingModal] Local storage sync error:', err);
       }
 
       setBookingConfirmation(newBooking);
@@ -144,12 +259,17 @@ export const BookingModal: React.FC<BookingModalProps> = ({
       }
       setIsSubmitting(false);
       setStep(4);
-    }, 600);
+    } catch (err: any) {
+      console.error('[BookingModal] Submit error:', err);
+      setErrors({ submit: 'Network error submitting booking. Please check your connection and try again.' });
+      setIsSubmitting(false);
+    }
   };
 
   const resetForm = () => {
     setStep(1);
     setBookingConfirmation(null);
+    setErrors({});
     onClose();
   };
 
@@ -161,8 +281,8 @@ export const BookingModal: React.FC<BookingModalProps> = ({
       title={step === 4 ? 'Appointment Confirmed' : 'Book Clinic Consultation'}
       subtitle={
         step === 4
-          ? 'We look forward to welcoming you at Holistic Edge in Mehdipatnam.'
-          : 'Schedule your clinical consultation with Dr. Abdul Mallik'
+          ? 'Your appointment has been automatically confirmed. We look forward to welcoming you.'
+          : 'Schedule your clinical consultation with Healer Abdul Mallik'
       }
       maxWidth="xl"
     >
@@ -172,186 +292,188 @@ export const BookingModal: React.FC<BookingModalProps> = ({
           <div className="flex items-center justify-between text-xs font-semibold text-[#736C63] mb-2 font-serif">
             <span className={step >= 1 ? 'text-[#0F2747] font-bold' : ''}>1. Service & Condition</span>
             <span className={step >= 2 ? 'text-[#0F2747] font-bold' : ''}>2. Date & Time</span>
-            <span className={step >= 3 ? 'text-[#0F2747] font-bold' : ''}>3. Patient Details</span>
+            <span className={step >= 3 ? 'text-[#0F2747] font-bold' : ''}>3. Patient Info</span>
           </div>
-          <div className="h-1.5 w-full bg-[#E8E4DC] rounded-full overflow-hidden flex">
+          <div className="h-1.5 w-full bg-[#E8E4DC] rounded-full overflow-hidden">
             <div
-              className="h-full bg-[#0F2747] transition-all duration-300"
+              className="h-full bg-[#0F2747] transition-all duration-300 rounded-full"
               style={{ width: `${(step / 3) * 100}%` }}
             />
           </div>
         </div>
       )}
 
-      {/* STEP 1: Service & Condition Selection */}
+      {errors.submit && (
+        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-xs text-red-700 flex items-center gap-2">
+          <AlertCircle className="w-4 h-4 flex-shrink-0" />
+          <span>{errors.submit}</span>
+        </div>
+      )}
+
+      {/* STEP 1: Service & Condition */}
       {step === 1 && (
         <div className="space-y-5">
           <div>
-            <label className="block text-sm font-bold text-[#1A1A1A] font-serif mb-2">
-              Select Care Option
+            <label className="block text-xs font-bold uppercase tracking-wider text-[#4A443D] mb-2 font-serif">
+              Select Clinical Therapy or Service *
             </label>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              {/* Highlighted General Consultation Option */}
-              <button
-                type="button"
-                onClick={() => setService('Chiropractic & Wellness Consultation')}
-                className={`p-3.5 rounded-xl border text-left transition-all ${
-                  service === 'Chiropractic & Wellness Consultation'
-                    ? 'border-[#1A1A1A] bg-[#F0F4F8] ring-2 ring-[#0F2747]/20'
-                    : 'border-[#E8E4DC] hover:border-[#D5CFC5] bg-white'
-                }`}
-              >
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-xs font-bold text-[#0F2747] flex items-center gap-1 font-serif">
-                    <Sparkles className="w-3.5 h-3.5 text-[#2563EB]" />
-                    Recommended
-                  </span>
-                  <Badge variant="editorial" size="sm">
-                    Standard Visit
-                  </Badge>
-                </div>
-                <div className="text-sm font-bold text-[#1A1A1A] font-serif">
-                  Chiropractic & Wellness Consultation
-                </div>
-                <div className="text-xs text-[#5A544E] mt-0.5">
-                  Full clinical screening & recovery plan discussion
-                </div>
-              </button>
-
-              {/* A.M.M Method Option */}
-              <button
-                type="button"
-                onClick={() => setService('A.M.M Method™ (Full Protocol)')}
-                className={`p-3.5 rounded-xl border text-left transition-all ${
-                  service === 'A.M.M Method™ (Full Protocol)'
-                    ? 'border-[#1A1A1A] bg-[#F0F4F8] ring-2 ring-[#0F2747]/20'
-                    : 'border-[#E8E4DC] hover:border-[#D5CFC5] bg-white'
-                }`}
-              >
-                <div className="flex items-center justify-between mb-1">
-                  <Badge variant="editorial" size="sm">
-                    Flagship Protocol
-                  </Badge>
-                </div>
-                <div className="text-sm font-bold text-[#1A1A1A] font-serif">
-                  The A.M.M Method™
-                </div>
-                <div className="text-xs text-[#5A544E] mt-0.5">
-                  Adjustment + Mobilization + Muscle Rehab
-                </div>
-              </button>
-
-              {servicesData
-                .filter(s => s.slug !== 'amm-method')
-                .map(s => (
-                  <button
-                    key={s.id}
-                    type="button"
-                    onClick={() => setService(s.title)}
-                    className={`p-3 rounded-xl border text-left transition-all ${
-                      service === s.title
-                        ? 'border-[#1A1A1A] bg-[#F0F4F8] ring-2 ring-[#0F2747]/20'
-                        : 'border-[#E8E4DC] hover:border-[#D5CFC5] bg-white'
-                    }`}
-                  >
-                    <div className="text-sm font-bold text-[#1A1A1A] font-serif">{s.title}</div>
-                    <div className="text-xs text-[#736C63] mt-0.5 line-clamp-1">
-                      {s.subtitle}
-                    </div>
-                  </button>
-                ))}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {servicesData.map(s => (
+                <button
+                  key={s.id}
+                  type="button"
+                  onClick={() => {
+                    setService(s.title);
+                    setErrors(prev => ({ ...prev, service: '' }));
+                  }}
+                  className={`p-3.5 rounded-2xl border text-left transition-all flex items-start gap-3 ${
+                    service === s.title
+                      ? 'border-[#0F2747] bg-[#F0F4F8] ring-1 ring-[#0F2747]'
+                      : 'border-[#E8E4DC] bg-white hover:border-[#CBD8E6]'
+                  }`}
+                >
+                  <div className={`p-2 rounded-xl flex-shrink-0 ${
+                    service === s.title ? 'bg-[#0F2747] text-white' : 'bg-[#FAF8F5] text-[#0F2747]'
+                  }`}>
+                    <Activity className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-bold text-[#1A1A1A] font-serif">{s.title}</h4>
+                    <p className="text-[11px] text-[#736C63] line-clamp-1 mt-0.5">{s.subtitle}</p>
+                  </div>
+                </button>
+              ))}
             </div>
-            {errors.service && (
-              <p className="text-xs text-[#9B2C2C] mt-1 flex items-center gap-1">
-                <AlertCircle className="w-3.5 h-3.5" />
-                {errors.service}
-              </p>
-            )}
+            {errors.service && <p className="text-xs text-[#9B2C2C] mt-1">{errors.service}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-bold text-[#1A1A1A] font-serif mb-2">
-              Primary Concern / Condition
+            <label className="block text-xs font-bold uppercase tracking-wider text-[#4A443D] mb-2 font-serif">
+              Primary Symptom or Health Concern *
             </label>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {conditionsData.map(c => (
                 <button
                   key={c.id}
                   type="button"
-                  onClick={() => setCondition(c.title)}
-                  className={`p-2.5 rounded-lg border text-left text-xs font-semibold transition-all ${
+                  onClick={() => {
+                    setCondition(c.title);
+                    setErrors(prev => ({ ...prev, condition: '' }));
+                  }}
+                  className={`p-2.5 rounded-xl border text-xs text-center font-medium transition-all ${
                     condition === c.title
-                      ? 'bg-[#1A1A1A] text-[#FAF9F6] border-[#1A1A1A]'
-                      : 'bg-[#FAF8F5] text-[#2C2926] border-[#E8E4DC] hover:border-[#D5CFC5] hover:bg-white'
+                      ? 'border-[#1B4332] bg-[#EAF2ED] text-[#1B4332] font-bold'
+                      : 'border-[#E8E4DC] bg-white text-[#4A443D] hover:bg-[#FAF8F5]'
                   }`}
                 >
                   {c.title}
                 </button>
               ))}
             </div>
+            {errors.condition && <p className="text-xs text-[#9B2C2C] mt-1">{errors.condition}</p>}
           </div>
         </div>
       )}
 
-      {/* STEP 2: Date and Time Selection */}
+      {/* STEP 2: Date & Time Selection */}
       {step === 2 && (
-        <div className="space-y-6">
+        <div className="space-y-5">
           <div>
-            <label className="block text-sm font-bold text-[#1A1A1A] font-serif mb-2 flex items-center gap-2">
-              <CalendarIcon className="w-4 h-4 text-[#0F2747]" />
-              Select Consultation Date
+            <label className="block text-xs font-bold uppercase tracking-wider text-[#4A443D] mb-2 font-serif flex items-center justify-between">
+              <span>Select Consultation Date *</span>
+              <span className="text-[#736C63] font-normal lowercase">(Next 7 Days)</span>
             </label>
-            <div className="grid grid-cols-3 sm:grid-cols-7 gap-2">
-              {availableDates.map(item => (
-                <button
-                  key={item.dateStr}
-                  type="button"
-                  onClick={() => setSelectedDate(item.dateStr)}
-                  className={`p-3 rounded-xl border text-center transition-all ${
-                    selectedDate === item.dateStr
-                      ? 'bg-[#1A1A1A] text-[#FAF9F6] border-[#1A1A1A] shadow-md'
-                      : 'bg-white text-[#2C2926] border-[#E8E4DC] hover:border-[#D5CFC5]'
-                  }`}
-                >
-                  <span className="text-[11px] font-medium block uppercase opacity-80">
-                    {item.dayName}
-                  </span>
-                  <span className="text-lg font-bold block my-0.5 font-serif">{item.dayNumber}</span>
-                  <span className="text-[10px] block opacity-80">{item.month}</span>
-                </button>
-              ))}
+
+            <div className="grid grid-cols-4 sm:grid-cols-7 gap-2">
+              {availableDates.map(item => {
+                const isSelected = selectedDate === item.dateStr;
+                return (
+                  <button
+                    key={item.dateStr}
+                    type="button"
+                    onClick={() => {
+                      setSelectedDate(item.dateStr);
+                      setErrors(prev => ({ ...prev, date: '' }));
+                    }}
+                    className={`p-2.5 rounded-2xl border text-center transition-all flex flex-col items-center justify-center ${
+                      isSelected
+                        ? 'border-[#0F2747] bg-[#0F2747] text-white shadow-sm'
+                        : 'border-[#E8E4DC] bg-white text-[#2C2926] hover:bg-[#FAF8F5]'
+                    }`}
+                  >
+                    <span className="text-[10px] font-semibold uppercase tracking-wider opacity-80">
+                      {item.dayName}
+                    </span>
+                    <span className="text-base font-bold font-serif my-0.5">{item.dayNumber}</span>
+                    <span className="text-[10px] opacity-75">{item.month}</span>
+                  </button>
+                );
+              })}
             </div>
+            {errors.date && <p className="text-xs text-[#9B2C2C] mt-1">{errors.date}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-bold text-[#1A1A1A] font-serif mb-2 flex items-center gap-2">
-              <Clock className="w-4 h-4 text-[#0F2747]" />
-              Select Convenient Time Slot
+            <label className="block text-xs font-bold uppercase tracking-wider text-[#4A443D] mb-2 font-serif">
+              Select Available Time Slot *
             </label>
+
+            {errors.slot && (
+              <div className="mb-3 p-2.5 bg-red-50 border border-red-200 rounded-xl text-xs text-red-700 flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                <span>{errors.slot}</span>
+              </div>
+            )}
+
             <div className="grid grid-cols-3 gap-2">
-              {timeSlots.map(slot => (
-                <button
-                  key={slot.time}
-                  type="button"
-                  onClick={() => setSelectedSlot(slot.time)}
-                  className={`p-2.5 rounded-xl border text-center text-xs font-semibold transition-all ${
-                    selectedSlot === slot.time
-                      ? 'bg-[#1B4332] text-white border-[#1B4332] shadow-sm'
-                      : 'bg-[#FAF8F5] text-[#2C2926] border-[#E8E4DC] hover:border-[#D5CFC5] hover:bg-white'
-                  }`}
-                >
-                  {slot.time}
-                </button>
-              ))}
+              {timeSlots.map(slotObj => {
+                const matchingAdminSlot = daySlots.find(
+                  s => s.timeLabel === slotObj.time || s.time === slotObj.time
+                );
+
+                const remaining = matchingAdminSlot
+                  ? calculateRemainingSlots(matchingAdminSlot.capacity ?? 5, matchingAdminSlot.booked ?? 0)
+                  : 5;
+                const isFull = matchingAdminSlot
+                  ? (matchingAdminSlot.status === 'FULL' || remaining <= 0 || matchingAdminSlot.status === 'CLOSED' || matchingAdminSlot.status === 'BLOCKED')
+                  : false;
+                const isSelected = selectedSlot === slotObj.time;
+
+                return (
+                  <button
+                    key={slotObj.time}
+                    type="button"
+                    disabled={isFull}
+                    onClick={() => {
+                      if (!isFull) {
+                        setSelectedSlot(slotObj.time);
+                        setErrors(prev => ({ ...prev, slot: '' }));
+                      }
+                    }}
+                    className={`p-2.5 rounded-xl border text-xs font-medium transition-all flex flex-col items-center justify-center gap-0.5 ${
+                      isFull
+                        ? 'border-[#E8E4DC] bg-[#F5F2EC] text-[#A69E92] cursor-not-allowed opacity-60'
+                        : isSelected
+                        ? 'border-[#0F2747] bg-[#F0F4F8] text-[#0F2747] font-bold ring-1 ring-[#0F2747]'
+                        : 'border-[#E8E4DC] bg-white text-[#2C2926] hover:bg-[#FAF8F5]'
+                    }`}
+                  >
+                    <div className="flex items-center gap-1">
+                      <Clock className="w-3 h-3 text-[#736C63]" />
+                      <span>{slotObj.time}</span>
+                    </div>
+                    <span className="text-[10px] text-[#736C63]">
+                      {formatSlotAvailability(matchingAdminSlot ? { ...matchingAdminSlot, remaining, capacity: matchingAdminSlot.capacity ?? 5, booked: matchingAdminSlot.booked ?? 0 } : { capacity: 5, booked: 0, remaining: 5, status: 'OPEN' })}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
-            <p className="text-[11px] text-[#736C63] mt-2">
-              * Consultations are scheduled to minimize clinic wait times.
-            </p>
           </div>
         </div>
       )}
 
-      {/* STEP 3: Patient Details */}
+      {/* STEP 3: Patient Contact Details */}
       {step === 3 && (
         <div className="space-y-4">
           <div>
@@ -395,7 +517,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-[#4A443D] mb-1">
-                How Long Have You Had Symptoms?
+                Symptom Duration
               </label>
               <select
                 value={symptomDuration}
@@ -410,96 +532,127 @@ export const BookingModal: React.FC<BookingModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-[#4A443D] mb-1">
-                Email Address (Optional)
+              <label className="block text-xs font-bold uppercase tracking-wider text-[#4A443D] mb-1 font-serif">
+                Email Address *
               </label>
               <input
                 type="email"
                 value={email}
-                onChange={e => setEmail(e.target.value)}
-                placeholder="For booking confirmation receipt"
-                className="w-full px-3 py-2.5 rounded-xl border border-[#E8E4DC] text-sm text-[#1A1A1A] placeholder-[#8A847C] focus:border-[#1A1A1A] outline-none"
+                onChange={e => {
+                  setEmail(e.target.value);
+                  setErrors(prev => ({ ...prev, email: '' }));
+                }}
+                placeholder="e.g. mohammed.ahmed@gmail.com"
+                className={`w-full px-3 py-2.5 rounded-xl border text-sm text-[#1A1A1A] placeholder-[#8A847C] outline-none transition-all ${
+                  errors.email ? 'border-[#9B2C2C] bg-red-50/50' : 'border-[#E8E4DC] focus:border-[#1A1A1A]'
+                }`}
               />
+              {errors.email && (
+                <p className="text-xs text-[#9B2C2C] mt-1 font-medium">{errors.email}</p>
+              )}
             </div>
           </div>
 
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-[#4A443D] mb-1">
-              Specific Pain Triggers or Previous MRI/X-ray Reports
+              Specific Pain Triggers or Notes
             </label>
             <textarea
               rows={2}
               value={notes}
               onChange={e => setNotes(e.target.value)}
-              placeholder="e.g. Pain shoots down right thigh when sitting; had lumbar X-ray 2 months ago..."
+              placeholder="e.g. Pain shoots down right leg when sitting..."
               className="w-full p-3 rounded-xl border border-[#E8E4DC] text-sm text-[#1A1A1A] placeholder-[#8A847C] focus:border-[#1A1A1A] outline-none"
             />
           </div>
 
           <div className="bg-[#FAF8F5] p-3 rounded-xl border border-[#E8E4DC] text-xs text-[#5A544E] flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-[#1B4332] flex-shrink-0" />
+            <ShieldCheck className="w-4 h-4 text-[#1B4332] flex-shrink-0" />
             <span>
-              Your information is strictly confidential and reviewed directly by Dr. Abdul Mallik's clinical team.
+              Your booking is <strong>automatically confirmed</strong> upon submission. No waiting for manual approval.
             </span>
           </div>
         </div>
       )}
 
-      {/* STEP 4: Confirmation Screen */}
+      {/* STEP 4: Factual Automatic Confirmation Success Screen */}
       {step === 4 && bookingConfirmation && (
         <div className="space-y-5 text-center py-2">
-          <div className="w-16 h-16 bg-[#EAF2ED] text-[#1B4332] rounded-full flex items-center justify-center mx-auto border border-[#C5DACB]">
-            <CheckCircle2 className="w-9 h-9" />
+          <div className="w-16 h-16 bg-[#DCFCE7] text-[#166534] rounded-full flex items-center justify-center mx-auto border border-[#86EFAC] shadow-sm">
+            <CheckCircle2 className="w-10 h-10" />
           </div>
 
           <div>
-            <Badge variant="verified" size="md">
-              Booking ID: {bookingConfirmation.id}
+            <Badge variant="verified" size="md" className="mb-1">
+              Token / Reg No: {bookingConfirmation.registrationTokenNumber || 'HE-CONFIRMED'}
             </Badge>
-            <h3 className="text-xl font-normal text-[#1A1A1A] font-serif mt-2">
-              Consultation Scheduled!
+            <h3 className="text-2xl font-bold text-[#0F2747] font-serif mt-2">
+              Appointment Confirmed
             </h3>
-            <p className="text-sm text-[#5A544E] max-w-md mx-auto mt-1">
-              Thank you, <strong>{bookingConfirmation.fullName}</strong>. Your consultation request has been logged.
+            <p className="text-sm text-[#475569] max-w-md mx-auto mt-1">
+              Thank you, <strong>{bookingConfirmation.fullName}</strong>. Your appointment has been successfully booked and automatically confirmed.
             </p>
           </div>
 
-          {/* Ticket Summary */}
-          <div className="bg-[#FAF8F5] border border-[#E8E4DC] rounded-2xl p-4 text-left text-xs text-[#2C2926] space-y-2 max-w-md mx-auto">
-            <div className="flex justify-between border-b border-[#E8E4DC] pb-2">
-              <span className="text-[#736C63] font-medium">Care Selected:</span>
-              <span className="font-bold text-[#1A1A1A]">{bookingConfirmation.preferredService}</span>
+          {/* Ticket Summary Card */}
+          <div className="bg-[#F8FAFC] border border-[#E2E8F0] rounded-2xl p-4 text-left text-xs text-[#334155] space-y-2.5 max-w-md mx-auto shadow-sm">
+            <div className="flex justify-between border-b border-[#EDF2F7] pb-2">
+              <span className="text-[#64748B] font-medium">Confirmation Status:</span>
+              <span className="font-bold text-[#166534] bg-[#DCFCE7] px-2 py-0.5 rounded-md border border-[#86EFAC]">
+                ✓ CONFIRMED
+              </span>
             </div>
-            <div className="flex justify-between border-b border-[#E8E4DC] pb-2">
-              <span className="text-[#736C63] font-medium">Condition:</span>
-              <span className="font-bold text-[#1A1A1A]">{bookingConfirmation.primaryCondition}</span>
+            <div className="flex justify-between border-b border-[#EDF2F7] pb-2">
+              <span className="text-[#64748B] font-medium">Reg. / Token No:</span>
+              <span className="font-bold text-[#0F2747] font-mono text-sm">{bookingConfirmation.registrationTokenNumber}</span>
             </div>
-            <div className="flex justify-between border-b border-[#E8E4DC] pb-2">
-              <span className="text-[#736C63] font-medium">Date & Slot:</span>
-              <span className="font-bold text-[#0F2747] font-serif">
+            <div className="flex justify-between border-b border-[#EDF2F7] pb-2">
+              <span className="text-[#64748B] font-medium">Service Selected:</span>
+              <span className="font-bold text-[#0F2747]">{bookingConfirmation.preferredService}</span>
+            </div>
+            <div className="flex justify-between border-b border-[#EDF2F7] pb-2">
+              <span className="text-[#64748B] font-medium">Date & Time:</span>
+              <span className="font-bold text-[#0F2747]">
                 {bookingConfirmation.preferredDate} at {bookingConfirmation.preferredTimeSlot}
               </span>
             </div>
-            <div className="flex justify-between pt-1">
-              <span className="text-[#736C63] font-medium">Clinic Address:</span>
-              <span className="font-medium text-[#1A1A1A] text-right">
-                Susheel Apts, Backside Olive Hospital, Mehdipatnam
+            <div className="flex justify-between pt-0.5">
+              <span className="text-[#64748B] font-medium">Practitioner & Location:</span>
+              <span className="font-semibold text-[#0F2747] text-right">
+                Healer Abdul Mallik<br />
+                <span className="text-[#475569] font-normal text-[11px]">Ground Floor, Susheel Apts, Mehdipatnam</span>
               </span>
+            </div>
+          </div>
+
+          {/* Factual Email Notice */}
+          <div className="bg-[#F0F4F8] border border-[#CBD8E6] rounded-xl p-3 text-xs text-[#0F2747] max-w-md mx-auto flex items-center gap-2.5 text-left">
+            <Mail className="w-5 h-5 text-[#0F2747] flex-shrink-0" />
+            <div>
+              {bookingConfirmation.email ? (
+                <span>
+                  ? confirmation email has been initiated for <strong>{bookingConfirmation.email}</strong>.
+                </span>
+              ) : (
+                <span>
+                  Your appointment is confirmed. If you provided an email address, your confirmation receipt will arrive shortly.
+                </span>
+              )}
             </div>
           </div>
 
           {/* Action buttons */}
           <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
             <a
-              href={`https://wa.me/${clinicInfo.whatsapp}?text=${encodeURIComponent(
-                `Hello Holistic Edge, I booked appointment ID: ${bookingConfirmation.id} for ${bookingConfirmation.fullName} on ${bookingConfirmation.preferredDate} at ${bookingConfirmation.preferredTimeSlot}.`
+              href={`https://wa.me/${clinicInfo.whatsapp}•text=${encodeURIComponent(
+                `Hello Holistic Edge, my appointment is CONFIRMED (Reg Token: ${bookingConfirmation.registrationTokenNumber}) for ${bookingConfirmation.fullName} on ${bookingConfirmation.preferredDate} at ${bookingConfirmation.preferredTimeSlot}.`
               )}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 bg-[#1B4332] hover:bg-[#143326] text-[#FAF9F6] px-5 py-2.5 rounded-xl font-semibold text-sm shadow-sm transition-colors"
+              className="inline-flex items-center justify-center gap-2 bg-[#0F2747] hover:bg-[#0B1D3A] text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-sm transition-colors"
             >
               <MessageCircle className="w-4 h-4 text-[#25D366]" />
-              <span>Confirm on WhatsApp</span>
+              <span>Connect on WhatsApp</span>
             </a>
             <Button variant="outline" onClick={resetForm}>
               Done / Close
@@ -538,3 +691,4 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     </Modal>
   );
 };
+

@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Star, ShieldCheck, Quote } from 'lucide-react';
 import { Badge } from './Badge';
 
@@ -10,7 +10,8 @@ export interface TestimonialSlideItem {
   review: string;
   source: string;
   location: string;
-  rating?: number;
+  rating: number;
+  isFeatured: boolean;
 }
 
 interface TestimonialsSliderProps {
@@ -34,18 +35,25 @@ export const TestimonialsSlider: React.FC<TestimonialsSliderProps> = ({ testimon
             key={`${testimonial.id}-${idx}`}
             className="w-[280px] sm:w-[340px] md:w-[380px] shrink-0 px-3"
           >
-            <div className="h-full bg-white p-5 sm:p-6 rounded-2xl border border-[#E8E4DC] shadow-sm flex flex-col justify-between hover:border-[#CBD8E6] transition-colors">
+            <div className="h-full bg-white p-5 sm:p-6 rounded-[24px] border border-[#E8E4DC] shadow-[0_8px_30px_rgba(0,0,0,0.05)] hover:shadow-[0_16px_40px_rgba(0,0,0,0.09)] hover:-translate-y-1 flex flex-col justify-between transition-all duration-300 cursor-pointer">
               <div className="space-y-3.5">
                 {/* Rating & Source */}
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-0.5 text-[#D49E58]">
+                  <div className="flex items-center gap-0.5 text-amber-500">
                     {Array.from({ length: testimonial.rating || 5 }).map((_, i) => (
-                      <Star key={i} className="w-3.5 h-3.5 fill-[#D49E58]" />
+                      <Star key={i} className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
                     ))}
                   </div>
-                  <Badge variant="neutral" size="sm" className="text-[10px]">
-                    {testimonial.source}
-                  </Badge>
+                  <div className="flex items-center gap-1.5">
+                    {testimonial.isFeatured && (
+                      <span className="text-[10px] font-bold bg-amber-50 text-amber-800 border border-amber-200/80 px-2 py-0.5 rounded-md flex items-center gap-0.5">
+                        ⭐ Featured
+                      </span>
+                    )}
+                    <Badge variant="neutral" size="sm" className="text-[10px]">
+                      {testimonial.source}
+                    </Badge>
+                  </div>
                 </div>
 
                 {/* Condition Badge */}
