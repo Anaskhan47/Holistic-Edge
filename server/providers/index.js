@@ -1,10 +1,10 @@
-﻿import { MockAuthProvider, FirebaseAuthProvider } from './authProvider.js';
+import { MockAuthProvider, FirebaseAuthProvider } from './authProvider.js';
 import { MockDataProvider, GoogleSheetsDataProvider } from './dataProvider.js';
 import { MockMediaProvider, GoogleDriveMediaProvider } from './mediaProvider.js';
 import { MockEmailProvider, SMTPEmailProvider } from './emailProvider.js';
 
 export function getAuthProvider() {
-  const providerType = (process.env.AUTH_PROVIDER || 'mock').toLowerCase();
+  const providerType = (process.env.AUTH_PROVIDER || 'firebase').toLowerCase();
   if (providerType === 'firebase') {
     const fb = new FirebaseAuthProvider();
     if (fb.isConfigured) return fb;
@@ -14,7 +14,7 @@ export function getAuthProvider() {
 }
 
 export function getDataProvider() {
-  const providerType = (process.env.DATA_PROVIDER || 'mock').toLowerCase();
+  const providerType = (process.env.DATA_PROVIDER || 'google_sheets').toLowerCase();
   if (providerType === 'google_sheets' || providerType === 'googlesheets') {
     const sheets = new GoogleSheetsDataProvider();
     if (sheets.isConfigured) return sheets;
@@ -24,7 +24,7 @@ export function getDataProvider() {
 }
 
 export function getMediaProvider() {
-  const providerType = (process.env.MEDIA_PROVIDER || 'mock').toLowerCase();
+  const providerType = (process.env.MEDIA_PROVIDER || 'google_drive').toLowerCase();
   if (providerType === 'google_drive' || providerType === 'googledrive') {
     const drive = new GoogleDriveMediaProvider();
     if (drive.isConfigured) return drive;
@@ -34,7 +34,7 @@ export function getMediaProvider() {
 }
 
 export function getEmailProvider() {
-  const providerType = (process.env.EMAIL_PROVIDER || 'mock').toLowerCase();
+  const providerType = (process.env.EMAIL_PROVIDER || 'smtp').toLowerCase();
   if (providerType === 'smtp') {
     const smtp = new SMTPEmailProvider();
     if (smtp.isConfigured) return smtp;

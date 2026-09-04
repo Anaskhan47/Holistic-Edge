@@ -1,4 +1,4 @@
-﻿import express from 'express';
+import express from 'express';
 import { db } from '../db.js';
 import { authenticate } from '../middleware/auth.js';
 
@@ -41,6 +41,17 @@ router.post('/', (req, res) => {
 
   if (!pName || !phone || !service) {
     return res.status(400).json({ error: 'Patient name, phone, and service are required.' });
+  }
+
+  if (email) {
+    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+    const cleanEmail = email.trim();
+    if (!emailRegex.test(cleanEmail) || cleanEmail.includes('<') || cleanEmail.includes('>') || !cleanEmail.split('@')[1]?.includes('.')) {
+      return res.status(400).json({
+        error: 'Please provide a valid email address with a domain (e.g. name@example.com).',
+        field: 'email',
+      });
+    }
   }
 
   const apptId = `HE-APPT-${Date.now().toString().slice(-6)}`;

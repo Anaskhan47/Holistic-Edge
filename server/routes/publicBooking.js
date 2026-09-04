@@ -129,8 +129,9 @@ router.post('/book', async (req, res) => {
     }
 
     if (resolvedPatientData.email) {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-      if (!emailRegex.test(resolvedPatientData.email)) {
+      const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+      const cleanEmail = resolvedPatientData.email.trim();
+      if (!emailRegex.test(cleanEmail) || cleanEmail.includes('<') || cleanEmail.includes('>') || !cleanEmail.split('@')[1]?.includes('.')) {
         return res.status(400).json({
           error: 'Please provide a valid email address with a domain (e.g. name@example.com).',
           field: 'email'

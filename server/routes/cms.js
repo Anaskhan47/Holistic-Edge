@@ -47,7 +47,13 @@ router.get('/team', (req, res) => {
 // GET /api/cms/clinic
 router.get('/clinic', (req, res) => {
   const settings = db.get('clinicSettings');
-  res.json({ success: true, clinic: settings });
+  res.json({ success: true, clinic: settings, settings });
+});
+
+// GET /api/cms/settings
+router.get('/settings', (req, res) => {
+  const settings = db.get('clinicSettings');
+  res.json({ success: true, settings, clinic: settings });
 });
 
 // GET /api/cms/offers

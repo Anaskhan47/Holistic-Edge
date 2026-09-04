@@ -1,4 +1,4 @@
-﻿import { google } from 'googleapis';
+import { google } from 'googleapis';
 import fs from 'fs';
 import { db } from '../db.js';
 
@@ -138,32 +138,32 @@ export class GoogleSheetsDataProvider extends DataProvider {
   constructor() {
     super();
     this.name = 'GoogleSheetsDataProvider';
-    this.spreadsheetId = process.env.GOOGLE_SPREADSHEET_ID;
+    this.spreadsheetId = process.env.GOOGLE_SPREADSHEET_ID || '1fFTHGvyYhDAXBie3VbGVYOskciiU4f8lbbyfsvGjihQ';
     this.credentialsPath = process.env.GOOGLE_CREDENTIALS_PATH;
     this.schemaInitialized = false;
 
     this.isConfigured = Boolean(this.spreadsheetId);
     if (this.isConfigured) {
       try {
-        let authConfig = {
-          scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-        };
-
-        if (this.credentialsPath && fs.existsSync(this.credentialsPath)) {
-          authConfig.keyFile = this.credentialsPath;
-        } else if (process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL && process.env.GOOGLE_PRIVATE_KEY) {
-          authConfig.credentials = {
-            client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-            private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
-          };
+        if (process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL && process.env.GOOGLE_PRIVATE_KEY) {
+          const auth = new google.auth.JWT(
+            process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+            null,
+            process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+            ['https://www.googleapis.com/auth/spreadsheets']
+          );
+          this.sheetsApi = google.sheets({ version: 'v4', auth });
+        } else if (this.credentialsPath && fs.existsSync(this.credentialsPath)) {
+          const auth = new google.auth.GoogleAuth({
+            keyFile: this.credentialsPath,
+            scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+          });
+          this.sheetsApi = google.sheets({ version: 'v4', auth });
         } else {
           this.isConfigured = false;
           console.warn('[GoogleSheets] Missing keyFile or private key credentials. Falling back to Mock.');
           return;
         }
-
-        const auth = new google.auth.GoogleAuth(authConfig);
-        this.sheetsApi = google.sheets({ version: 'v4', auth });
       } catch (err) {
         this.isConfigured = false;
         console.error('[GoogleSheets] Init error:', err.message);
@@ -311,13 +311,17 @@ export class GoogleSheetsDataProvider extends DataProvider {
         patientData.updatedAt || new Date().toISOString(),
       ];
 
-      this.sheetsApi.spreadsheets.values.append({
-        spreadsheetId: this.spreadsheetId,
-        range: 'PATIENTS!A:I',
-        valueInputOption: 'USER_ENTERED',
-        requestBody: { values: [row] },
-      }).catch(e => console.error('[GoogleSheets] background append error:', e.message));
-      console.log(`[GoogleSheets] Appended Patient ${patientData.registrationTokenNumber} to PATIENTS sheet`);
+      try {
+        await this.sheetsApi.spreadsheets.values.append({
+          spreadsheetId: this.spreadsheetId,
+          range: 'PATIENTS!A:I',
+          valueInputOption: 'USER_ENTERED',
+          requestBody: { values: [row] },
+        });
+        console.log(`[GoogleSheets] Appended Patient ${patientData.registrationTokenNumber} to PATIENTS sheet`);
+      } catch (e) {
+        console.error('[GoogleSheets] append error:', e.message);
+      }
     } catch (err) {
       console.error('[GoogleSheets] createPatient append error:', err.message);
     }
@@ -395,13 +399,17 @@ export class GoogleSheetsDataProvider extends DataProvider {
         appointmentData.updatedAt || new Date().toISOString(),
       ];
 
-      this.sheetsApi.spreadsheets.values.append({
-        spreadsheetId: this.spreadsheetId,
-        range: 'APPOINTMENTS!A:K',
-        valueInputOption: 'USER_ENTERED',
-        requestBody: { values: [row] },
-      }).catch(e => console.error('[GoogleSheets] background append error:', e.message));
-      console.log(`[GoogleSheets] Appended Appointment ${appointmentData.id} to APPOINTMENTS sheet`);
+      try {
+        await this.sheetsApi.spreadsheets.values.append({
+          spreadsheetId: this.spreadsheetId,
+          range: 'APPOINTMENTS!A:K',
+          valueInputOption: 'USER_ENTERED',
+          requestBody: { values: [row] },
+        });
+        console.log(`[GoogleSheets] Appended Appointment ${appointmentData.id} to APPOINTMENTS sheet`);
+      } catch (e) {
+        console.error('[GoogleSheets] append error:', e.message);
+      }
     } catch (err) {
       console.error('[GoogleSheets] createAppointment append error:', err.message);
     }
@@ -450,13 +458,17 @@ export class GoogleSheetsDataProvider extends DataProvider {
         new Date().toISOString(),
       ];
 
-      this.sheetsApi.spreadsheets.values.append({
-        spreadsheetId: this.spreadsheetId,
-        range: 'FOLLOW_UPS!A:O',
-        valueInputOption: 'USER_ENTERED',
-        requestBody: { values: [row] },
-      }).catch(e => console.error('[GoogleSheets] background append error:', e.message));
-      console.log(`[GoogleSheets] Appended Follow-up ${reminderData.id} to FOLLOW_UPS sheet`);
+      try {
+        await this.sheetsApi.spreadsheets.values.append({
+          spreadsheetId: this.spreadsheetId,
+          range: 'FOLLOW_UPS!A:O',
+          valueInputOption: 'USER_ENTERED',
+          requestBody: { values: [row] },
+        });
+        console.log(`[GoogleSheets] Appended Follow-up ${reminderData.id} to FOLLOW_UPS sheet`);
+      } catch (e) {
+        console.error('[GoogleSheets] append error:', e.message);
+      }
     } catch (err) {
       console.error('[GoogleSheets] createReminder append error:', err.message);
     }
