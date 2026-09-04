@@ -110,9 +110,11 @@ router.post('/:id/send-now', authenticate, async (req, res) => {
       sentAt: new Date().toISOString(),
     };
 
-    sendFollowUpReminderEmail(reminder, patient, bookingUrl).catch(err => {
-      console.error(`[FollowUpDispatch] Async error sending email:`, err.message);
-    });
+    try {
+      await sendFollowUpReminderEmail(reminder, patient, bookingUrl);
+    } catch (err) {
+      console.error(`[FollowUpDispatch] Error sending email:`, err.message);
+    }
 
     res.json({
       success: true,

@@ -172,10 +172,14 @@ router.post('/book', async (req, res) => {
       }
     }
 
-    // Trigger confirmation email
-    sendAppointmentConfirmationEmail(result.appointment, result.patient).catch(err => {
+    // Trigger confirmation email and await delivery before responding in serverless
+    try {
+      if (result.appointment && result.patient) {
+        await sendAppointmentConfirmationEmail(result.appointment, result.patient);
+      }
+    } catch (err) {
       console.error('[PublicBooking] Confirmation email error:', err.message);
-    });
+    }
 
     res.status(201).json({
       success: true,

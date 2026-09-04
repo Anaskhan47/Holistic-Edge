@@ -1,4 +1,4 @@
-﻿import { getActiveDataProvider } from '../providers/dataProvider.js';
+import { getActiveDataProvider } from '../providers/dataProvider.js';
 import { findOrCreatePatient } from './patientService.js';
 import { db } from '../db.js';
 
@@ -97,6 +97,15 @@ export async function createBookingTransaction({
       patient = patientResolution.patient;
     }
 
+    if (patientData && patientData.email && patientData.email !== patient.email) {
+      patient.email = patientData.email;
+      try {
+        await dataProvider.updatePatient(patient.id, { email: patientData.email });
+      } catch (err) {
+        console.warn('[BookingService] Failed to sync patient email:', err.message);
+      }
+    }
+
     const appointmentId = `apt_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
     const newAppointment = {
       id: appointmentId,
@@ -104,7 +113,7 @@ export async function createBookingTransaction({
       registrationTokenNumber: patient.registrationTokenNumber,
       patientName: patient.name,
       patientPhone: patient.phone,
-      patientEmail: patient.email,
+      patientEmail: (patientData && patientData.email) || patient.email,
       date,
       time: targetSlot.time,
       slotId: targetSlot.id,

@@ -1,31 +1,16 @@
-﻿import { getActiveEmailProvider } from '../providers/emailProvider.js';
+import { getActiveEmailProvider } from '../providers/emailProvider.js';
 import { db } from '../db.js';
 import fs from 'fs';
 import path from 'path';
 
 const emailProvider = getActiveEmailProvider();
 
-// CID-based inline logo (NO base64 data URI, NO attachment paperclip)
-const LOGO_CID = 'holistic_logo@holisticedge.in';
+const PUBLIC_LOGO_URL = 'https://holistic-edge-pied.vercel.app/brand/holistic-edge-official-logo.png';
 
 let cachedLogoAttachment = null;
 
 function getLogoCidAttachment() {
-  if (cachedLogoAttachment !== null) {
-    return cachedLogoAttachment;
-  }
-  const logoPath = path.join(process.cwd(), 'public/brand/holistic-edge-official-logo.png');
-  if (fs.existsSync(logoPath)) {
-    cachedLogoAttachment = [{
-      filename: 'holistic-edge-official-logo.png',
-      path: logoPath,
-      cid: LOGO_CID,
-      contentDisposition: 'inline',
-    }];
-  } else {
-    cachedLogoAttachment = [];
-  }
-  return cachedLogoAttachment;
+  return [];
 }
 
 export function buildCleanEmailLayout({ title, bodyHtml }) {
@@ -95,7 +80,7 @@ export function buildCleanEmailLayout({ title, bodyHtml }) {
           <!-- BRAND LOGO HEADER -->
           <tr>
             <td align="center" style="padding:16px 16px 24px 16px; background-color:#FFFFFF; text-align:center;">
-              <img src="cid:${LOGO_CID}" alt="Holistic Edge Wellness Centre" width="280" class="logo-img"
+              <img src="${PUBLIC_LOGO_URL}" alt="Holistic Edge Wellness Centre" width="280" class="logo-img"
                 style="display:block; width:280px; max-width:85%; height:auto; border:0; margin:0 auto;" />
             </td>
           </tr>
@@ -188,7 +173,7 @@ export async function sendAppointmentConfirmationEmail(appointment, patient) {
           <table border="0" cellpadding="0" cellspacing="0">
             <tr>
               <td style="background-color:#0F2747; border-radius:8px;">
-                <a href="http://localhost:3000/admin/appointments" class="cta-btn"
+                <a href="https://holistic-edge-pied.vercel.app/admin/appointments" class="cta-btn"
                   style="display:inline-block; font-family:-apple-system,sans-serif; font-size:14px; font-weight:700; color:#FFFFFF; text-decoration:none; padding:13px 32px; border-radius:8px; background-color:#0F2747; letter-spacing:0.3px;">
                   VIEW APPOINTMENT DETAILS &rarr;
                 </a>
@@ -245,11 +230,12 @@ export async function sendAppointmentConfirmationEmail(appointment, patient) {
   const html = buildCleanEmailLayout({ title: 'Your Appointment is Confirmed', bodyHtml });
   const text = `Dear ${patient.name}, your appointment (${appointment.service}) on ${appointment.date} at ${appointment.time} is confirmed. Token: ${patient.registrationTokenNumber}.`;
 
+  const targetRecipient = appointment.patientEmail || patient.email || 'patient@example.com';
   const logId = `elog_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
   const logRecord = {
     id: logId, idempotencyKey,
     appointmentId: appointment.id, patientId: patient.id,
-    recipient: patient.email || 'patient@example.com',
+    recipient: targetRecipient,
     template: 'APPOINTMENT_CONFIRMATION',
     subject, status: 'QUEUED',
     queuedAt: new Date().toISOString(),
@@ -258,7 +244,7 @@ export async function sendAppointmentConfirmationEmail(appointment, patient) {
 
   try {
     const result = await emailProvider.sendEmail({
-      to: patient.email || 'patient@example.com',
+      to: targetRecipient,
       subject, html, text, idempotencyKey,
       attachments: getLogoCidAttachment(),
       metadata: { appointmentId: appointment.id, registrationTokenNumber: patient.registrationTokenNumber },
@@ -325,17 +311,18 @@ export async function sendFollowUpReminderEmail(reminder, patient, bookingUrl) {
   const html = buildCleanEmailLayout({ title: 'Health Follow-up Reminder', bodyHtml });
   const text = `Dear ${patient.name}, it is time for your follow-up assessment. Token: ${patient.registrationTokenNumber}. Book online: ${bookingUrl}`;
 
+  const targetRecipient = reminder.patientEmail || patient.email || 'patient@example.com';
   const logId = `elog_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
   db.insert('emailLogs', {
     id: logId, idempotencyKey, reminderId: reminder.id, patientId: patient.id,
-    recipient: patient.email || 'patient@example.com',
+    recipient: targetRecipient,
     template: 'FOLLOW_UP_REMINDER',
     subject, status: 'QUEUED', queuedAt: new Date().toISOString(),
   });
 
   try {
     const result = await emailProvider.sendEmail({
-      to: patient.email || 'patient@example.com',
+      to: targetRecipient,
       subject, html, text, idempotencyKey,
       attachments: getLogoCidAttachment(),
       metadata: { reminderId: reminder.id, patientId: patient.id },

@@ -1,4 +1,4 @@
-﻿import nodemailer from 'nodemailer';
+import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -76,29 +76,25 @@ export class SMTPEmailProvider extends EmailProvider {
     this.fromName = process.env.SMTP_FROM_NAME || 'Holistic Edge Wellness Centre';
     this.isConfigured = Boolean(this.host && this.user && this.pass);
 
-    if (this.isConfigured && !globalTransporter) {
-      // Direct SSL/TLS high-speed pooled socket connection
-      globalTransporter = nodemailer.createTransport({
-        pool: true,              // Reuse persistent SMTP connection pool
-        maxConnections: 5,       // 5 simultaneous SMTP socket streams
-        maxMessages: 200,        // 200 emails per socket reuse
-        rateLimit: 15,           // 15 emails/sec throughput
-        host: this.host,
-        port: this.port,
-        secure: this.port === 465, // Direct SSL on port 465 (bypasses STARTTLS roundtrips)
-        auth: {
-          user: this.user,
-          pass: this.pass,
-        },
-        tls: {
-          rejectUnauthorized: false,
-        },
-        connectionTimeout: 4000,
-        greetingTimeout: 3000,
-        socketTimeout: 10000,
-      });
-    }
-    this.transporter = globalTransporter;
+    this.transporter = null;
+  }
+
+  getTransporter() {
+    return nodemailer.createTransport({
+      host: this.host,
+      port: this.port,
+      secure: this.port === 465,
+      auth: {
+        user: this.user,
+        pass: this.pass,
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+      connectionTimeout: 10000,
+      greetingTimeout: 8000,
+      socketTimeout: 15000,
+    });
   }
 
   getStatus() {
@@ -114,7 +110,7 @@ export class SMTPEmailProvider extends EmailProvider {
   }
 
   async checkConnection() {
-    if (!this.isConfigured || !this.transporter) {
+    if (!this.isConfigured) {
       return {
         healthy: false,
         status: 'NOT_CONFIGURED',
@@ -122,7 +118,8 @@ export class SMTPEmailProvider extends EmailProvider {
       };
     }
     try {
-      await this.transporter.verify();
+      const transporter = this.getTransporter();
+      await transporter.verify();
       return {
         healthy: true,
         status: 'CONNECTED',
@@ -138,12 +135,13 @@ export class SMTPEmailProvider extends EmailProvider {
   }
 
   async sendEmail({ to, subject, html, text, idempotencyKey, metadata, attachments }) {
-    if (!this.isConfigured || !this.transporter) {
+    if (!this.isConfigured) {
       const err = new Error('SMTP credentials are not configured.');
       err.code = 'NOT_CONFIGURED';
       throw err;
     }
 
+    const transporter = this.getTransporter();
     const mailOptions = {
       from: `"${this.fromName}" <${this.fromEmail}>`,
       to,
@@ -154,7 +152,7 @@ export class SMTPEmailProvider extends EmailProvider {
     };
 
     const startTime = Date.now();
-    const info = await this.transporter.sendMail(mailOptions);
+    const info = await transporter.sendMail(mailOptions);
     const duration = Date.now() - startTime;
     console.log(`[SMTPEmailProvider] ⚡ Real Email Dispatched in ${duration}ms over Direct SSL! Message ID: ${info.messageId}`);
     
