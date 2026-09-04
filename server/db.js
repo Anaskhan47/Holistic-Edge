@@ -1,4 +1,4 @@
-﻿import fs from 'fs';
+import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -130,7 +130,9 @@ class PersistentDb {
       this.ensureDirectory();
       fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), 'utf-8');
     } catch (e) {
-      console.error('[DB] Failed to save database file', e);
+      if (e.code !== 'EROFS') {
+        console.error('[DB] Failed to save database file', e.message);
+      }
     }
   }
 
