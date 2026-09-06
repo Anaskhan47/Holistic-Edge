@@ -42,6 +42,27 @@
   },
   "patients": [
     {
+      "id": "pat_test_nocta_1788701820578",
+      "name": "Tariq Al-Mansoor",
+      "phone": "9848022338",
+      "email": "anasahmedkhan845@gmail.com",
+      "registrationTokenNumber": "HE-260906-9901"
+    },
+    {
+      "id": "pat_test_sec_002",
+      "name": "Bilal Test-Patient",
+      "phone": "9876543222",
+      "email": "bilal.test@example.com",
+      "registrationTokenNumber": "HE-260906-8802"
+    },
+    {
+      "id": "pat_test_sec_001",
+      "name": "Amina Test-Patient",
+      "phone": "9876543210",
+      "email": "amina.test@example.com",
+      "registrationTokenNumber": "HE-260906-8801"
+    },
+    {
       "id": "pat_test_sec_002",
       "name": "Bilal Test-Patient",
       "phone": "9876543222",
@@ -342,6 +363,37 @@
     }
   ],
   "appointments": [
+    {
+      "id": "appt_test_nocta_1788701820578",
+      "patientId": "pat_test_nocta_1788701820578",
+      "date": "2026-09-30",
+      "time": "10:00 AM",
+      "service": "Comprehensive Chiropractic & Spinal Alignment Protocol",
+      "status": "CONFIRMED",
+      "createdAt": "2026-09-06T13:37:00.578Z",
+      "emailStatus": "SENT",
+      "updatedAt": "2026-09-06T13:37:05.080Z"
+    },
+    {
+      "id": "appt_test_sec_002",
+      "patientId": "pat_test_sec_002",
+      "date": "2026-09-16",
+      "time": "02:00 PM",
+      "service": "Sciatica & Disc Decompression Care",
+      "status": "CONFIRMED",
+      "createdAt": "2026-09-06T13:14:05.991Z"
+    },
+    {
+      "id": "appt_test_sec_001",
+      "patientId": "pat_test_sec_001",
+      "date": "2026-09-15",
+      "time": "11:00 AM",
+      "service": "Chiropractic Consultation & Spinal Assessment",
+      "status": "CONFIRMED",
+      "createdAt": "2026-09-06T13:14:05.991Z",
+      "emailStatus": "SENT",
+      "updatedAt": "2026-09-06T13:14:10.661Z"
+    },
     {
       "id": "appt_test_sec_002",
       "patientId": "pat_test_sec_002",
@@ -3417,6 +3469,34 @@
     }
   ],
   "emailLogs": [
+    {
+      "id": "elog_1788701820586_juft9",
+      "idempotencyKey": "email_appt_appt_test_nocta_1788701820578_1788701820586",
+      "appointmentId": "appt_test_nocta_1788701820578",
+      "patientId": "pat_test_nocta_1788701820578",
+      "recipient": "anasahmedkhan845@gmail.com",
+      "template": "APPOINTMENT_CONFIRMATION",
+      "subject": "Appointment Confirmed - HE-260906-9901 | Holistic Edge",
+      "status": "SENT",
+      "queuedAt": "2026-09-06T13:37:00.586Z",
+      "sentAt": "2026-09-06T13:37:05.069Z",
+      "providerMessageId": "<ee51326f-c0ab-d18c-eec4-a3fbc59af1bf@gmail.com>",
+      "updatedAt": "2026-09-06T13:37:05.069Z"
+    },
+    {
+      "id": "elog_1788700446104_oolp2",
+      "idempotencyKey": "email_appt_appt_test_sec_001_1788700446104",
+      "appointmentId": "appt_test_sec_001",
+      "patientId": "pat_test_sec_001",
+      "recipient": "amina.test@example.com",
+      "template": "APPOINTMENT_CONFIRMATION",
+      "subject": "Appointment Confirmed - HE-260906-8801 | Holistic Edge",
+      "status": "SENT",
+      "queuedAt": "2026-09-06T13:14:06.105Z",
+      "sentAt": "2026-09-06T13:14:10.648Z",
+      "providerMessageId": "<93cdb80e-5ae9-c8a0-6023-181fa3dd3ea4@gmail.com>",
+      "updatedAt": "2026-09-06T13:14:10.648Z"
+    },
     {
       "id": "elog_1788700278707_kz6uv",
       "idempotencyKey": "email_appt_appt_test_sec_001_1788700278704",

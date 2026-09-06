@@ -152,14 +152,6 @@ export async function sendAppointmentConfirmationEmail(appointment, patient) {
   const idempotencyKey = `email_appt_${appointment.id}_${Date.now()}`;
   const subject = `Appointment Confirmed - ${patient.registrationTokenNumber} | Holistic Edge`;
 
-  let apptViewUrl = `${getAppBaseUrl()}/appointment/details`;
-  try {
-    const accessToken = generateSignedAppointmentAccessToken(appointment.id, patient.id);
-    apptViewUrl = `${getAppBaseUrl()}/appointment/${accessToken}`;
-  } catch (err) {
-    console.warn('[EmailService] Failed to generate appointment access token:', err.message);
-  }
-
   const bodyHtml = `
     <p style="margin:0 0 12px 0; font-size:15px; font-weight:700; color:#0F2747;">Dear ${patient.name},</p>
     <p style="margin:0 0 20px 0; font-size:14px; color:#334155; line-height:1.6;">
@@ -175,24 +167,6 @@ export async function sendAppointmentConfirmationEmail(appointment, patient) {
           <p style="margin:0 0 8px 0; font-size:13px;"><strong style="color:#64748B;">Service:</strong> <span style="color:#0F2747; font-weight:600;">${appointment.service}</span></p>
           <p style="margin:0 0 8px 0; font-size:13px;"><strong style="color:#64748B;">Date & Time:</strong> <span style="color:#0F2747; font-weight:600;">${appointment.date} at ${appointment.time}</span></p>
           <p style="margin:0; font-size:13px;"><strong style="color:#64748B;">Status:</strong> <span style="color:#166534; font-weight:700; background-color:#DCFCE7; padding:2px 8px; border-radius:4px;">CONFIRMED</span></p>
-        </td>
-      </tr>
-    </table>
-
-    <!-- ACTION BUTTON -->
-    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-bottom:24px;">
-      <tr>
-        <td align="center">
-          <table border="0" cellpadding="0" cellspacing="0">
-            <tr>
-              <td style="background-color:#0F2747; border-radius:8px;">
-                <a href="${apptViewUrl}" class="cta-btn"
-                  style="display:inline-block; font-family:-apple-system,sans-serif; font-size:14px; font-weight:700; color:#FFFFFF; text-decoration:none; padding:13px 32px; border-radius:8px; background-color:#0F2747; letter-spacing:0.3px;">
-                  VIEW APPOINTMENT DETAILS &rarr;
-                </a>
-              </td>
-            </tr>
-          </table>
         </td>
       </tr>
     </table>
@@ -241,7 +215,7 @@ export async function sendAppointmentConfirmationEmail(appointment, patient) {
   `;
 
   const html = buildCleanEmailLayout({ title: 'Your Appointment is Confirmed', bodyHtml });
-  const text = `Dear ${patient.name}, your appointment (${appointment.service}) on ${appointment.date} at ${appointment.time} is confirmed. Token: ${patient.registrationTokenNumber}. View your appointment details: ${apptViewUrl}`;
+  const text = `Dear ${patient.name}, your appointment (${appointment.service}) on ${appointment.date} at ${appointment.time} is confirmed. Token: ${patient.registrationTokenNumber}. Location: Ground Floor, Susheel Apartments, Behind Olive Hospital, Mehdipatnam, Hyderabad - 500028. For assistance: Call +91 81426 42051 | WhatsApp +91 81426 42051.`;
 
   const targetRecipient = appointment.patientEmail || patient.email || 'patient@example.com';
   const logId = `elog_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;

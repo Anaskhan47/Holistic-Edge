@@ -127,15 +127,13 @@ export function renderTransactionalEmailHtml({
     </tr>
   ` : '';
 
-  const finalBookingUrl = bookingUrl || 'https://www.holisticedge.in';
-
-  const ctaButtonHtml = `
+  const ctaButtonHtml = bookingUrl ? `
     <tr>
       <td align="center" style="padding-bottom: 28px; background-color: #FFFFFF;">
         <table border="0" cellpadding="0" cellspacing="0" style="margin: 0 auto;">
           <tr>
             <td align="center" style="background-color: #0F2747; border-radius: 8px;" class="cta-cell">
-              <a href="${finalBookingUrl}" target="_blank" class="cta-button" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; font-weight: 700; color: #FFFFFF !important; text-decoration: none; padding: 14px 32px; display: inline-block; letter-spacing: 0.5px; border-radius: 8px; background-color: #0F2747;">
+              <a href="${bookingUrl}" target="_blank" class="cta-button" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; font-weight: 700; color: #FFFFFF !important; text-decoration: none; padding: 14px 32px; display: inline-block; letter-spacing: 0.5px; border-radius: 8px; background-color: #0F2747;">
                 ${buttonText}
               </a>
             </td>
@@ -143,7 +141,7 @@ export function renderTransactionalEmailHtml({
         </table>
       </td>
     </tr>
-  `;
+  ` : '';
 
   return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
