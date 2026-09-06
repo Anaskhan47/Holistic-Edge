@@ -1,4 +1,4 @@
-﻿import React, { useState, Suspense, lazy } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { AnnouncementBar } from './components/layout/AnnouncementBar';
@@ -15,6 +15,7 @@ const HomeView = lazy(() => import('./views/HomeView').then(module => ({ default
 const AboutView = lazy(() => import('./views/AboutView').then(module => ({ default: module.AboutView })));
 const ConditionsView = lazy(() => import('./views/ConditionsView').then(module => ({ default: module.ConditionsView })));
 const ServicesView = lazy(() => import('./views/ServicesView').then(module => ({ default: module.ServicesView })));
+const PatientAppointmentView = lazy(() => import('./views/PatientAppointmentView').then(module => ({ default: module.PatientAppointmentView })));
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -77,6 +78,8 @@ function MainContent() {
                   <Route path="/conditions/:slug" element={<ConditionsView onOpenBooking={handleOpenBooking} />} />
                   <Route path="/services" element={<ServicesView onOpenBooking={handleOpenBooking} />} />
                   <Route path="/services/:slug" element={<ServicesView onOpenBooking={handleOpenBooking} />} />
+                  <Route path="/appointment/:token" element={<PatientAppointmentView onOpenBooking={handleOpenBooking} />} />
+                  <Route path="/appointments/view/:token" element={<PatientAppointmentView onOpenBooking={handleOpenBooking} />} />
                 </Routes>
               </Suspense>
             </main>

@@ -127,7 +127,7 @@ export function renderTransactionalEmailHtml({
     </tr>
   ` : '';
 
-  const finalBookingUrl = bookingUrl || 'http://localhost:3000/admin/appointments';
+  const finalBookingUrl = bookingUrl || 'https://www.holisticedge.in';
 
   const ctaButtonHtml = `
     <tr>

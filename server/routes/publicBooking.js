@@ -2,6 +2,7 @@ import express from 'express';
 import { getActiveDataProvider } from '../providers/dataProvider.js';
 import { createBookingTransaction } from '../services/bookingService.js';
 import { verifySignedBookingToken } from '../services/reminderService.js';
+import { verifySignedAppointmentAccessToken } from '../services/appointmentAccessTokenService.js';
 import { sendAppointmentConfirmationEmail } from '../services/emailService.js';
 import { db } from '../db.js';
 
@@ -82,6 +83,95 @@ router.get('/verify-reminder-token', async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+// GET /api/public/appointment/:token
+router.get(['/appointment/:token', '/appointment-details/:token'], async (req, res) => {
+  try {
+    const { token } = req.params;
+    if (!token) {
+      return res.status(400).json({ success: false, error: 'Access token is required' });
+    }
+
+    const verification = verifySignedAppointmentAccessToken(token);
+    if (!verification.valid) {
+      return res.status(400).json({
+        success: false,
+        error: verification.error || 'Invalid or expired appointment access link',
+        code: verification.error?.includes('expired') ? 'TOKEN_EXPIRED' : 'TOKEN_INVALID'
+      });
+    }
+
+    // Retrieve appointment
+    let appointment = null;
+    try {
+      appointment = await dataProvider.getAppointmentById(verification.appointmentId);
+    } catch (err) {
+      console.warn('[PublicBooking] dataProvider getAppointmentById fallback:', err.message);
+    }
+    if (!appointment) {
+      appointment = db.find('appointments', a => a.id === verification.appointmentId);
+    }
+
+    if (!appointment) {
+      return res.status(404).json({ success: false, error: 'Appointment record not found or has been archived' });
+    }
+
+    // Strict Patient Isolation Check
+    if (appointment.patientId !== verification.patientId) {
+      return res.status(403).json({ success: false, error: 'Access unauthorized for this appointment' });
+    }
+
+    // Retrieve patient info safely
+    let patient = null;
+    try {
+      patient = await dataProvider.getPatientById(verification.patientId);
+    } catch (err) {
+      console.warn('[PublicBooking] dataProvider getPatientById fallback:', err.message);
+    }
+    if (!patient) {
+      patient = db.find('patients', p => p.id === verification.patientId);
+    }
+
+    // Mask sensitive fields to protect patient privacy
+    const maskedPhone = patient?.phone ? patient.phone.replace(/(\d{3})\d{4}(\d{3})/, '$1****$2') : '';
+    const maskedEmail = patient?.email ? patient.email.replace(/(.{2})(.*)(@.*)/, '$1***$3') : '';
+
+    res.json({
+      success: true,
+      appointment: {
+        id: appointment.id,
+        date: appointment.date,
+        time: appointment.time,
+        service: appointment.service || 'Chiropractic Consultation',
+        status: appointment.status || 'CONFIRMED',
+        createdAt: appointment.createdAt,
+      },
+      patient: {
+        name: patient ? patient.name : 'Valued Patient',
+        registrationTokenNumber: patient?.registrationTokenNumber || 'HE-CONFIRMED',
+        maskedPhone,
+        maskedEmail,
+      },
+      clinic: {
+        name: 'Holistic Edge Chiropractic & Wellness Clinic',
+        address: 'Ground Floor, Susheel Apartments, Behind Olive Hospital, Mehdipatnam, Hyderabad - 500028',
+        phone: '+91 81426 42051',
+        whatsapp: '918142642051',
+        googleMapsUrl: 'https://maps.google.com/?q=Holistic+Edge+Chiropractic+Mehdipatnam+Hyderabad',
+        instructions: [
+          'Please arrive 10-15 minutes prior to your scheduled slot for smooth check-in.',
+          'Wear loose, comfortable clothing suitable for spinal assessment and gentle movements.',
+          'Bring any previous X-rays, MRI scans, or medical reports relevant to your spine or joints.',
+          'If you need to reschedule or have questions, please reach out via WhatsApp or call our front desk.'
+        ]
+      },
+      expiresAt: verification.expiresAt
+    });
+  } catch (err) {
+    console.error('[PublicBooking] Appointment view error:', err);
+    res.status(500).json({ success: false, error: 'Failed to retrieve appointment details' });
   }
 });
 

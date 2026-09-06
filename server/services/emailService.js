@@ -1,11 +1,16 @@
 import { getActiveEmailProvider } from '../providers/emailProvider.js';
+import { generateSignedAppointmentAccessToken } from './appointmentAccessTokenService.js';
 import { db } from '../db.js';
 import fs from 'fs';
 import path from 'path';
 
 const emailProvider = getActiveEmailProvider();
 
-const PUBLIC_LOGO_URL = 'https://holistic-edge-pied.vercel.app/brand/holistic-edge-official-logo.png';
+function getAppBaseUrl() {
+  return process.env.APP_BASE_URL || 'https://www.holisticedge.in';
+}
+
+const PUBLIC_LOGO_URL = 'https://www.holisticedge.in/brand/holistic-edge-official-logo.png';
 
 let cachedLogoAttachment = null;
 
@@ -147,6 +152,14 @@ export async function sendAppointmentConfirmationEmail(appointment, patient) {
   const idempotencyKey = `email_appt_${appointment.id}_${Date.now()}`;
   const subject = `Appointment Confirmed - ${patient.registrationTokenNumber} | Holistic Edge`;
 
+  let apptViewUrl = `${getAppBaseUrl()}/appointment/details`;
+  try {
+    const accessToken = generateSignedAppointmentAccessToken(appointment.id, patient.id);
+    apptViewUrl = `${getAppBaseUrl()}/appointment/${accessToken}`;
+  } catch (err) {
+    console.warn('[EmailService] Failed to generate appointment access token:', err.message);
+  }
+
   const bodyHtml = `
     <p style="margin:0 0 12px 0; font-size:15px; font-weight:700; color:#0F2747;">Dear ${patient.name},</p>
     <p style="margin:0 0 20px 0; font-size:14px; color:#334155; line-height:1.6;">
@@ -173,7 +186,7 @@ export async function sendAppointmentConfirmationEmail(appointment, patient) {
           <table border="0" cellpadding="0" cellspacing="0">
             <tr>
               <td style="background-color:#0F2747; border-radius:8px;">
-                <a href="https://holistic-edge-pied.vercel.app/admin/appointments" class="cta-btn"
+                <a href="${apptViewUrl}" class="cta-btn"
                   style="display:inline-block; font-family:-apple-system,sans-serif; font-size:14px; font-weight:700; color:#FFFFFF; text-decoration:none; padding:13px 32px; border-radius:8px; background-color:#0F2747; letter-spacing:0.3px;">
                   VIEW APPOINTMENT DETAILS &rarr;
                 </a>
@@ -228,7 +241,7 @@ export async function sendAppointmentConfirmationEmail(appointment, patient) {
   `;
 
   const html = buildCleanEmailLayout({ title: 'Your Appointment is Confirmed', bodyHtml });
-  const text = `Dear ${patient.name}, your appointment (${appointment.service}) on ${appointment.date} at ${appointment.time} is confirmed. Token: ${patient.registrationTokenNumber}.`;
+  const text = `Dear ${patient.name}, your appointment (${appointment.service}) on ${appointment.date} at ${appointment.time} is confirmed. Token: ${patient.registrationTokenNumber}. View your appointment details: ${apptViewUrl}`;
 
   const targetRecipient = appointment.patientEmail || patient.email || 'patient@example.com';
   const logId = `elog_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;

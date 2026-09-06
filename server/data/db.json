@@ -42,6 +42,20 @@
   },
   "patients": [
     {
+      "id": "pat_test_sec_002",
+      "name": "Bilal Test-Patient",
+      "phone": "9876543222",
+      "email": "bilal.test@example.com",
+      "registrationTokenNumber": "HE-260906-8802"
+    },
+    {
+      "id": "pat_test_sec_001",
+      "name": "Amina Test-Patient",
+      "phone": "9876543210",
+      "email": "amina.test@example.com",
+      "registrationTokenNumber": "HE-260906-8801"
+    },
+    {
       "id": "pt_1788521937227_a2km4",
       "registrationTokenNumber": "HE-001301",
       "name": "RC Audit Patient",
@@ -314,6 +328,26 @@
     }
   ],
   "appointments": [
+    {
+      "id": "appt_test_sec_002",
+      "patientId": "pat_test_sec_002",
+      "date": "2026-09-16",
+      "time": "02:00 PM",
+      "service": "Sciatica & Disc Decompression Care",
+      "status": "CONFIRMED",
+      "createdAt": "2026-09-06T12:57:25.830Z"
+    },
+    {
+      "id": "appt_test_sec_001",
+      "patientId": "pat_test_sec_001",
+      "date": "2026-09-15",
+      "time": "11:00 AM",
+      "service": "Chiropractic Consultation & Spinal Assessment",
+      "status": "CONFIRMED",
+      "createdAt": "2026-09-06T12:57:25.830Z",
+      "emailStatus": "SENT",
+      "updatedAt": "2026-09-06T12:57:30.580Z"
+    },
     {
       "id": "apt_1788521938386_bj6td",
       "patientId": "pt_1788521937227_a2km4",
@@ -3350,6 +3384,20 @@
   ],
   "emailLogs": [
     {
+      "id": "elog_1788699445852_5mmmn",
+      "idempotencyKey": "email_appt_appt_test_sec_001_1788699445851",
+      "appointmentId": "appt_test_sec_001",
+      "patientId": "pat_test_sec_001",
+      "recipient": "amina.test@example.com",
+      "template": "APPOINTMENT_CONFIRMATION",
+      "subject": "Appointment Confirmed - HE-260906-8801 | Holistic Edge",
+      "status": "SENT",
+      "queuedAt": "2026-09-06T12:57:25.852Z",
+      "sentAt": "2026-09-06T12:57:30.575Z",
+      "providerMessageId": "<e2b5fbae-493f-a9a0-c995-7108738dca28@gmail.com>",
+      "updatedAt": "2026-09-06T12:57:30.575Z"
+    },
+    {
       "id": "elog_1788521938432_deeqs",
       "idempotencyKey": "email_appt_apt_1788521938386_bj6td_1788521938432",
       "appointmentId": "apt_1788521938386_bj6td",
@@ -5877,12 +5925,197 @@
       "updatedAt": "2026-09-01T10:39:20.555Z"
     }
   ],
-  "cmsServices": [],
-  "cmsConditions": [],
-  "cmsFaqs": [],
+  "cmsServices": [
+    {
+      "id": "srv_1",
+      "title": "Chiropractic Care",
+      "slug": "chiropractic-care",
+      "category": "Core Clinical Therapy",
+      "summary": "Precision spinal realignment, joint mobilization, and postural balance to eliminate nerve impingement and restore natural movement.",
+      "status": "PUBLISHED",
+      "isFeatured": true,
+      "price": 1500,
+      "duration": "45 mins",
+      "createdAt": "2026-09-06T12:57:25.825Z"
+    },
+    {
+      "id": "srv_2",
+      "title": "A.M.M Method™ Protocol",
+      "slug": "amm-method",
+      "category": "Signature Proprietary Protocol",
+      "summary": "A 3-stage integrated rehabilitation combining spinal decompression, fascial release, and neuro-muscular stabilization developed by Healer Abdul Mallik.",
+      "status": "PUBLISHED",
+      "isFeatured": true,
+      "price": 2500,
+      "duration": "60 mins",
+      "createdAt": "2026-09-06T12:57:25.825Z"
+    },
+    {
+      "id": "srv_3",
+      "title": "Acupuncture & Cupping Therapy",
+      "slug": "acupuncture-cupping",
+      "category": "Alternative Therapies",
+      "summary": "Targeted blood circulation enhancement, deep muscle tension release, and meridian point stimulation for chronic pain relief.",
+      "status": "PUBLISHED",
+      "isFeatured": true,
+      "price": 1800,
+      "duration": "45 mins",
+      "createdAt": "2026-09-06T12:57:25.825Z"
+    },
+    {
+      "id": "srv_4",
+      "title": "Sports Injury & Neuromuscular Rehab",
+      "slug": "sports-injury-rehab",
+      "category": "Rehabilitation",
+      "summary": "Focused structural rehabilitation for athletes and active individuals recovering from ligament sprains, tendonitis, and biomechanical imbalances.",
+      "status": "PUBLISHED",
+      "isFeatured": false,
+      "price": 2000,
+      "duration": "45 mins",
+      "createdAt": "2026-09-06T12:57:25.825Z"
+    }
+  ],
+  "cmsConditions": [
+    {
+      "id": "cond_1",
+      "title": "Lower Back Pain & Sciatica",
+      "slug": "sciatica-lower-back-pain",
+      "category": "Spine & Nerve",
+      "summary": "Compressed lumbar discs, radiating nerve pain, and severe lower spine stiffness treated with non-surgical decompression.",
+      "status": "PUBLISHED",
+      "isFeatured": true,
+      "createdAt": "2026-09-06T12:57:25.825Z"
+    },
+    {
+      "id": "cond_2",
+      "title": "Cervical Spondylosis & Neck Stiffness",
+      "slug": "cervical-spondylosis",
+      "category": "Cervical Spine",
+      "summary": "Chronic neck tension, pinched nerve radiculopathy, and numbness radiating down arms addressed via gentle cervical adjustments.",
+      "status": "PUBLISHED",
+      "isFeatured": true,
+      "createdAt": "2026-09-06T12:57:25.825Z"
+    },
+    {
+      "id": "cond_3",
+      "title": "Frozen Shoulder & Joint Immobility",
+      "slug": "frozen-shoulder",
+      "category": "Joints",
+      "summary": "Adhesive capsulitis and shoulder capsule restriction restored through fascial mobilization and targeted therapeutic cupping.",
+      "status": "PUBLISHED",
+      "isFeatured": true,
+      "createdAt": "2026-09-06T12:57:25.825Z"
+    },
+    {
+      "id": "cond_4",
+      "title": "Lumbar Slipped / Bulging Disc",
+      "slug": "lumbar-slip-disc",
+      "category": "Spine",
+      "summary": "L4-L5 and L5-S1 disc protrusion managed safely without invasive surgery through the holistic 3-stage A.M.M protocol.",
+      "status": "PUBLISHED",
+      "isFeatured": true,
+      "createdAt": "2026-09-06T12:57:25.825Z"
+    }
+  ],
+  "cmsFaqs": [
+    {
+      "id": "faq_1",
+      "question": "What makes the A.M.M Method™ different from regular chiropractic?",
+      "answer": "The A.M.M Method™ is a proprietary 3-stage holistic recovery protocol developed by Healer Abdul Mallik over 25+ years. It synergizes precise chiropractic adjustments with deep tissue cupping and neuromuscular stabilization exercises for permanent root-cause relief.",
+      "category": "General Clinical",
+      "status": "PUBLISHED",
+      "isPublished": true,
+      "createdAt": "2026-09-06T12:57:25.825Z"
+    },
+    {
+      "id": "faq_2",
+      "question": "Is chiropractic spinal adjustment painful?",
+      "answer": "No. Chiropractic adjustments performed by experienced practitioners are gentle, precise, and virtually painless. Most patients experience immediate relief and a sense of lightness in their spine following the session.",
+      "category": "Treatment Safety",
+      "status": "PUBLISHED",
+      "isPublished": true,
+      "createdAt": "2026-09-06T12:57:25.825Z"
+    },
+    {
+      "id": "faq_3",
+      "question": "Can disc bulges and sciatica be treated without surgery?",
+      "answer": "Yes. In the vast majority of non-emergency cases, conservative care combining spinal decompression, fascial release, and neuromuscular re-education effectively relieves nerve pressure and eliminates pain without surgery.",
+      "category": "Conditions & Care",
+      "status": "PUBLISHED",
+      "isPublished": true,
+      "createdAt": "2026-09-06T12:57:25.825Z"
+    }
+  ],
   "cmsTeam": [],
-  "offers": [],
-  "googleReviews": [],
+  "offers": [
+    {
+      "id": "off_1",
+      "title": "Comprehensive Spine & Posture Consultation",
+      "code": "FIRSTCARE",
+      "discountText": "20% OFF Initial Consultation",
+      "validUntil": "2026-12-31",
+      "description": "Complete physical evaluation, spinal alignment check, posture assessment, and tailored clinical recovery roadmap.",
+      "status": "ACTIVE",
+      "isPublished": true,
+      "createdAt": "2026-09-06T12:57:25.825Z"
+    }
+  ],
+  "googleReviews": [
+    {
+      "id": "grev_1",
+      "googleReviewId": "ChZDSUhNMG9nS0VJQ0FnSUNkLXF2aWFnEAE",
+      "reviewerName": "M. Rahman",
+      "authorName": "M. Rahman",
+      "starRating": 5,
+      "rating": 5,
+      "comment": "I had been struggling with excruciating lower back pain that radiated down my right leg for over 8 months. Healer Abdul Mallik did a thorough assessment and started the A.M.M protocol. By the 4th session, the sharp nerve pain subsided completely.",
+      "text": "I had been struggling with excruciating lower back pain that radiated down my right leg for over 8 months. Healer Abdul Mallik did a thorough assessment and started the A.M.M protocol. By the 4th session, the sharp nerve pain subsided completely.",
+      "reviewTimestamp": "2026-09-06T12:57:25.825Z",
+      "source": "GOOGLE",
+      "location": "Mehdipatnam, Hyderabad",
+      "status": "PUBLISHED",
+      "isApproved": true,
+      "isPublishedOnWebsite": true,
+      "isFeatured": true,
+      "createdAt": "2026-09-06T12:57:25.825Z"
+    },
+    {
+      "id": "grev_2",
+      "googleReviewId": "ChZDSUhNMG9nS0VJQ0FnSUNkLXF2aWFnEAF",
+      "reviewerName": "Syed K.",
+      "authorName": "Syed K.",
+      "starRating": 5,
+      "rating": 5,
+      "comment": "Healer Abdul Mallik is extremely experienced. You can clearly feel his 25 years of practice in the way he examines the spine. His gentle adjustments relieved morning stiffness in my neck.",
+      "text": "Healer Abdul Mallik is extremely experienced. You can clearly feel his 25 years of practice in the way he examines the spine. His gentle adjustments relieved morning stiffness in my neck.",
+      "reviewTimestamp": "2026-09-06T12:57:25.825Z",
+      "source": "GOOGLE",
+      "location": "Banjara Hills, Hyderabad",
+      "status": "PUBLISHED",
+      "isApproved": true,
+      "isPublishedOnWebsite": true,
+      "isFeatured": true,
+      "createdAt": "2026-09-06T12:57:25.825Z"
+    },
+    {
+      "id": "grev_3",
+      "googleReviewId": "ChZDSUhNMG9nS0VJQ0FnSUNkLXF2aWFnEAG",
+      "reviewerName": "P. Venkat",
+      "authorName": "P. Venkat",
+      "starRating": 5,
+      "rating": 5,
+      "comment": "Could not lift my left arm above shoulder level. The combination of cupping therapy followed by joint mobilization worked wonders. My range of motion improved by over 80%.",
+      "text": "Could not lift my left arm above shoulder level. The combination of cupping therapy followed by joint mobilization worked wonders. My range of motion improved by over 80%.",
+      "reviewTimestamp": "2026-09-06T12:57:25.825Z",
+      "source": "GOOGLE",
+      "location": "Tolichowki, Hyderabad",
+      "status": "PUBLISHED",
+      "isApproved": true,
+      "isPublishedOnWebsite": true,
+      "isFeatured": true,
+      "createdAt": "2026-09-06T12:57:25.825Z"
+    }
+  ],
   "notifications": [
     {
       "id": "notif_1788521938411",
