@@ -86,10 +86,10 @@ router.get('/verify-reminder-token', async (req, res) => {
   }
 });
 
-// GET /api/public/appointment/:token
-router.get(['/appointment/:token', '/appointment-details/:token'], async (req, res) => {
+// GET /api/public/appointment/:token or /api/public/appointment?token=...
+router.get(['/appointment', '/appointment/:token', '/appointment-details', '/appointment-details/:token'], async (req, res) => {
   try {
-    const { token } = req.params;
+    const token = req.params.token || req.query.token;
     if (!token) {
       return res.status(400).json({ success: false, error: 'Access token is required' });
     }

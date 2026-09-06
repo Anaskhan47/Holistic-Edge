@@ -81,7 +81,13 @@ export const PatientAppointmentView: React.FC<PatientAppointmentViewProps> = ({ 
         setError(null);
         setErrorCode(null);
 
-        const response = await fetch(`/api/public/appointment/${encodeURIComponent(token)}`);
+        let response = await fetch(`/api/public/appointment/${encodeURIComponent(token)}`);
+        if (!response.ok && response.status === 404) {
+          response = await fetch(`/api/public/appointment?token=${encodeURIComponent(token)}`);
+        }
+        if (!response.ok && response.status === 404) {
+          response = await fetch(`/api/public/appointment-details?token=${encodeURIComponent(token)}`);
+        }
         const result: ApiResponse = await response.json();
 
         if (!isMounted) return;
