@@ -27,6 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'online',
+    version: '1.4.1-patient-cta-secure',
     clinic: 'Holistic Edge Chiropractic & Wellness Clinic',
     founder: 'Healer Abdul Mallik',
     timestamp: new Date().toISOString(),
@@ -47,6 +48,9 @@ app.use('/api/follow-ups', followUpRoutes);
 app.use('/api/email', emailRoutes);
 app.use('/api/media', mediaRoutes);
 app.use('/api/public', publicBookingRoutes);
+app.use('/api/appointment', publicBookingRoutes);
+app.use('/api/appointment-details', publicBookingRoutes);
+app.use('/api/public-booking', publicBookingRoutes);
 app.use('/api/cms', cmsRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/notifications', notificationRoutes);

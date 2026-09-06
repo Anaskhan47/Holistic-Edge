@@ -56,6 +56,20 @@
       "registrationTokenNumber": "HE-260906-8801"
     },
     {
+      "id": "pat_test_sec_002",
+      "name": "Bilal Test-Patient",
+      "phone": "9876543222",
+      "email": "bilal.test@example.com",
+      "registrationTokenNumber": "HE-260906-8802"
+    },
+    {
+      "id": "pat_test_sec_001",
+      "name": "Amina Test-Patient",
+      "phone": "9876543210",
+      "email": "amina.test@example.com",
+      "registrationTokenNumber": "HE-260906-8801"
+    },
+    {
       "id": "pt_1788521937227_a2km4",
       "registrationTokenNumber": "HE-001301",
       "name": "RC Audit Patient",
@@ -328,6 +342,26 @@
     }
   ],
   "appointments": [
+    {
+      "id": "appt_test_sec_002",
+      "patientId": "pat_test_sec_002",
+      "date": "2026-09-16",
+      "time": "02:00 PM",
+      "service": "Sciatica & Disc Decompression Care",
+      "status": "CONFIRMED",
+      "createdAt": "2026-09-06T13:11:18.643Z"
+    },
+    {
+      "id": "appt_test_sec_001",
+      "patientId": "pat_test_sec_001",
+      "date": "2026-09-15",
+      "time": "11:00 AM",
+      "service": "Chiropractic Consultation & Spinal Assessment",
+      "status": "CONFIRMED",
+      "createdAt": "2026-09-06T13:11:18.643Z",
+      "emailStatus": "SENT",
+      "updatedAt": "2026-09-06T13:11:23.618Z"
+    },
     {
       "id": "appt_test_sec_002",
       "patientId": "pat_test_sec_002",
@@ -3383,6 +3417,20 @@
     }
   ],
   "emailLogs": [
+    {
+      "id": "elog_1788700278707_kz6uv",
+      "idempotencyKey": "email_appt_appt_test_sec_001_1788700278704",
+      "appointmentId": "appt_test_sec_001",
+      "patientId": "pat_test_sec_001",
+      "recipient": "amina.test@example.com",
+      "template": "APPOINTMENT_CONFIRMATION",
+      "subject": "Appointment Confirmed - HE-260906-8801 | Holistic Edge",
+      "status": "SENT",
+      "queuedAt": "2026-09-06T13:11:18.707Z",
+      "sentAt": "2026-09-06T13:11:23.609Z",
+      "providerMessageId": "<8e1af3b8-de49-5141-5379-504002549198@gmail.com>",
+      "updatedAt": "2026-09-06T13:11:23.609Z"
+    },
     {
       "id": "elog_1788699445852_5mmmn",
       "idempotencyKey": "email_appt_appt_test_sec_001_1788699445851",
