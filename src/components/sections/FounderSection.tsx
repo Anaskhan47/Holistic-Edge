@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { teamData } from '../../data/team';
 import { Award, Users, CheckCircle2, Quote, Sparkles, ArrowRight } from 'lucide-react';
 import { Button } from '../ui/Button';

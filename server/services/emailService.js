@@ -127,7 +127,7 @@ export function buildCleanEmailLayout({ title, bodyHtml }) {
                 &#128205; Ground Floor, Susheel Apartments, Behind Olive Hospital, Mehdipatnam, Hyderabad - 500028
               </div>
               <div style="font-size:12px; color:#475569; margin-bottom:14px;">
-                &#128222; +91 81426 42051 &nbsp;|&nbsp; &#9993; info@holisticedge.in &nbsp;|&nbsp; &#127760; www.holisticedge.in
+                &#128222; +91 81426 42051 &nbsp;|&nbsp; &#9993; info@holisticedge.in &nbsp;|&nbsp; <img src="https://www.holisticedge.in/favicon-32x32.png" width="13" height="13" alt="Logo" style="vertical-align:-1px; margin-right:2px; border-radius:50%; display:inline-block;" /> www.holisticedge.in
               </div>
               <div style="border-top:1px solid #E2E8F0; padding-top:12px; font-size:11px; color:#94A3B8; line-height:1.5;">
                 This is an automated operational message from Holistic Edge Clinic.<br />

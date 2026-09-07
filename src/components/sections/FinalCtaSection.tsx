@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Calendar, Phone, ShieldCheck, Leaf, MapPin } from 'lucide-react';
 import { clinicInfo } from '../../data/clinicInfo';
 

@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { usePublishedFaqs } from '../../hooks/useCmsContent';
 import { Accordion } from '../ui/Accordion';
 import { Badge } from '../ui/Badge';

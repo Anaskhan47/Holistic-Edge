@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { ammMethodStages, ammPhilosophy } from '../../data/ammMethod';
 import {
   ShieldCheck,

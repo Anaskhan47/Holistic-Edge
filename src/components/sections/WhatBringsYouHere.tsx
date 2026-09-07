@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { conditionsData } from '../../data/conditions';
 import { ArrowRight, ChevronRight, Activity, Sparkles, CheckCircle2 } from 'lucide-react';
 import { Button } from '../ui/Button';

@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Phone, MessageCircle, Calendar, Sparkles, Tag, ArrowRight } from 'lucide-react';
 import { clinicInfo } from '../../data/clinicInfo';
 import { useMobileStickyOffer } from '../../hooks/usePublicOffers';

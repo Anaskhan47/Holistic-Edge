@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { ScrollText, RefreshCw, Activity, Check, Plus, Trash2, Eye, Star } from 'lucide-react';
 import { useAdminStore } from '../../context/AdminStoreContext';
 

@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { testimonialsData } from '../../data/testimonials';
 import { googleReviewsStorage } from '../../services/api/cmsStorage';
 import { Star, ArrowRight, ShieldCheck } from 'lucide-react';
