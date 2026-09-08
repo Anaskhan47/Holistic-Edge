@@ -166,7 +166,6 @@ export function renderTransactionalEmailHtml({
     @media screen and (max-width: 600px) {
       .email-container { width: 100% !important; max-width: 100% !important; margin: 0 !important; }
       .fluid-padding { padding: 20px 14px !important; }
-      .contact-col { width: 100% !important; display: block !important; margin-bottom: 10px !important; box-sizing: border-box !important; }
       .cta-cell { width: 100% !important; display: block !important; }
       .cta-button { width: 100% !important; display: block !important; box-sizing: border-box !important; text-align: center !important; padding: 14px 16px !important; }
       .logo-img { width: 220px !important; }
@@ -244,33 +243,40 @@ export function renderTransactionalEmailHtml({
                       <tr>
                         <td style="background-color: #FFFFFF;">
                           <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                            <!-- Call the Clinic CTA (Full Width) -->
                             <tr>
-                              <td width="48%" align="center" class="contact-col" style="padding: 12px; background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; vertical-align: middle;">
-                                <a href="tel:${clinicPhoneRaw}" style="text-decoration: none; color: inherit; display: block;">
-                                  <table border="0" cellpadding="0" cellspacing="0" align="center">
+                              <td width="100%" align="center" style="padding: 12px; background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; vertical-align: middle;">
+                                <a href="tel:${clinicPhoneRaw}" style="text-decoration: none; color: inherit; display: block; width: 100%;">
+                                  <table border="0" cellpadding="0" cellspacing="0" align="center" style="margin: 0 auto;">
                                     <tr>
-                                      <td align="center" style="width: 34px; height: 34px; background-color: #EEF2FF; border-radius: 50%; color: #0F2747; font-size: 16px; line-height: 34px;">
+                                      <td align="center" valign="middle" style="width: 34px; height: 34px; background-color: #EEF2FF; border-radius: 50%; color: #0F2747; font-size: 16px; line-height: 34px;">
                                         📞
                                       </td>
-                                      <td style="padding-left: 10px; text-align: left;">
-                                        <div style="font-size: 12px; font-weight: 700; color: #0F2747;">Call the Clinic</div>
-                                        <div style="font-size: 12px; color: #475569;">${clinicPhone}</div>
+                                      <td style="padding-left: 10px; text-align: left;" valign="middle">
+                                        <div style="font-size: 12px; font-weight: 700; color: #0F2747; line-height: 1.3;">Call the Clinic</div>
+                                        <div style="font-size: 12px; color: #475569; line-height: 1.3;">${clinicPhone}</div>
                                       </td>
                                     </tr>
                                   </table>
                                 </a>
                               </td>
-                              <td width="4%" style="font-size: 1px; line-height: 1px;">&nbsp;</td>
-                              <td width="48%" align="center" class="contact-col" style="padding: 12px; background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; vertical-align: middle;">
-                                <a href="https://wa.me/${clinicWhatsappRaw}" style="text-decoration: none; color: inherit; display: block;">
-                                  <table border="0" cellpadding="0" cellspacing="0" align="center">
+                            </tr>
+                            <!-- Spacer Row -->
+                            <tr>
+                              <td height="10" style="height: 10px; font-size: 1px; line-height: 10px; mso-line-height-rule: exactly;">&nbsp;</td>
+                            </tr>
+                            <!-- WhatsApp Us CTA (Full Width) -->
+                            <tr>
+                              <td width="100%" align="center" style="padding: 12px; background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; vertical-align: middle;">
+                                <a href="https://wa.me/${clinicWhatsappRaw}" style="text-decoration: none; color: inherit; display: block; width: 100%;">
+                                  <table border="0" cellpadding="0" cellspacing="0" align="center" style="margin: 0 auto;">
                                     <tr>
-                                      <td align="center" style="width: 34px; height: 34px; background-color: #DCFCE7; border-radius: 50%; color: #166534; font-size: 16px; line-height: 34px;">
+                                      <td align="center" valign="middle" style="width: 34px; height: 34px; background-color: #DCFCE7; border-radius: 50%; color: #166534; font-size: 16px; line-height: 34px;">
                                         💬
                                       </td>
-                                      <td style="padding-left: 10px; text-align: left;">
-                                        <div style="font-size: 12px; font-weight: 700; color: #0F2747;">WhatsApp Us</div>
-                                        <div style="font-size: 12px; color: #475569;">${clinicPhone}</div>
+                                      <td style="padding-left: 10px; text-align: left;" valign="middle">
+                                        <div style="font-size: 12px; font-weight: 700; color: #0F2747; line-height: 1.3;">WhatsApp Us</div>
+                                        <div style="font-size: 12px; color: #475569; line-height: 1.3;">${clinicPhone}</div>
                                       </td>
                                     </tr>
                                   </table>

@@ -67,7 +67,6 @@ export function buildCleanEmailLayout({ title, bodyHtml }) {
     @media screen and (max-width: 600px) {
       .email-container { width: 100% !important; max-width: 100% !important; }
       .fluid-pd { padding: 24px 16px !important; }
-      .contact-col { display: block !important; width: 100% !important; margin-bottom: 8px !important; }
       .cta-btn { width: 100% !important; padding: 14px 16px !important; box-sizing: border-box !important; text-align: center !important; }
       .logo-img { width: 260px !important; max-width: 85% !important; }
     }
@@ -174,34 +173,41 @@ export async function sendAppointmentConfirmationEmail(appointment, patient) {
     <!-- CONTACT STRIP -->
     <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-top:1px solid #E2E8F0; padding-top:20px;">
       <tr>
-        <td align="center" style="padding-bottom:12px; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; color:#64748B;">Need to reach us?</td>
+        <td align="center" style="padding-bottom:14px; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; color:#64748B;">Need to reach us?</td>
       </tr>
       <tr>
         <td>
           <table border="0" cellpadding="0" cellspacing="0" width="100%">
+            <!-- Call the Clinic CTA (Full Width) -->
             <tr>
-              <td width="48%" class="contact-col" style="padding:12px; background-color:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; vertical-align:middle;">
-                <a href="tel:918142642051" style="text-decoration:none; color:inherit; display:block;">
-                  <table border="0" cellpadding="0" cellspacing="0" align="center">
+              <td width="100%" style="padding:12px; background-color:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; vertical-align:middle;">
+                <a href="tel:918142642051" style="text-decoration:none; color:inherit; display:block; width:100%;">
+                  <table border="0" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto;">
                     <tr>
-                      <td align="center" style="width:32px; height:32px; background-color:#EEF2FF; border-radius:50%; font-size:15px; line-height:32px;">&#128222;</td>
-                      <td style="padding-left:10px;">
-                        <div style="font-size:12px; font-weight:700; color:#0F2747;">Call the Clinic</div>
-                        <div style="font-size:12px; color:#475569;">+91 81426 42051</div>
+                      <td align="center" valign="middle" style="width:32px; height:32px; background-color:#EEF2FF; border-radius:50%; font-size:15px; line-height:32px;">&#128222;</td>
+                      <td style="padding-left:10px; text-align:left;" valign="middle">
+                        <div style="font-size:12px; font-weight:700; color:#0F2747; line-height:1.3;">Call the Clinic</div>
+                        <div style="font-size:12px; color:#475569; line-height:1.3;">+91 81426 42051</div>
                       </td>
                     </tr>
                   </table>
                 </a>
               </td>
-              <td width="4%" style="font-size:1px; line-height:1px;">&nbsp;</td>
-              <td width="48%" class="contact-col" style="padding:12px; background-color:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; vertical-align:middle;">
-                <a href="https://wa.me/918142642051" style="text-decoration:none; color:inherit; display:block;">
-                  <table border="0" cellpadding="0" cellspacing="0" align="center">
+            </tr>
+            <!-- Spacer Row -->
+            <tr>
+              <td height="10" style="height:10px; font-size:1px; line-height:10px; mso-line-height-rule:exactly;">&nbsp;</td>
+            </tr>
+            <!-- WhatsApp Us CTA (Full Width) -->
+            <tr>
+              <td width="100%" style="padding:12px; background-color:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; vertical-align:middle;">
+                <a href="https://wa.me/918142642051" style="text-decoration:none; color:inherit; display:block; width:100%;">
+                  <table border="0" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto;">
                     <tr>
-                      <td align="center" style="width:32px; height:32px; background-color:#DCFCE7; border-radius:50%; font-size:15px; line-height:32px;">&#128172;</td>
-                      <td style="padding-left:10px;">
-                        <div style="font-size:12px; font-weight:700; color:#0F2747;">WhatsApp Us</div>
-                        <div style="font-size:12px; color:#475569;">+91 81426 42051</div>
+                      <td align="center" valign="middle" style="width:32px; height:32px; background-color:#DCFCE7; border-radius:50%; font-size:15px; line-height:32px;">&#128172;</td>
+                      <td style="padding-left:10px; text-align:left;" valign="middle">
+                        <div style="font-size:12px; font-weight:700; color:#0F2747; line-height:1.3;">WhatsApp Us</div>
+                        <div style="font-size:12px; color:#475569; line-height:1.3;">+91 81426 42051</div>
                       </td>
                     </tr>
                   </table>
