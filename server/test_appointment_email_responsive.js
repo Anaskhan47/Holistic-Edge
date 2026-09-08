@@ -44,7 +44,9 @@ async function runAppointmentEmailResponsiveVerification() {
   assert(!emailServiceSource.includes('alt="Logo"'), 'emailService.js must not contain alt="Logo" in footer');
   assert(emailServiceSource.includes('&#x1F310;'), 'emailService.js must contain &#x1F310; Unicode globe');
   assert(emailServiceSource.includes('href="https://www.holisticedge.in"'), 'emailService.js must contain clickable website link');
-  console.log('✅ Footer globe icon uses Unicode &#x1F310; with clickable https://www.holisticedge.in (No img tag).');
+  assert(emailServiceSource.includes('href="mailto:info@holisticedge.in"'), 'emailService.js must contain clickable mailto link');
+  assert(emailServiceSource.includes('&#x2709;&#xFE0F;'), 'emailService.js must contain clean Unicode envelope &#x2709;&#xFE0F;');
+  console.log('✅ Footer globe icon (&#x1F310;) & enhanced envelope (&#x2709;&#xFE0F;) with clickable links verified in emailService.js.');
 
   // Test 2: Source code analysis of emailTemplateEngine.js
   console.log('\n--- Test 2: emailTemplateEngine.js HTML structure ---');
@@ -61,7 +63,9 @@ async function runAppointmentEmailResponsiveVerification() {
   assert(!templateEngineSource.includes('alt="Logo"'), 'emailTemplateEngine.js must not contain alt="Logo"');
   assert(templateEngineSource.includes('&#x1F310;'), 'emailTemplateEngine.js must contain &#x1F310; Unicode globe');
   assert(templateEngineSource.includes('href="https://www.holisticedge.in"'), 'emailTemplateEngine.js must contain clickable website link');
-  console.log('✅ emailTemplateEngine.js stacked table structure and Unicode globe verified.');
+  assert(templateEngineSource.includes('href="mailto:info@holisticedge.in"'), 'emailTemplateEngine.js must contain clickable mailto link');
+  assert(templateEngineSource.includes('&#x2709;&#xFE0F;'), 'emailTemplateEngine.js must contain clean Unicode envelope &#x2709;&#xFE0F;');
+  console.log('✅ emailTemplateEngine.js stacked table structure, globe, and enhanced envelope verified.');
 
   // Test 3: Render actual HTML from emailService
   console.log('\n--- Test 3: Render HTML from emailService ---');

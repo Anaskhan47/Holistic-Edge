@@ -125,8 +125,12 @@ export function buildCleanEmailLayout({ title, bodyHtml }) {
               <div style="font-size:12px; color:#475569; line-height:1.5; margin-bottom:6px;">
                 &#128205; Ground Floor, Susheel Apartments, Behind Olive Hospital, Mehdipatnam, Hyderabad - 500028
               </div>
-              <div style="font-size:12px; color:#475569; margin-bottom:14px; line-height:1.6;">
-                <span style="white-space:nowrap;">&#128222; +91 81426 42051</span> &nbsp;|&nbsp; <span style="white-space:nowrap;">&#9993; info@holisticedge.in</span> &nbsp;|&nbsp; <span style="white-space:nowrap;"><span style="font-size:18px; line-height:1; vertical-align:-2px;">&#x1F310;</span> <a href="https://www.holisticedge.in" target="_blank" rel="noopener noreferrer" style="color:#475569; text-decoration:none;">www.holisticedge.in</a></span>
+              <div style="font-size:12px; color:#475569; margin-bottom:14px; line-height:1.8;">
+                <span style="white-space:nowrap;"><span style="font-size:16px; line-height:1; vertical-align:-2px;">&#128222;</span> <a href="tel:918142642051" style="color:#475569; text-decoration:none;">+91 81426 42051</a></span>
+                &nbsp;|&nbsp;
+                <span style="white-space:nowrap;"><span style="font-size:18px; line-height:1; vertical-align:-2px;">&#x2709;&#xFE0F;</span> <a href="mailto:info@holisticedge.in" style="color:#475569; text-decoration:none;">info@holisticedge.in</a></span>
+                &nbsp;|&nbsp;
+                <span style="white-space:nowrap;"><span style="font-size:18px; line-height:1; vertical-align:-2px;">&#x1F310;</span> <a href="https://www.holisticedge.in" target="_blank" rel="noopener noreferrer" style="color:#475569; text-decoration:none;">www.holisticedge.in</a></span>
               </div>
               <div style="border-top:1px solid #E2E8F0; padding-top:12px; font-size:11px; color:#94A3B8; line-height:1.5;">
                 This is an automated operational message from Holistic Edge Clinic.<br />
