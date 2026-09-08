@@ -39,6 +39,13 @@ async function runAppointmentEmailResponsiveVerification() {
   assert(emailServiceSource.includes('mso-line-height-rule:exactly;'), 'Must have Outlook spacer styling');
   console.log('✅ Stacked full-width table rows with spacer verified.');
 
+  // Check globe icon in footer (No broken img, Unicode &#x1F310; used, clickable URL)
+  assert(!emailServiceSource.includes('favicon-32x32.png'), 'emailService.js must not contain favicon-32x32.png');
+  assert(!emailServiceSource.includes('alt="Logo"'), 'emailService.js must not contain alt="Logo" in footer');
+  assert(emailServiceSource.includes('&#x1F310;'), 'emailService.js must contain &#x1F310; Unicode globe');
+  assert(emailServiceSource.includes('href="https://www.holisticedge.in"'), 'emailService.js must contain clickable website link');
+  console.log('✅ Footer globe icon uses Unicode &#x1F310; with clickable https://www.holisticedge.in (No img tag).');
+
   // Test 2: Source code analysis of emailTemplateEngine.js
   console.log('\n--- Test 2: emailTemplateEngine.js HTML structure ---');
   const templateEngineSource = fs.readFileSync('server/services/emailTemplateEngine.js', 'utf8');
@@ -50,7 +57,11 @@ async function runAppointmentEmailResponsiveVerification() {
   assert(callIndexEngine < waIndexEngine, '"Call the Clinic" must appear before "WhatsApp Us"');
   assert(templateEngineSource.includes('tel:${clinicPhoneRaw}'), 'Call CTA must have dynamic tel: link');
   assert(templateEngineSource.includes('https://wa.me/${clinicWhatsappRaw}'), 'WhatsApp CTA must have dynamic wa.me link');
-  console.log('✅ emailTemplateEngine.js stacked table structure verified.');
+  assert(!templateEngineSource.includes('favicon-32x32.png'), 'emailTemplateEngine.js must not contain favicon-32x32.png');
+  assert(!templateEngineSource.includes('alt="Logo"'), 'emailTemplateEngine.js must not contain alt="Logo"');
+  assert(templateEngineSource.includes('&#x1F310;'), 'emailTemplateEngine.js must contain &#x1F310; Unicode globe');
+  assert(templateEngineSource.includes('href="https://www.holisticedge.in"'), 'emailTemplateEngine.js must contain clickable website link');
+  console.log('✅ emailTemplateEngine.js stacked table structure and Unicode globe verified.');
 
   // Test 3: Render actual HTML from emailService
   console.log('\n--- Test 3: Render HTML from emailService ---');

@@ -304,8 +304,8 @@ export function renderTransactionalEmailHtml({
               <div style="font-size: 12px; color: #475569; line-height: 1.4; margin-bottom: 6px;">
                 📍 Ground Floor, Susheel Apartments, Behind Olive Hospital, Mehdipatnam, Hyderabad - 500028
               </div>
-              <div style="font-size: 12px; color: #475569; margin-bottom: 12px;">
-                📞 ${clinicPhone} &nbsp;|&nbsp; ✉️ info@holisticedge.in &nbsp;|&nbsp; <img src="https://www.holisticedge.in/favicon-32x32.png" width="13" height="13" alt="Logo" style="vertical-align: -1px; margin-right: 2px; border-radius: 50%; display: inline-block;" /> www.holisticedge.in
+              <div style="font-size: 12px; color: #475569; margin-bottom: 12px; line-height: 1.6;">
+                <span style="white-space: nowrap;">📞 ${clinicPhone}</span> &nbsp;|&nbsp; <span style="white-space: nowrap;">✉️ info@holisticedge.in</span> &nbsp;|&nbsp; <span style="white-space: nowrap;"><span style="font-size: 18px; line-height: 1; vertical-align: -2px;">&#x1F310;</span> <a href="https://www.holisticedge.in" target="_blank" rel="noopener noreferrer" style="color: #475569; text-decoration: none;">www.holisticedge.in</a></span>
               </div>
               <div style="border-top: 1px solid #E2E8F0; padding-top: 10px; font-size: 11px; color: #94A3B8; line-height: 1.5;">
                 This is an automated message. Please do not reply directly to this email.<br />
